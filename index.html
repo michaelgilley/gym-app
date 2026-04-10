@@ -1,0 +1,1558 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0f0f0f">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Gym">
+    <link rel="apple-touch-icon" href="./icon-192.png">
+    <link rel="manifest" href="./manifest.json">
+    <link rel="icon" type="image/png" href="./icon-192.png">
+
+    <title>Gym Program</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg: #0f0f0f;
+            --card: #191919;
+            --border: #2a2a2a;
+            --accent: #c8f135;
+            --push: #f17b2c;
+            --lower-q: #a78bfa;
+            --pull: #4fa8e8;
+            --lower-h: #f472b6;
+            --text-primary: #ffffff;
+            --text-secondary: #b0b0b0;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text-primary);
+            font-family: 'Barlow', sans-serif;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-top: 10px;
+        }
+
+        h1 {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            letter-spacing: -1px;
+        }
+
+        /* Date Selector */
+        .date-selector {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .date-input {
+            background: var(--card);
+            border: 2px solid var(--border);
+            color: var(--text-primary);
+            padding: 10px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: 'Barlow', sans-serif;
+            font-size: 14px;
+        }
+
+        .date-input:focus {
+            border-color: var(--accent);
+            outline: none;
+        }
+
+        .date-display {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 16px;
+            color: var(--text-secondary);
+        }
+
+        /* Weekly Schedule */
+        .weekly-schedule {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 8px;
+            margin-bottom: 25px;
+        }
+
+        .day-indicator {
+            background: var(--card);
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            padding: 12px 8px;
+            text-align: center;
+            font-size: 12px;
+            font-family: 'Barlow Condensed', sans-serif;
+            font-weight: 500;
+        }
+
+        .day-indicator.gym {
+            border-color: var(--accent);
+            background: rgba(200, 241, 53, 0.1);
+        }
+
+        .day-indicator.rest {
+            opacity: 0.6;
+        }
+
+        .day-letter {
+            font-weight: 700;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .day-type {
+            font-size: 10px;
+            color: var(--text-secondary);
+        }
+
+        /* Tab Navigation */
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 25px;
+            overflow-x: auto;
+            padding-bottom: 10px;
+        }
+
+        .tab-btn {
+            padding: 12px 20px;
+            background: var(--card);
+            border: 2px solid var(--border);
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 8px;
+            white-space: nowrap;
+            transition: all 0.2s;
+        }
+
+        .tab-btn:hover {
+            border-color: var(--accent);
+        }
+
+        .tab-btn.active {
+            color: var(--bg);
+            border-color: transparent;
+            font-weight: 700;
+        }
+
+        .tab-btn.active[data-day="A"] {
+            background: var(--push);
+        }
+
+        .tab-btn.active[data-day="B"] {
+            background: var(--lower-q);
+        }
+
+        .tab-btn.active[data-day="C"] {
+            background: var(--pull);
+        }
+
+        .tab-btn.active[data-day="D"] {
+            background: var(--lower-h);
+        }
+
+        /* Tab Content */
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .workout-section {
+            margin-bottom: 25px;
+        }
+
+        .section-title {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--border);
+            letter-spacing: -0.5px;
+        }
+
+        /* Workout Table */
+        .workout-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .workout-table tr {
+            border-bottom: 1px solid var(--border);
+        }
+
+        .workout-table td {
+            padding: 14px;
+            text-align: left;
+            font-size: 14px;
+        }
+
+        .workout-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .exercise-name {
+            font-weight: 500;
+            color: var(--text-primary);
+            min-width: 150px;
+        }
+
+        .sets-reps {
+            color: var(--text-secondary);
+            font-size: 13px;
+            min-width: 100px;
+        }
+
+        .rest-time {
+            color: var(--text-secondary);
+            font-size: 12px;
+            min-width: 80px;
+        }
+
+        .weight-input-cell {
+            min-width: 120px;
+        }
+
+        .weight-input {
+            background: var(--card);
+            border: 2px solid var(--border);
+            color: var(--accent);
+            padding: 8px 10px;
+            border-radius: 6px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            font-weight: 600;
+            width: 100%;
+            max-width: 100px;
+            transition: border-color 0.2s;
+        }
+
+        .weight-input:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 8px rgba(200, 241, 53, 0.2);
+        }
+
+        .weight-input::placeholder {
+            color: var(--text-secondary);
+            opacity: 0.5;
+        }
+
+        /* Weight History */
+        .history-toggle {
+            background: none;
+            border: none;
+            color: var(--accent);
+            cursor: pointer;
+            font-size: 12px;
+            text-decoration: underline;
+            padding: 0;
+            margin-left: 10px;
+        }
+
+        .history-container {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .history-container.expanded {
+            max-height: 200px;
+        }
+
+        .history-list {
+            background: rgba(200, 241, 53, 0.05);
+            border-left: 3px solid var(--accent);
+            padding: 12px;
+            margin-top: 10px;
+            border-radius: 6px;
+            font-size: 12px;
+        }
+
+        .history-entry {
+            padding: 6px 0;
+            color: var(--text-secondary);
+        }
+
+        .history-weight {
+            color: var(--accent);
+            font-weight: 600;
+            font-family: 'Courier New', monospace;
+        }
+
+        /* Progression Info */
+        .progression-section {
+            background: var(--card);
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 25px;
+        }
+
+        .progression-section h3 {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: var(--accent);
+        }
+
+        .progression-week {
+            margin-bottom: 12px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .progression-week:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .progression-week strong {
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        .progression-week p {
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin: 6px 0;
+        }
+
+        /* Nutrition & Rest Days */
+        .info-section {
+            background: var(--card);
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 25px;
+        }
+
+        .info-section h3 {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: var(--accent);
+        }
+
+        .info-section ul {
+            list-style: none;
+            margin-left: 0;
+        }
+
+        .info-section li {
+            font-size: 13px;
+            color: var(--text-secondary);
+            padding: 8px 0;
+        }
+
+        .info-section li::before {
+            content: "• ";
+            color: var(--accent);
+            margin-right: 8px;
+            font-weight: 700;
+        }
+
+        /* Save Button */
+        .save-button {
+            background: var(--accent);
+            color: var(--bg);
+            border: none;
+            padding: 14px 28px;
+            border-radius: 8px;
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.3s;
+            margin-top: 30px;
+            letter-spacing: 0.5px;
+        }
+
+        .save-button:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+
+        .save-button:active {
+            transform: translateY(0);
+        }
+
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--accent);
+            color: var(--bg);
+            padding: 14px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            z-index: 1000;
+            animation: slideIn 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+
+            .workout-table td {
+                padding: 10px;
+                font-size: 13px;
+            }
+
+            .exercise-name {
+                min-width: 120px;
+            }
+
+            .tab-btn {
+                padding: 10px 16px;
+                font-size: 14px;
+            }
+
+            .weight-input {
+                max-width: 80px;
+                padding: 6px 8px;
+                font-size: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>GYM PROGRAM</h1>
+        </header>
+
+        <div class="date-selector">
+            <label class="date-display">Select Date:</label>
+            <input type="date" id="dateInput" class="date-input">
+        </div>
+
+        <div class="weekly-schedule" id="weeklySchedule"></div>
+
+        <div class="tabs">
+            <button class="tab-btn active" data-day="A" data-title="Upper Push">Day A</button>
+            <button class="tab-btn" data-day="B" data-title="Lower Quad">Day B</button>
+            <button class="tab-btn" data-day="C" data-title="Upper Pull">Day C</button>
+            <button class="tab-btn" data-day="D" data-title="Lower Hinge">Day D</button>
+        </div>
+
+        <!-- Day A - Upper Push -->
+        <div class="tab-content active" data-day="A">
+            <div class="progression-section">
+                <h3>4-Week Progression Plan</h3>
+                <div class="progression-week">
+                    <strong>Wk 1:</strong>
+                    <p>Learn movements. Pick weights where last 2 reps are hard but form stays clean.</p>
+                </div>
+                <div class="progression-week">
+                    <strong>Wk 2:</strong>
+                    <p>Add 5 lbs to barbell lifts. Go up one dumbbell size where possible.</p>
+                </div>
+                <div class="progression-week">
+                    <strong>Wk 3:</strong>
+                    <p>Same as week 2. If you hit top of rep range easily, add weight.</p>
+                </div>
+                <div class="progression-week">
+                    <strong>Wk 4:</strong>
+                    <p>Add a 4th set to the main compound each day. Push intensity.</p>
+                </div>
+            </div>
+
+            <div class="workout-section">
+                <div class="section-title">Day A - Upper Push (Monday, ~65 min)</div>
+
+                <div class="workout-section">
+                    <div class="section-title" style="font-size: 14px; border: none; padding: 0; margin: 15px 0 10px 0;">Warmup</div>
+                    <table class="workout-table">
+                        <tr>
+                            <td class="exercise-name">5 min cardio</td>
+                            <td class="rest-time">Light intensity</td>
+                            <td class="weight-input-cell"></td>
+                        </tr>
+                        <tr>
+                            <td class="exercise-name">Arm circles / Shoulder rotations</td>
+                            <td class="rest-time">2 min</td>
+                            <td class="weight-input-cell"></td>
+                        </tr>
+                        <tr>
+                            <td class="exercise-name">Warm-up sets on bench</td>
+                            <td class="sets-reps">2 x 10</td>
+                            <td class="weight-input-cell"></td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="workout-section">
+                    <div class="section-title" style="font-size: 14px; border: none; padding: 0; margin: 15px 0 10px 0;">Compound</div>
+                    <table class="workout-table">
+                        <tr>
+                            <td class="exercise-name">Barbell bench press</td>
+                            <td class="sets-reps">3 x 8-10</td>
+                            <td class="rest-time">2-3 min rest</td>
+                            <td class="weight-input-cell">
+                                <input type="number" class="weight-input" data-exercise="Barbell bench press" placeholder="lbs">
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="workout-section">
+                    <div class="section-title" style="font-size: 14px; border: none; padding: 0; margin: 15px 0 10px 0;">Accessories</div>
+                    <table class="workout-table">
+                        <tr>
+                            <td class="exercise-name">Incline dumbbell press</td>
+                            <td class="sets-reps">3 x 10-12</td>
+                            <td class="rest-time">90s</td>
+                            <td class="weight-input-cell">
+                                <input type="number" class="weight-input" data-exercise="Incline dumbbell press" placeholder="lbs">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="exercise-name">Overhead dumbbell press</td>
+                            <td class="sets-reps">3 x 10-12</td>
+                            <td class="rest-time">90s</td>
+                            <td class="weight-input-cell">
+                                <input type="number" class="weight-input" data-exercise="Overhead dumbbell press" placeholder="lbs">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="exercise-name">Cable lateral raise</td>
+                            <td class="sets-reps">3 x 12-15</td>
+                            <td class="rest-time">60s</td>
+                            <td class="weight-input-cell">
+                                <input type="number" class="weight-input" data-exercise="Cable lateral raise" placeholder="lbs">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="exercise-name">Tricep cable pushdown</td>
+                            <td class="sets-reps">3 x 12-15</td>
+                            <td class="rest-time">60s</td>
+                            <td class="weight-input-cell">
+                                <input type="number" class="weight-input" data-exercise="Tricep cable pushdown" placeholder="lbs">
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="workout-section">
+                    <div class="section-title" style="font-size: 14px; border: none; padding: 0; margin: 15px 0 10px 0;">Cooldown</div>
+                    <table class="workout-table">
+                        <tr>
+                            <td class="exercise-name">Chest doorway stretch</td>
+                            <td class="rest-time">45s</td>
+                            <td class="weight-input-cell"></td>
+                        </tr>
+                        <tr>
+                            <td class="exercise-name">Cross-body shoulder stretch</td>
+                            <td class="rest-time">45s each</td>
+                            <td class="weight-input-cell"></td>
+                        </tr>
+                        <tr>
+                            <td class="exercise-name">Overhead tricep stretch</td>
+                            <td class="rest-time">30s each</td>
+                            <td class="weight-input-cell"></td>
+                        </tr>
+                        <tr>
+                            <td class="exercise-name">Bicep wall stretch</td>
+                            <td class="rest-time">30s each</td>
+                            <td class="weight-input-cell"></td>
+                        </tr>
+                        <tr>
+                            <td class="exercise-name">Child's pose</td>
+                            <td class="rest-time">60s</td>
+                            <td class="weight-input-cell"></td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="workout-section">
+                    <div class="section-title" style="font-size: 14px; border: none; padding: 0; margin: 15px 0 10px 0;">Ab Finisher</div>
+                    <table class="workout-table">
+                        <tr>
+                            <td class="exercise-name">Goblet overhead leg raise</td>
+                            <td class="sets-reps">3 x 10-12</td>
+                            <td class="rest-time">60s</td>
+                            <td class="weight-input-cell">
+                                <input type="number" class="weight-input" data-exercise="Goblet overhead leg raise" placeholder="lbs">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="exercise-name">Plank</td>
+                            <td class="sets-reps">3 x 30s</td>
+                            <td class="rest-time"></td>
+                            <td class="weight-input-cell"></td>
+                        </tr>
+                        <tr>
+                            <td class="exercise-name">Bicycle crunches</td>
+                            <td class="sets-reps">3 x 15 each</td>
+                            <td class="rest-time"></td>
+                            <td class="weight-input-cell"></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <button class="save-button" data-day="A">Save Day A Workout</button>
+        </div>
+
+        <!-- Day B - Lower Quad -->
+        <div class="tab-content" data-day="B">
+            <div class="progression-section">
+                <h3>4-Week Progression Plan</h3>
+                <div class="progression-week">
+                    <strong>Wk 1:</strong>
+                    <p>Learn movements. Pick weights where last 2 reps are hard but form stays clean.</p>
+                </div>
+                <div class="progression-week">
+                    <strong>Wk 2:</strong>
+                    <p>Add 5 lbs to barbell lifts. Go up one dumbbell size where possible.</p>
+                </div>
+                <div class="progression-week">
+                    <strong>Wk 3:</strong>
+                    <p>Same as week 2. If you hit top of rep range easily, add weight.</p>
+                </div>
+                <div class="progression-week">
+                    <strong>Wk 4:</strong>
+                    <p>Add a 4th set to the main compound each day. Push intensity.</p>
+                </div>
+            </div>
+
+            <div class="workout-section">
+                <div class="section-title">Day B - Lower Quad (Tuesday, ~65 min)</div>
+
+                <div class="workout-section">
+                    <div class="section-title" style="font-size: 14px; border: none; padding: 0; margin: 15px 0 10px 0;">Warmup</div>
+                    <table class="workout-table">
+                        <tr>
+                            <td class="exercise-name">5 min bike/treadmill</td>
+                            <td class="rest-time">Light intensity</td>
+                            <td class="weight-input-cell"></td>
+                        </tr>
+                        <tr>
+                            <td class="exercise-name">90-90 stretch</td>
+                            <td class="rest-time">60-90s per side</td>
+                            <td class="weight-input-cell"></td>
+                        </tr>
+                        <tr>
+                            <td class="exercise-name">Leg swings / Hip circles / BW squats x10</td>
+                            <td class="rest-time">2 min</td>
+                            <td class="weight-input-cell"></td>
+                        </tr>
+                        <tr>
+                            <td class="exercise-name">Warm-up sets on squat</td>
+                            <td class="sets-reps">2 x 10</td>
+                            <td class="weight-input-cell"></td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="workout-section">
+                    <div class="section-title" style="font-size: 14px; border: none; padding: 0; margin: 15px 0 10px 0;">Compound</div>
+                    <table class="workout-table">
+                        <tr>
+                            <td class="exercise-name">Barbell back squat</td>
+                            <td class="sets-reps">3 x 8-10</td>
+                            <td class="rest-time">2-3 min rest</td>
+                            <td class="weight-input-cell">
+                                <input type="number" class="weight-input" data-exercise="Barbell back squat" placeholder="lbs">
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="workout-section">
+                    <div class="section-title" style="font-size: 14px; border: none; padding: 0; margin: 15px 0 10px 0;">Accessories</div>
+                    <table class="workout-table">
+                        <tr>
+                            <td class="exercise-name">Leg press</td>
+                            <td class="sets-reps">3 x 10-12</td>
+                            <td class="rest-time">90s</td>
+                            <td class="weight-input-cell">
+                                <input type="number" class="weight-input" data-exercise="Leg press" placeholder="lbs">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="exercise-name">Walking lunges (dumbbells)</td>
+                            <td class="sets-reps">3 x 10 each</td>
+                            <td class="rest-time">90s</td>
+                            <td class="weight-input-cell">
+                                <input type="number" class="weight-input" data-exercise="Walking lunges" placeholder="lbs">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="exercise-name">Leg extension machine</td>
+                            <td class="sets-reps">3 x 12-15</td>
+                            <td class="rest-time">60s</td>
+                            <td class="weight-input-cell">
+                                <input type="number" class="weight-input" data-exercise="Leg extension" placeholder="lbs">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="exercise-name">Standing calf raise</td>
+                            <td class="sets-reps">3 x 15</td>
+                            <td class="rest-time">60s</td>
+                            <td class="weight-input-cell">
+                                <input type="number" class="weight-input" data-exercise="Standing calf raise" placeholder="lbs">
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="workout-section">
+                    <div class="section-title" style="font-size: 14px; border: none; padding: 0; margin: 15px 0 10px 0;">Finisher</div>
+                    <table class="workout-table">
+                        <tr>
+                            <td class="exercise-name">Hip abductor machine</td>
+                            <td class="sets-reps">3 x 15-20</td>
+                            <td class="rest-time">60s</td>
+                            <td class="weight-input-cell">
+                                <input type="number" class="weight-input" data-exercise="Hip abductor machine" placeholder="lbs">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="exercise-name">Hip adductor machine</td>
+                            <td class="sets-reps">3 x 15-20</td>
+                            <td class="rest-time">60s</td>
+                            <td class="weight-input-cell">
+                                <input type="number" class="weight-input" data-exercise="Hip adductor machine" placeholder="lbs">
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="workout-section">
+                    <div class="section-title" style="font-size: 14px; border: none; padding: 0; margin: 15px 0 10px 0;">Cooldown</div>
+                    <table class="workout-table">
+                        <tr>
+                            <td class="exercise-name">Standing quad stretch</td>
+                            <td class="rest-time">45s each</td>
+                            <td class="weight-input-cell"></td>
+                        </tr>
+                        <tr>
+                            <td class="exercise-name">Kneeling hip flexor stretch</td>
+                            <td class="rest-time">45s each</td>
+                            <td class="weight-input-cell"></td>
+                        </tr>
+                        <tr>
+                            <td class="exercise-name">Pigeon pose</td>
+                            <td class="rest-time">60s each</td>
+                            <td class="weight-input-cell"></td>
+                        </tr>
+                        <tr>
+                            <td class="exercise-name">Seated forward fold</td>
+                            <td class="rest-time">60s</td>
+                            <td class="weight-input-cell"></td>
+                        </tr>
+                        <tr>
+                            <td class="exercise-name">Child's pose</td>
+                            <td class="rest-time">60s</td>
+                            <td class="weight-input-cell"></td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="workout-section">
+                    <div class="section-title" style="font-size: 14px; border: none; padding: 0; margin: 15px 0 10px 0;">Ab Finisher</div>
+                    <table class="workout-table">
+                        <tr>
+                            <td class="exercise-name">Goblet overhead leg raise</td>
+                            <td class="sets-reps">3 x 10-12</td>
+                            <td class="rest-time">60s</td>
+                            <td class="weight-input-cell">
+                                <input type="number" class="weight-input" data-exercise="Goblet overhead leg raise" placeholder="lbs">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="exercise-name">Plank</td>
+                            <td class="sets-reps">3 x 30s</td>
+                            <td class="rest-time"></td>
+                            <td class="weight-input-cell"></td>
+                        </tr>
+                        <tr>
+                            <td class="exercise-name">Bicycle crunches</td>
+                            <td class="sets-reps">3 x 15 each</td>
+                            <td class="rest-time"></td>
+                            <td class="weight-input-cell"></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <button class="save-button" data-day="B">Save Day B Workout</button>
+        </div>
+
+        <!-- Day C - Upper Pull -->
+        <div class="tab-content" data-day="C">
+            <div class="progression-section">
+                <h3>4-Week Progression Plan</h3>
+                <div class="progression-week">
+                    <strong>Wk 1:</strong>
+                    <p>Learn movements. Pick weights where last 2 reps are hard but form stays clean.</p>
+                </div>
+                <div class="progression-week">
+                    <strong>Wk 2:</strong>
+                    <p>Add 5 lbs to barbell lifts. Go up one dumbbell size where possible.</p>
+                </div>
+                <div class="progression-week">
+                    <strong>Wk 3:</strong>
+                    <p>Same as week 2. If you hit top of rep range easily, add weight.</p>
+                </div>
+                <div class="progression-week">
+                    <strong>Wk 4:</strong>
+                    <p>Add a 4th set to the main compound each day. Push intensity.</p>
+                </div>
+            </div>
+
+            <div class="workout-section">
+                <div class="section-title">Day C - Upper Pull (Thursday, ~65 min)</div>
+
+                <div class="workout-section">
+                    <div class="section-title" style="font-size: 14px; border: none; padding: 0; margin: 15px 0 10px 0;">Warmup</div>
+                    <table class="workout-table">
+                        <tr>
+                            <td class="exercise-name">5 min rowing</td>
+                            <td class="rest-time">Light intensity</td>
+                            <td class="weight-input-cell"></td>
+                        </tr>
+                        <tr>
+                            <td class="exercise-name">Arm circles / Shoulder rotations</td>
+                            <td class="rest-time">2 min</td>
+                            <td class="weight-input-cell"></td>
+                        </tr>
+                        <tr>
+                            <td class="exercise-name">Warm-up sets on barbell row</td>
+                            <td class="sets-reps">2 x 10</td>
+                            <td class="weight-input-cell"></td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="workout-section">
+                    <div class="section-title" style="font-size: 14px; border: none; padding: 0; margin: 15px 0 10px 0;">Compound</div>
+                    <table class="workout-table">
+                        <tr>
+                            <td class="exercise-name">Barbell row</td>
+                            <td class="sets-reps">3 x 8-10</td>
+                            <td class="rest-time">2-3 min rest</td>
+                            <td class="weight-input-cell">
+                                <input type="number" class="weight-input" data-exercise="Barbell row" placeholder="lbs">
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="workout-section">
+                    <div class="section-title" style="font-size: 14px; border: none; padding: 0; margin: 15px 0 10px 0;">Accessories</div>
+                    <table class="workout-table">
+                        <tr>
+                            <td class="exercise-name">Lat pulldown</td>
+                            <td class="sets-reps">3 x 10-12</td>
+                            <td class="rest-time">90s</td>
+                            <td class="weight-input-cell">
+                                <input type="number" class="weight-input" data-exercise="Lat pulldown" placeholder="lbs">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="exercise-name">Cable seated row</td>
+                            <td class="sets-reps">3 x 10-12</td>
+                            <td class="rest-time">90s</td>
+                            <td class="weight-input-cell">
+                                <input type="number" class="weight-input" data-exercise="Cable seated row" placeholder="lbs">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="exercise-name">Dumbbell curl</td>
+                            <td class="sets-reps">3 x 12-15</td>
+                            <td class="rest-time">60s</td>
+                            <td class="weight-input-cell">
+                                <input type="number" class="weight-input" data-exercise="Dumbbell curl" placeholder="lbs">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="exercise-name">Face pull (cable)</td>
+                            <td class="sets-reps">3 x 15</td>
+                            <td class="rest-time">60s</td>
+                            <td class="weight-input-cell">
+                                <input type="number" class="weight-input" data-exercise="Face pull" placeholder="lbs">
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="workout-section">
+                    <div class="section-title" style="font-size: 14px; border: none; padding: 0; margin: 15px 0 10px 0;">Cooldown</div>
+                    <table class="workout-table">
+                        <tr>
+                            <td class="exercise-name">Chest doorway stretch</td>
+                            <td class="rest-time">45s</td>
+                            <td class="weight-input-cell"></td>
+                        </tr>
+                        <tr>
+                            <td class="exercise-name">Cross-body shoulder stretch</td>
+                            <td class="rest-time">45s each</td>
+                            <td class="weight-input-cell"></td>
+                        </tr>
+                        <tr>
+                            <td class="exercise-name">Bicep wall stretch</td>
+                            <td class="rest-time">30s each</td>
+                            <td class="weight-input-cell"></td>
+                        </tr>
+                        <tr>
+                            <td class="exercise-name">Child's pose</td>
+                            <td class="rest-time">60s</td>
+                            <td class="weight-input-cell"></td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="workout-section">
+                    <div class="section-title" style="font-size: 14px; border: none; padding: 0; margin: 15px 0 10px 0;">Ab Finisher</div>
+                    <table class="workout-table">
+                        <tr>
+                            <td class="exercise-name">Goblet overhead leg raise</td>
+                            <td class="sets-reps">3 x 10-12</td>
+                            <td class="rest-time">60s</td>
+                            <td class="weight-input-cell">
+                                <input type="number" class="weight-input" data-exercise="Goblet overhead leg raise" placeholder="lbs">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="exercise-name">Plank</td>
+                            <td class="sets-reps">3 x 30s</td>
+                            <td class="rest-time"></td>
+                            <td class="weight-input-cell"></td>
+                        </tr>
+                        <tr>
+                            <td class="exercise-name">Bicycle crunches</td>
+                            <td class="sets-reps">3 x 15 each</td>
+                            <td class="rest-time"></td>
+                            <td class="weight-input-cell"></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <button class="save-button" data-day="C">Save Day C Workout</button>
+        </div>
+
+        <!-- Day D - Lower Hinge -->
+        <div class="tab-content" data-day="D">
+            <div class="progression-section">
+                <h3>4-Week Progression Plan</h3>
+                <div class="progression-week">
+                    <strong>Wk 1:</strong>
+                    <p>Learn movements. Pick weights where last 2 reps are hard but form stays clean.</p>
+                </div>
+                <div class="progression-week">
+                    <strong>Wk 2:</strong>
+                    <p>Add 5 lbs to barbell lifts. Go up one dumbbell size where possible.</p>
+                </div>
+                <div class="progression-week">
+                    <strong>Wk 3:</strong>
+                    <p>Same as week 2. If you hit top of rep range easily, add weight.</p>
+                </div>
+                <div class="progression-week">
+                    <strong>Wk 4:</strong>
+                    <p>Add a 4th set to the main compound each day. Push intensity.</p>
+                </div>
+            </div>
+
+            <div class="workout-section">
+                <div class="section-title">Day D - Lower Hinge (Friday, ~65 min)</div>
+
+                <div class="workout-section">
+                    <div class="section-title" style="font-size: 14px; border: none; padding: 0; margin: 15px 0 10px 0;">Warmup</div>
+                    <table class="workout-table">
+                        <tr>
+                            <td class="exercise-name">5 min bike/treadmill</td>
+                            <td class="rest-time">Light intensity</td>
+                            <td class="weight-input-cell"></td>
+                        </tr>
+                        <tr>
+                            <td class="exercise-name">90-90 stretch</td>
+                            <td class="rest-time">60-90s per side</td>
+                            <td class="weight-input-cell"></td>
+                        </tr>
+                        <tr>
+                            <td class="exercise-name">Leg swings / Hip circles / Glute bridges x10</td>
+                            <td class="rest-time">2 min</td>
+                            <td class="weight-input-cell"></td>
+                        </tr>
+                        <tr>
+                            <td class="exercise-name">Warm-up sets on RDL</td>
+                            <td class="sets-reps">2 x 10</td>
+                            <td class="weight-input-cell"></td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="workout-section">
+                    <div class="section-title" style="font-size: 14px; border: none; padding: 0; margin: 15px 0 10px 0;">Compound</div>
+                    <table class="workout-table">
+                        <tr>
+                            <td class="exercise-name">Romanian deadlift</td>
+                            <td class="sets-reps">3 x 8-10</td>
+                            <td class="rest-time">2-3 min rest</td>
+                            <td class="weight-input-cell">
+                                <input type="number" class="weight-input" data-exercise="Romanian deadlift" placeholder="lbs">
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="workout-section">
+                    <div class="section-title" style="font-size: 14px; border: none; padding: 0; margin: 15px 0 10px 0;">Accessories</div>
+                    <table class="workout-table">
+                        <tr>
+                            <td class="exercise-name">Hip thrust (barbell)</td>
+                            <td class="sets-reps">3 x 10-12</td>
+                            <td class="rest-time">90s</td>
+                            <td class="weight-input-cell">
+                                <input type="number" class="weight-input" data-exercise="Hip thrust" placeholder="lbs">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="exercise-name">Leg curl machine</td>
+                            <td class="sets-reps">3 x 12-15</td>
+                            <td class="rest-time">90s</td>
+                            <td class="weight-input-cell">
+                                <input type="number" class="weight-input" data-exercise="Leg curl machine" placeholder="lbs">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="exercise-name">Sumo dumbbell squat</td>
+                            <td class="sets-reps">3 x 12</td>
+                            <td class="rest-time">90s</td>
+                            <td class="weight-input-cell">
+                                <input type="number" class="weight-input" data-exercise="Sumo dumbbell squat" placeholder="lbs">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="exercise-name">Seated calf raise</td>
+                            <td class="sets-reps">3 x 15</td>
+                            <td class="rest-time">60s</td>
+                            <td class="weight-input-cell">
+                                <input type="number" class="weight-input" data-exercise="Seated calf raise" placeholder="lbs">
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="workout-section">
+                    <div class="section-title" style="font-size: 14px; border: none; padding: 0; margin: 15px 0 10px 0;">Finisher</div>
+                    <table class="workout-table">
+                        <tr>
+                            <td class="exercise-name">Hip abductor machine</td>
+                            <td class="sets-reps">3 x 15-20</td>
+                            <td class="rest-time">60s</td>
+                            <td class="weight-input-cell">
+                                <input type="number" class="weight-input" data-exercise="Hip abductor machine" placeholder="lbs">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="exercise-name">Hip adductor machine</td>
+                            <td class="sets-reps">3 x 15-20</td>
+                            <td class="rest-time">60s</td>
+                            <td class="weight-input-cell">
+                                <input type="number" class="weight-input" data-exercise="Hip adductor machine" placeholder="lbs">
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="workout-section">
+                    <div class="section-title" style="font-size: 14px; border: none; padding: 0; margin: 15px 0 10px 0;">Cooldown</div>
+                    <table class="workout-table">
+                        <tr>
+                            <td class="exercise-name">Standing hamstring stretch</td>
+                            <td class="rest-time">45s each</td>
+                            <td class="weight-input-cell"></td>
+                        </tr>
+                        <tr>
+                            <td class="exercise-name">Kneeling hip flexor stretch</td>
+                            <td class="rest-time">45s each</td>
+                            <td class="weight-input-cell"></td>
+                        </tr>
+                        <tr>
+                            <td class="exercise-name">Pigeon pose</td>
+                            <td class="rest-time">60s each</td>
+                            <td class="weight-input-cell"></td>
+                        </tr>
+                        <tr>
+                            <td class="exercise-name">Seated forward fold</td>
+                            <td class="rest-time">60s</td>
+                            <td class="weight-input-cell"></td>
+                        </tr>
+                        <tr>
+                            <td class="exercise-name">Child's pose</td>
+                            <td class="rest-time">60s</td>
+                            <td class="weight-input-cell"></td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="workout-section">
+                    <div class="section-title" style="font-size: 14px; border: none; padding: 0; margin: 15px 0 10px 0;">Ab Finisher</div>
+                    <table class="workout-table">
+                        <tr>
+                            <td class="exercise-name">Goblet overhead leg raise</td>
+                            <td class="sets-reps">3 x 10-12</td>
+                            <td class="rest-time">60s</td>
+                            <td class="weight-input-cell">
+                                <input type="number" class="weight-input" data-exercise="Goblet overhead leg raise" placeholder="lbs">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="exercise-name">Plank</td>
+                            <td class="sets-reps">3 x 30s</td>
+                            <td class="rest-time"></td>
+                            <td class="weight-input-cell"></td>
+                        </tr>
+                        <tr>
+                            <td class="exercise-name">Bicycle crunches</td>
+                            <td class="sets-reps">3 x 15 each</td>
+                            <td class="rest-time"></td>
+                            <td class="weight-input-cell"></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <button class="save-button" data-day="D">Save Day D Workout</button>
+        </div>
+
+        <!-- Info Sections -->
+        <div class="info-section">
+            <h3>Active Rest Days</h3>
+            <ul>
+                <li><strong>Walks:</strong> 30-45 min, 3x/week, brisk but conversational</li>
+                <li><strong>E-bike:</strong> 30-60 min, 1-2x/week, moderate effort</li>
+                <li><strong>Avoid:</strong> Long rides before lower body days</li>
+            </ul>
+        </div>
+
+        <div class="info-section">
+            <h3>Nutrition Guidelines</h3>
+            <ul>
+                <li><strong>Protein:</strong> 0.8-1g per pound bodyweight daily</li>
+                <li><strong>Calories:</strong> 200-300 below maintenance (recomp)</li>
+                <li><strong>Timing:</strong> Don't skip meals on gym days</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        const DB_NAME = 'GymTrackerDB';
+        const DB_VERSION = 1;
+        const STORE_NAME = 'workouts';
+
+        let db;
+
+        // Initialize IndexedDB
+        function initDB() {
+            return new Promise((resolve, reject) => {
+                const request = indexedDB.open(DB_NAME, DB_VERSION);
+
+                request.onerror = () => reject(request.error);
+                request.onsuccess = () => {
+                    db = request.result;
+                    resolve(db);
+                };
+
+                request.onupgradeneeded = (event) => {
+                    db = event.target.result;
+                    if (!db.objectStoreNames.contains(STORE_NAME)) {
+                        const store = db.createObjectStore(STORE_NAME, { keyPath: 'id' });
+                        store.createIndex('dateExercise', ['date', 'exercise'], { unique: false });
+                    }
+                };
+            });
+        }
+
+        // Save weight data to IndexedDB
+        function saveWeight(date, exercise, weight) {
+            return new Promise((resolve, reject) => {
+                const transaction = db.transaction([STORE_NAME], 'readwrite');
+                const store = transaction.objectStore(STORE_NAME);
+
+                const id = `${date}_${exercise}`;
+                const data = {
+                    id,
+                    date,
+                    exercise,
+                    weight: parseFloat(weight) || null,
+                    timestamp: new Date().getTime()
+                };
+
+                const request = store.put(data);
+                request.onerror = () => reject(request.error);
+                request.onsuccess = () => resolve(data);
+            });
+        }
+
+        // Get weight for specific date and exercise
+        function getWeight(date, exercise) {
+            return new Promise((resolve, reject) => {
+                const transaction = db.transaction([STORE_NAME], 'readonly');
+                const store = transaction.objectStore(STORE_NAME);
+                const id = `${date}_${exercise}`;
+
+                const request = store.get(id);
+                request.onerror = () => reject(request.error);
+                request.onsuccess = () => resolve(request.result?.weight || null);
+            });
+        }
+
+        // Get weight history for exercise (last 4 entries)
+        function getWeightHistory(exercise) {
+            return new Promise((resolve, reject) => {
+                const transaction = db.transaction([STORE_NAME], 'readonly');
+                const store = transaction.objectStore(STORE_NAME);
+                const index = store.index('dateExercise');
+
+                const request = index.getAll([exercise]);
+                request.onerror = () => reject(request.error);
+                request.onsuccess = () => {
+                    const results = request.result
+                        .sort((a, b) => b.timestamp - a.timestamp)
+                        .slice(0, 4)
+                        .reverse();
+                    resolve(results);
+                };
+            });
+        }
+
+        // Format date to YYYY-MM-DD
+        function formatDate(date) {
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            return `${year}-${month}-${day}`;
+        }
+
+        // Get day of week (0=Sun, 1=Mon, etc.)
+        function getDayOfWeek(date) {
+            return date.getDay();
+        }
+
+        // Auto-select today's workout
+        function autoSelectToday() {
+            const today = new Date();
+            const dayOfWeek = getDayOfWeek(today);
+
+            // Mon=1->A, Tue=2->B, Thu=4->C, Fri=5->D, else->A
+            let tabDay = 'A';
+            if (dayOfWeek === 2) tabDay = 'B';
+            else if (dayOfWeek === 4) tabDay = 'C';
+            else if (dayOfWeek === 5) tabDay = 'D';
+
+            switchTab(tabDay);
+        }
+
+        // Switch tabs
+        function switchTab(day) {
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+
+            document.querySelector(`.tab-btn[data-day="${day}"]`).classList.add('active');
+            document.querySelector(`.tab-content[data-day="${day}"]`).classList.add('active');
+        }
+
+        // Render weekly schedule
+        function renderWeeklySchedule() {
+            const today = new Date();
+            const startOfWeek = new Date(today);
+            startOfWeek.setDate(today.getDate() - today.getDay());
+
+            const schedule = document.getElementById('weeklySchedule');
+            schedule.innerHTML = '';
+
+            const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+            const gymDays = [false, true, true, false, true, true, false]; // Mon, Tue, Thu, Fri are gym days
+
+            for (let i = 0; i < 7; i++) {
+                const date = new Date(startOfWeek);
+                date.setDate(startOfWeek.getDate() + i);
+                const isGymDay = gymDays[i];
+                const dayName = dayNames[i];
+                const isToday = formatDate(date) === formatDate(today);
+
+                let dayType = isGymDay ? 'Gym' : 'Rest';
+                let dayLabel = isGymDay ? 'GYM' : 'REST';
+
+                const dayDiv = document.createElement('div');
+                dayDiv.className = `day-indicator ${isGymDay ? 'gym' : 'rest'} ${isToday ? 'today' : ''}`;
+                dayDiv.innerHTML = `<span class="day-letter">${dayName}</span><span class="day-type">${dayLabel}</span>`;
+
+                if (isToday) {
+                    dayDiv.style.borderColor = 'var(--accent)';
+                }
+
+                schedule.appendChild(dayDiv);
+            }
+        }
+
+        // Load weights for current tab and date
+        async function loadWeights(day, date) {
+            const exercises = {
+                'A': [
+                    'Barbell bench press',
+                    'Incline dumbbell press',
+                    'Overhead dumbbell press',
+                    'Cable lateral raise',
+                    'Tricep cable pushdown',
+                    'Goblet overhead leg raise'
+                ],
+                'B': [
+                    'Barbell back squat',
+                    'Leg press',
+                    'Walking lunges',
+                    'Leg extension',
+                    'Standing calf raise',
+                    'Hip abductor machine',
+                    'Hip adductor machine',
+                    'Goblet overhead leg raise'
+                ],
+                'C': [
+                    'Barbell row',
+                    'Lat pulldown',
+                    'Cable seated row',
+                    'Dumbbell curl',
+                    'Face pull',
+                    'Goblet overhead leg raise'
+                ],
+                'D': [
+                    'Romanian deadlift',
+                    'Hip thrust',
+                    'Leg curl machine',
+                    'Sumo dumbbell squat',
+                    'Seated calf raise',
+                    'Hip abductor machine',
+                    'Hip adductor machine',
+                    'Goblet overhead leg raise'
+                ]
+            };
+
+            const exerciseList = exercises[day] || [];
+
+            for (const exercise of exerciseList) {
+                const weight = await getWeight(date, exercise);
+                const input = document.querySelector(`input[data-exercise="${exercise}"]`);
+
+                if (input) {
+                    if (weight) {
+                        input.value = weight;
+                    } else {
+                        // Get last weight as placeholder
+                        const history = await getWeightHistory(exercise);
+                        if (history.length > 0) {
+                            input.placeholder = `${history[0].weight} lbs`;
+                        }
+                    }
+
+                    // Load and display weight history
+                    loadWeightHistory(exercise);
+                }
+            }
+        }
+
+        // Load and display weight history for an exercise
+        async function loadWeightHistory(exercise) {
+            const history = await getWeightHistory(exercise);
+            const input = document.querySelector(`input[data-exercise="${exercise}"]`);
+
+            if (!input) return;
+
+            let historyHtml = '';
+            const parentRow = input.closest('tr');
+            let historyContainer = parentRow.querySelector('.history-container');
+
+            if (!historyContainer) {
+                const cell = input.closest('td');
+                historyContainer = document.createElement('div');
+                historyContainer.className = 'history-container';
+
+                const toggleBtn = document.createElement('button');
+                toggleBtn.className = 'history-toggle';
+                toggleBtn.textContent = 'history';
+                toggleBtn.onclick = (e) => {
+                    e.preventDefault();
+                    historyContainer.classList.toggle('expanded');
+                };
+
+                const historyList = document.createElement('div');
+                historyList.className = 'history-list';
+
+                cell.appendChild(toggleBtn);
+                cell.appendChild(historyContainer);
+                historyContainer.appendChild(historyList);
+            }
+
+            const historyList = historyContainer.querySelector('.history-list');
+            historyList.innerHTML = '';
+
+            if (history.length === 0) {
+                historyList.innerHTML = '<div class="history-entry">No history yet</div>';
+            } else {
+                history.forEach(entry => {
+                    const date = new Date(parseInt(entry.id.split('_')[0].replace(/-/g, '')));
+                    const dateStr = formatDate(date);
+                    const historyEntry = document.createElement('div');
+                    historyEntry.className = 'history-entry';
+                    historyEntry.innerHTML = `${dateStr}: <span class="history-weight">${entry.weight} lbs</span>`;
+                    historyList.appendChild(historyEntry);
+                });
+            }
+        }
+
+        // Save workout for a day
+        async function saveWorkout(day) {
+            const dateInput = document.getElementById('dateInput');
+            const date = dateInput.value;
+
+            const inputs = document.querySelectorAll(`.tab-content[data-day="${day}"] input.weight-input`);
+            const promises = [];
+
+            let savedCount = 0;
+            inputs.forEach(input => {
+                const exercise = input.getAttribute('data-exercise');
+                const weight = input.value;
+
+                if (weight) {
+                    promises.push(saveWeight(date, exercise, weight));
+                    savedCount++;
+                }
+            });
+
+            await Promise.all(promises);
+
+            showToast(`Day ${day} saved (${savedCount} exercises)`);
+
+            // Reload weights to show in history
+            await loadWeights(day, date);
+        }
+
+        // Show toast notification
+        function showToast(message) {
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            toast.textContent = message;
+            document.body.appendChild(toast);
+
+            setTimeout(() => {
+                toast.style.animation = 'slideOut 0.3s ease';
+                setTimeout(() => toast.remove(), 300);
+            }, 2000);
+        }
+
+        // Initialize app
+        async function init() {
+            await initDB();
+            renderWeeklySchedule();
+
+            const today = new Date();
+            const dateInput = document.getElementById('dateInput');
+            dateInput.value = formatDate(today);
+            dateInput.max = formatDate(today);
+
+            // Load weights for today
+            autoSelectToday();
+            await loadWeights('A', formatDate(today));
+
+            // Tab switching
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const day = btn.getAttribute('data-day');
+                    switchTab(day);
+                    loadWeights(day, dateInput.value);
+                });
+            });
+
+            // Date change
+            dateInput.addEventListener('change', async () => {
+                const day = document.querySelector('.tab-btn.active').getAttribute('data-day');
+                await loadWeights(day, dateInput.value);
+            });
+
+            // Save buttons
+            document.querySelectorAll('.save-button').forEach(btn => {
+                btn.addEventListener('click', async () => {
+                    const day = btn.getAttribute('data-day');
+                    await saveWorkout(day);
+                });
+            });
+
+            // Register service worker
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.register('./sw.js').catch(err => {
+                    console.log('Service Worker registration failed:', err);
+                });
+            }
+        }
+
+        // Start app when DOM is ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', init);
+        } else {
+            init();
+        }
+    </script>
+</body>
+</html>
