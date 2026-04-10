@@ -402,8 +402,11 @@
             cursor: pointer;
             width: 100%;
             transition: all 0.3s;
-            margin-top: 30px;
+            margin-top: 16px;
             letter-spacing: 0.5px;
+            position: sticky;
+            bottom: 16px;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.6);
         }
 
         .save-button:hover {
@@ -1265,12 +1268,12 @@
             return new Promise((resolve, reject) => {
                 const transaction = db.transaction([STORE_NAME], 'readonly');
                 const store = transaction.objectStore(STORE_NAME);
-                const index = store.index('dateExercise');
 
-                const request = index.getAll([exercise]);
+                const request = store.getAll();
                 request.onerror = () => reject(request.error);
                 request.onsuccess = () => {
                     const results = request.result
+                        .filter(r => r.exercise === exercise)
                         .sort((a, b) => b.timestamp - a.timestamp)
                         .slice(0, 4)
                         .reverse();
@@ -1514,7 +1517,8 @@
 
             // Load weights for today
             autoSelectToday();
-            await loadWeights('A', formatDate(today));
+            const activeDay = document.querySelector('.tab-btn.active').getAttribute('data-day');
+            await loadWeights(activeDay, formatDate(today));
 
             // Tab switching
             document.querySelectorAll('.tab-btn').forEach(btn => {
