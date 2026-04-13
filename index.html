@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <meta name="theme-color" content="#0f0f0f">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -315,44 +315,6 @@
         }
 
         /* Progression Info */
-        .progression-section {
-            background: var(--card);
-            border: 2px solid var(--border);
-            border-radius: 8px;
-            padding: 20px;
-            margin-bottom: 25px;
-        }
-
-        .progression-section h3 {
-            font-family: 'Barlow Condensed', sans-serif;
-            font-size: 16px;
-            font-weight: 700;
-            margin-bottom: 12px;
-            color: var(--accent);
-        }
-
-        .progression-week {
-            margin-bottom: 12px;
-            padding-bottom: 12px;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .progression-week:last-child {
-            border-bottom: none;
-            margin-bottom: 0;
-            padding-bottom: 0;
-        }
-
-        .progression-week strong {
-            color: var(--accent);
-            font-weight: 600;
-        }
-
-        .progression-week p {
-            font-size: 13px;
-            color: var(--text-secondary);
-            margin: 6px 0;
-        }
 
         /* Nutrition & Rest Days */
         .info-section {
@@ -498,25 +460,6 @@
 
         <!-- Day A - Upper Push -->
         <div class="tab-content active" data-day="A">
-            <div class="progression-section">
-                <h3>4-Week Progression Plan</h3>
-                <div class="progression-week">
-                    <strong>Wk 1:</strong>
-                    <p>Learn movements. Pick weights where last 2 reps are hard but form stays clean.</p>
-                </div>
-                <div class="progression-week">
-                    <strong>Wk 2:</strong>
-                    <p>Add 5 lbs to barbell lifts. Go up one dumbbell size where possible.</p>
-                </div>
-                <div class="progression-week">
-                    <strong>Wk 3:</strong>
-                    <p>Same as week 2. If you hit top of rep range easily, add weight.</p>
-                </div>
-                <div class="progression-week">
-                    <strong>Wk 4:</strong>
-                    <p>Add a 4th set to the main compound each day. Push intensity.</p>
-                </div>
-            </div>
 
             <div class="workout-section">
                 <div class="section-title">Day A - Upper Push (Monday, ~65 min)</div>
@@ -657,25 +600,6 @@
 
         <!-- Day B - Lower Quad -->
         <div class="tab-content" data-day="B">
-            <div class="progression-section">
-                <h3>4-Week Progression Plan</h3>
-                <div class="progression-week">
-                    <strong>Wk 1:</strong>
-                    <p>Learn movements. Pick weights where last 2 reps are hard but form stays clean.</p>
-                </div>
-                <div class="progression-week">
-                    <strong>Wk 2:</strong>
-                    <p>Add 5 lbs to barbell lifts. Go up one dumbbell size where possible.</p>
-                </div>
-                <div class="progression-week">
-                    <strong>Wk 3:</strong>
-                    <p>Same as week 2. If you hit top of rep range easily, add weight.</p>
-                </div>
-                <div class="progression-week">
-                    <strong>Wk 4:</strong>
-                    <p>Add a 4th set to the main compound each day. Push intensity.</p>
-                </div>
-            </div>
 
             <div class="workout-section">
                 <div class="section-title">Day B - Lower Quad (Tuesday, ~65 min)</div>
@@ -843,25 +767,6 @@
 
         <!-- Day C - Upper Pull -->
         <div class="tab-content" data-day="C">
-            <div class="progression-section">
-                <h3>4-Week Progression Plan</h3>
-                <div class="progression-week">
-                    <strong>Wk 1:</strong>
-                    <p>Learn movements. Pick weights where last 2 reps are hard but form stays clean.</p>
-                </div>
-                <div class="progression-week">
-                    <strong>Wk 2:</strong>
-                    <p>Add 5 lbs to barbell lifts. Go up one dumbbell size where possible.</p>
-                </div>
-                <div class="progression-week">
-                    <strong>Wk 3:</strong>
-                    <p>Same as week 2. If you hit top of rep range easily, add weight.</p>
-                </div>
-                <div class="progression-week">
-                    <strong>Wk 4:</strong>
-                    <p>Add a 4th set to the main compound each day. Push intensity.</p>
-                </div>
-            </div>
 
             <div class="workout-section">
                 <div class="section-title">Day C - Upper Pull (Thursday, ~65 min)</div>
@@ -997,25 +902,6 @@
 
         <!-- Day D - Lower Hinge -->
         <div class="tab-content" data-day="D">
-            <div class="progression-section">
-                <h3>4-Week Progression Plan</h3>
-                <div class="progression-week">
-                    <strong>Wk 1:</strong>
-                    <p>Learn movements. Pick weights where last 2 reps are hard but form stays clean.</p>
-                </div>
-                <div class="progression-week">
-                    <strong>Wk 2:</strong>
-                    <p>Add 5 lbs to barbell lifts. Go up one dumbbell size where possible.</p>
-                </div>
-                <div class="progression-week">
-                    <strong>Wk 3:</strong>
-                    <p>Same as week 2. If you hit top of rep range easily, add weight.</p>
-                </div>
-                <div class="progression-week">
-                    <strong>Wk 4:</strong>
-                    <p>Add a 4th set to the main compound each day. Push intensity.</p>
-                </div>
-            </div>
 
             <div class="workout-section">
                 <div class="section-title">Day D - Lower Hinge (Friday, ~65 min)</div>
@@ -1201,7 +1087,7 @@
         </div>
     </div>
 
-    <footer style="text-align:center; padding: 20px; color: var(--text-secondary); font-size: 12px; font-family: monospace;">
+    <footer style="text-align:center; padding: 20px calc(20px + env(safe-area-inset-right)) calc(20px + env(safe-area-inset-bottom)) calc(20px + env(safe-area-inset-left)); color: var(--text-secondary); font-size: 12px; font-family: monospace;">
         b220f0f &middot; 2026-04-10
     </footer>
 
