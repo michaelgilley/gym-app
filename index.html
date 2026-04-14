@@ -46,6 +46,7 @@
             max-width: 900px;
             margin: 0 auto;
             padding: 20px;
+            padding-top: calc(20px + env(safe-area-inset-top));
         }
 
         header {
@@ -120,6 +121,13 @@
 
         .day-indicator.rest {
             opacity: 0.6;
+        }
+
+        .day-indicator.today {
+            background: rgba(200, 241, 53, 0.2);
+            border-color: var(--accent);
+            box-shadow: 0 0 8px rgba(200, 241, 53, 0.3);
+            opacity: 1;
         }
 
         .day-letter {
@@ -323,6 +331,7 @@
             border-radius: 8px;
             padding: 20px;
             margin-bottom: 25px;
+            margin-top: 25px;
         }
 
         .info-section h3 {
@@ -378,6 +387,30 @@
 
         .save-button:active {
             transform: translateY(0);
+        }
+
+        /* Data Management */
+        .data-section {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .data-btn {
+            background: var(--card);
+            color: var(--text-secondary);
+            border: 1px solid var(--border);
+            padding: 10px 16px;
+            border-radius: 6px;
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            flex: 1;
+        }
+
+        .data-btn:active {
+            opacity: 0.7;
         }
 
         /* Toast Notification */
@@ -1085,10 +1118,17 @@
                 <li><strong>Timing:</strong> Don't skip meals on gym days</li>
             </ul>
         </div>
+
+        <div class="data-section">
+            <button class="data-btn" onclick="exportData()">Export Data</button>
+            <button class="data-btn" onclick="document.getElementById('importFile').click()">Import Data</button>
+            <input type="file" id="importFile" accept=".json" style="display:none" onchange="importData(event)">
+        </div>
     </div>
 
     <footer style="text-align:center; padding: 20px calc(20px + env(safe-area-inset-right)) calc(20px + env(safe-area-inset-bottom)) calc(20px + env(safe-area-inset-left)); color: var(--text-secondary); font-size: 12px; font-family: monospace;">
-        b220f0f &middot; 2026-04-10
+        <img src="./icon-512.png" alt="Gym" style="width: 32px; height: 32px; opacity: 0.5; margin-bottom: 8px;"><br>
+        2026-04-13
     </footer>
 
     <script>
@@ -1234,10 +1274,6 @@
                 dayDiv.className = `day-indicator ${isGymDay ? 'gym' : 'rest'} ${isToday ? 'today' : ''}`;
                 dayDiv.innerHTML = `<span class="day-letter">${dayName}</span><span class="day-type">${dayLabel}</span>`;
 
-                if (isToday) {
-                    dayDiv.style.borderColor = 'var(--accent)';
-                }
-
                 schedule.appendChild(dayDiv);
             }
         }
@@ -1345,7 +1381,7 @@
                 historyList.innerHTML = '<div class="history-entry">No history yet</div>';
             } else {
                 history.forEach(entry => {
-                    const date = new Date(parseInt(entry.id.split('_')[0].replace(/-/g, '')));
+                    const date = new Date(entry.id.split('_')[0] + 'T00:00:00');
                     const dateStr = formatDate(date);
                     const historyEntry = document.createElement('div');
                     historyEntry.className = 'history-entry';
@@ -1380,6 +1416,55 @@
 
             // Reload weights to show in history
             await loadWeights(day, date);
+        }
+
+        // Export all data as JSON
+        function exportData() {
+            const transaction = db.transaction([STORE_NAME], 'readonly');
+            const store = transaction.objectStore(STORE_NAME);
+            const request = store.getAll();
+            request.onsuccess = () => {
+                const data = JSON.stringify(request.result, null, 2);
+                const blob = new Blob([data], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `gym-data-${formatDate(new Date())}.json`;
+                a.click();
+                URL.revokeObjectURL(url);
+                showToast('Data exported');
+            };
+        }
+
+        // Import data from JSON file
+        function importData(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = async (e) => {
+                try {
+                    const records = JSON.parse(e.target.result);
+                    if (!Array.isArray(records)) throw new Error('Invalid format');
+
+                    const transaction = db.transaction([STORE_NAME], 'readwrite');
+                    const store = transaction.objectStore(STORE_NAME);
+
+                    for (const record of records) {
+                        store.put(record);
+                    }
+
+                    transaction.oncomplete = async () => {
+                        showToast(`Imported ${records.length} records`);
+                        const day = document.querySelector('.tab-btn.active').getAttribute('data-day');
+                        await loadWeights(day, document.getElementById('dateInput').value);
+                    };
+                } catch (err) {
+                    showToast('Import failed: invalid file');
+                }
+                event.target.value = '';
+            };
+            reader.readAsText(file);
         }
 
         // Show toast notification

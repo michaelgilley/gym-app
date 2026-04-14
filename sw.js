@@ -41,28 +41,42 @@ self.addEventListener('activate', (event) => {
     self.clients.claim();
 });
 
-// Fetch: Cache-first strategy
+// Fetch: Network-first for navigation (HTML), cache-first for assets
 self.addEventListener('fetch', (event) => {
-    // Skip non-GET requests
     if (event.request.method !== 'GET') {
         return;
     }
 
+    // Navigation requests (HTML pages): network-first so updates are picked up
+    if (event.request.mode === 'navigate') {
+        event.respondWith(
+            fetch(event.request).then((response) => {
+                if (response && response.status === 200) {
+                    const responseToCache = response.clone();
+                    caches.open(CACHE_VERSION).then((cache) => {
+                        cache.put(event.request, responseToCache);
+                    });
+                }
+                return response;
+            }).catch(() => {
+                return caches.match(event.request);
+            })
+        );
+        return;
+    }
+
+    // Static assets: cache-first
     event.respondWith(
         caches.match(event.request).then((response) => {
-            // Return from cache if found
             if (response) {
                 return response;
             }
 
-            // Otherwise, fetch from network
             return fetch(event.request).then((response) => {
-                // Don't cache non-successful responses
                 if (!response || response.status !== 200 || response.type === 'error') {
                     return response;
                 }
 
-                // Cache successful responses for future use
                 const responseToCache = response.clone();
                 caches.open(CACHE_VERSION).then((cache) => {
                     cache.put(event.request, responseToCache);
@@ -70,7 +84,6 @@ self.addEventListener('fetch', (event) => {
 
                 return response;
             }).catch(() => {
-                // Offline fallback - try to return cached response
                 return caches.match(event.request);
             });
         })
