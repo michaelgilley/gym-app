@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <meta name="theme-color" content="#0f0f0f">
+    <meta name="theme-color" content="#08060f" media="(prefers-color-scheme: dark)">
+    <meta name="theme-color" content="#fdf5ff" media="(prefers-color-scheme: light)">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Gym">
@@ -13,468 +14,1010 @@
 
     <title>Gym Program</title>
 
-    <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Unbounded:wght@500;600;700;800&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
 
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        /* ═══════════════════════════════════════════════════════════════
+           VARIANT B — VIBRANT COMPANION
+           Chunky, bouncy, and alive. Aurora-drift background, frosted-
+           glass cards with colored edge-glow, Unbounded display type,
+           huge mono weight numbers. Every surface nudges you to lift.
+           ═══════════════════════════════════════════════════════════════ */
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         :root {
-            --bg: #0f0f0f;
-            --card: #191919;
-            --border: #2a2a2a;
-            --accent: #c8f135;
-            --push: #f17b2c;
-            --lower-q: #a78bfa;
-            --pull: #4fa8e8;
-            --lower-h: #f472b6;
-            --text-primary: #ffffff;
-            --text-secondary: #b0b0b0;
+            /* ── DARK MODE (default) ─────────────────────────────────────── */
+            --bg-0: #08060f;
+            --bg-1: #0d0a1a;
+            --bg-2: #120e25;
+
+            /* Glass */
+            --glass:         rgba(28, 18, 54, 0.55);
+            --glass-hi:      rgba(52, 32, 92, 0.72);
+            --glass-edge:    rgba(255, 255, 255, 0.09);
+            --glass-edge-hi: rgba(255, 255, 255, 0.16);
+
+            /* Ink */
+            --ink:       #fef8ff;
+            --ink-dim:   #c0b3dd;
+            --ink-faint: #7a6ba0;
+
+            /* Accent + day palette — saturated, tuned for dark */
+            --accent:      #d4ff3c;
+            --accent-rgb:  212, 255, 60;
+            --push:        #ff7a2e;   --push-rgb:   255, 122, 46;
+            --lower-q:     #c29fff;   --lower-q-rgb: 194, 159, 255;
+            --pull:        #4ec9ff;   --pull-rgb:   78, 201, 255;
+            --lower-h:     #ff6ec7;   --lower-h-rgb: 255, 110, 199;
+
+            /* Aurora blob colors (extra pop) */
+            --aur-1: #ff5ec3;         --aur-1-rgb: 255, 94, 195;
+            --aur-2: #7c6dff;         --aur-2-rgb: 124, 109, 255;
+            --aur-3: #28e6ff;         --aur-3-rgb: 40, 230, 255;
+            --aur-4: #ffcc3d;         --aur-4-rgb: 255, 204, 61;
+            --aur-opacity: 0.42;
+
+            /* Spark color for sparkles */
+            --spark-shadow: 0.9;
+
+            /* Sheen on active tab */
+            --sheen-color: rgba(255, 255, 255, 0.45);
+
+            /* Active-day tokens */
+            --day:       var(--accent);
+            --day-rgb:   var(--accent-rgb);
+            --day-2:     #6affe0;
+            --day-2-rgb: 106, 255, 224;
+
+            /* Shadow depth */
+            --shadow-card: 0 16px 48px rgba(0, 0, 0, 0.35);
+            --shadow-deep: 0 24px 60px rgba(0, 0, 0, 0.55);
+            --ink-on-pop:  #0a0414;
+            --table-row-hairline: rgba(255, 255, 255, 0.05);
+        }
+
+        /* Each day gets its OWN aurora palette + subtle base tint so the whole
+           surface shifts mood. A = warm inferno · B = royal violet ·
+           C = deep ocean · D = twilight rose. */
+
+        body[data-active-day="A"] {
+            --day:     #ff7a2e;  --day-rgb:   255,122,46;
+            --day-2:   #ffcf3d;  --day-2-rgb: 255,207,61;
+            --aur-1:   #ff2d5f;  --aur-1-rgb: 255, 45, 95;     /* crimson */
+            --aur-2:   #ff9e1f;  --aur-2-rgb: 255,158, 31;     /* tangerine */
+            --aur-3:   #ffd53d;  --aur-3-rgb: 255,213, 61;     /* gold */
+            --aur-4:   #8c1a0a;  --aur-4-rgb: 140, 26, 10;     /* ember */
+            --aur-opacity: 0.48;
+            --bg-0: #0f0805;
+        }
+
+        body[data-active-day="B"] {
+            --day:     #c29fff;  --day-rgb:   194,159,255;
+            --day-2:   #ff6ec7;  --day-2-rgb: 255,110,199;
+            --aur-1:   #7a2dff;  --aur-1-rgb: 122, 45, 255;    /* electric violet */
+            --aur-2:   #ff2da6;  --aur-2-rgb: 255, 45,166;     /* magenta */
+            --aur-3:   #6b4dff;  --aur-3-rgb: 107, 77,255;     /* indigo */
+            --aur-4:   #361580;  --aur-4-rgb:  54, 21,128;     /* deep royal */
+            --aur-opacity: 0.5;
+            --bg-0: #0a0618;
+        }
+
+        body[data-active-day="C"] {
+            --day:     #4ec9ff;  --day-rgb:   78,201,255;
+            --day-2:   #6affe0;  --day-2-rgb: 106,255,224;
+            --aur-1:   #1f5bff;  --aur-1-rgb:  31, 91,255;     /* sapphire */
+            --aur-2:   #00e0ff;  --aur-2-rgb:   0,224,255;     /* cyan */
+            --aur-3:   #2dffb0;  --aur-3-rgb:  45,255,176;     /* mint */
+            --aur-4:   #05306e;  --aur-4-rgb:   5, 48,110;     /* abyss */
+            --aur-opacity: 0.48;
+            --bg-0: #040814;
+        }
+
+        body[data-active-day="D"] {
+            --day:     #ff6ec7;  --day-rgb:   255,110,199;
+            --day-2:   #ffb347;  --day-2-rgb: 255,179, 71;
+            --aur-1:   #ff2d86;  --aur-1-rgb: 255, 45,134;     /* hot pink */
+            --aur-2:   #ff8150;  --aur-2-rgb: 255,129, 80;     /* coral */
+            --aur-3:   #ffc567;  --aur-3-rgb: 255,197,103;     /* peach */
+            --aur-4:   #7a1a4f;  --aur-4-rgb: 122, 26, 79;     /* wine */
+            --aur-opacity: 0.5;
+            --bg-0: #12060d;
+        }
+
+        /* ── LIGHT MODE (follows system preference) ────────────────────── */
+        @media (prefers-color-scheme: light) {
+            :root {
+                --bg-0: #fdf5ff;
+                --bg-1: #fff9ff;
+                --bg-2: #f9e9ff;
+
+                /* Glass — tinted white with depth */
+                --glass:         rgba(255, 255, 255, 0.55);
+                --glass-hi:      rgba(255, 255, 255, 0.78);
+                --glass-edge:    rgba(46, 20, 82, 0.08);
+                --glass-edge-hi: rgba(46, 20, 82, 0.16);
+
+                /* Ink — inverted */
+                --ink:       #1a0c2e;
+                --ink-dim:   #5a4580;
+                --ink-faint: #9887b5;
+
+                /* Day colors — deepened for contrast on light */
+                --accent:      #7fbf00;    --accent-rgb: 127, 191, 0;
+                --push:        #e05a00;    --push-rgb:   224, 90, 0;
+                --lower-q:     #7c4dff;    --lower-q-rgb: 124, 77, 255;
+                --pull:        #007ec2;    --pull-rgb:   0, 126, 194;
+                --lower-h:     #d63082;    --lower-h-rgb: 214, 48, 130;
+
+                /* Aurora — softer on light so colors stay readable */
+                --aur-1: #ff88d4;         --aur-1-rgb: 255, 136, 212;
+                --aur-2: #a795ff;         --aur-2-rgb: 167, 149, 255;
+                --aur-3: #66d9ff;         --aur-3-rgb: 102, 217, 255;
+                --aur-4: #ffd66a;         --aur-4-rgb: 255, 214, 106;
+                --aur-opacity: 0.55;
+
+                --sheen-color: rgba(255, 255, 255, 0.8);
+
+                --day:       var(--accent);
+                --day-rgb:   var(--accent-rgb);
+                --day-2:     #00b3a1;
+                --day-2-rgb: 0, 179, 161;
+
+                --shadow-card: 0 16px 40px rgba(80, 30, 140, 0.15);
+                --shadow-deep: 0 24px 56px rgba(80, 30, 140, 0.22);
+                --ink-on-pop:  #ffffff;
+                --table-row-hairline: rgba(46, 20, 82, 0.06);
+            }
+
+            body[data-active-day="A"] {
+                --day:     #e05a00;  --day-rgb:   224, 90,  0;
+                --day-2:   #f5b000;  --day-2-rgb: 245,176,  0;
+                --aur-1:   #ffa25a;  --aur-1-rgb: 255,162, 90;
+                --aur-2:   #ff7d6e;  --aur-2-rgb: 255,125,110;
+                --aur-3:   #ffe08a;  --aur-3-rgb: 255,224,138;
+                --aur-4:   #ffc29b;  --aur-4-rgb: 255,194,155;
+                --bg-0: #fff5eb;
+            }
+
+            body[data-active-day="B"] {
+                --day:     #7c4dff;  --day-rgb:   124, 77, 255;
+                --day-2:   #d63082;  --day-2-rgb: 214, 48, 130;
+                --aur-1:   #b99aff;  --aur-1-rgb: 185,154, 255;
+                --aur-2:   #ff9ecf;  --aur-2-rgb: 255,158, 207;
+                --aur-3:   #a5b4ff;  --aur-3-rgb: 165,180, 255;
+                --aur-4:   #e5c2ff;  --aur-4-rgb: 229,194, 255;
+                --bg-0: #f7efff;
+            }
+
+            body[data-active-day="C"] {
+                --day:     #007ec2;  --day-rgb:   0,126,194;
+                --day-2:   #00a89a;  --day-2-rgb: 0,168,154;
+                --aur-1:   #78c8ff;  --aur-1-rgb: 120,200,255;
+                --aur-2:   #7dead9;  --aur-2-rgb: 125,234,217;
+                --aur-3:   #a9e7ff;  --aur-3-rgb: 169,231,255;
+                --aur-4:   #bfe8ff;  --aur-4-rgb: 191,232,255;
+                --bg-0: #ecf7ff;
+            }
+
+            body[data-active-day="D"] {
+                --day:     #d63082;  --day-rgb:   214, 48,130;
+                --day-2:   #e87923;  --day-2-rgb: 232,121, 35;
+                --aur-1:   #ff9ac4;  --aur-1-rgb: 255,154,196;
+                --aur-2:   #ffb598;  --aur-2-rgb: 255,181,152;
+                --aur-3:   #ffd1b3;  --aur-3-rgb: 255,209,179;
+                --aur-4:   #ffc6da;  --aur-4-rgb: 255,198,218;
+                --bg-0: #fff0f5;
+            }
         }
 
         body {
-            background-color: var(--bg);
-            color: var(--text-primary);
-            font-family: 'Barlow', sans-serif;
+            background: var(--bg-0);
+            color: var(--ink);
+            font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
+            font-weight: 400;
+            line-height: 1.5;
+            min-height: 100vh;
             overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            transition: background-color 0.7s ease;
+        }
+
+        /* Aurora — saturated multi-color gradient mesh that drifts */
+        body::before {
+            content: "";
+            position: fixed;
+            inset: -25%;
+            z-index: 0;
+            pointer-events: none;
+            background:
+                radial-gradient(ellipse 48% 38% at 12% 18%,  rgba(var(--day-rgb),     var(--aur-opacity)), transparent 60%),
+                radial-gradient(ellipse 44% 42% at 88% 22%,  rgba(var(--aur-1-rgb),   var(--aur-opacity)), transparent 60%),
+                radial-gradient(ellipse 52% 44% at 50% 60%,  rgba(var(--aur-2-rgb),   calc(var(--aur-opacity) * 0.85)), transparent 60%),
+                radial-gradient(ellipse 46% 38% at 90% 90%,  rgba(var(--aur-3-rgb),   calc(var(--aur-opacity) * 0.75)), transparent 60%),
+                radial-gradient(ellipse 40% 34% at 8%  88%,  rgba(var(--aur-4-rgb),   calc(var(--aur-opacity) * 0.7)),  transparent 60%),
+                radial-gradient(ellipse 36% 32% at 65% 6%,   rgba(var(--day-2-rgb),   calc(var(--aur-opacity) * 0.65)), transparent 60%);
+            filter: blur(56px) saturate(1.3);
+            animation: auroraDrift 24s ease-in-out infinite alternate;
+            transition: background 0.8s ease, filter 0.8s ease;
+        }
+
+        @keyframes auroraDrift {
+            0%   { transform: translate3d(0, 0, 0)     scale(1);    }
+            33%  { transform: translate3d(-3%, 3%, 0)  scale(1.06); }
+            66%  { transform: translate3d(3%, -2%, 0)  scale(1.03); }
+            100% { transform: translate3d(-1%, -3%, 0) scale(1.08); }
+        }
+
+        /* Light-mode gets a softer aurora + lighter shadows throughout */
+        @media (prefers-color-scheme: light) {
+            body::before { filter: blur(72px) saturate(1.4); }
+            body::after  { opacity: 0.035; }
+
+            .date-selector   { box-shadow: inset 0 1px 0 rgba(255,255,255,0.5), 0 12px 32px rgba(80, 30, 140, 0.12); }
+            .day-indicator   { box-shadow: inset 0 1px 0 rgba(255,255,255,0.5), 0 4px 14px  rgba(80, 30, 140, 0.1); }
+            .workout-table   { box-shadow: inset 0 1px 0 rgba(255,255,255,0.6), 0 18px 48px rgba(80, 30, 140, 0.15), 0 0 0 1px rgba(var(--day-rgb), 0.1); }
+            .info-section    { box-shadow: inset 0 1px 0 rgba(255,255,255,0.55), 0 14px 42px rgba(80, 30, 140, 0.14); }
+            .toast           { box-shadow: inset 0 1px 0 rgba(255,255,255,0.45), 0 16px 40px rgba(var(--day-rgb), 0.45); }
+        }
+
+        /* Grain on top of everything to unify */
+        body::after {
+            content: "";
+            position: fixed;
+            inset: 0;
+            z-index: 1;
+            pointer-events: none;
+            opacity: 0.05;
+            mix-blend-mode: overlay;
+            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
         }
 
         .container {
+            position: relative;
+            z-index: 2;
             max-width: 900px;
             margin: 0 auto;
-            padding: 20px;
-            padding-top: calc(20px + env(safe-area-inset-top));
+            padding: 28px 20px 48px;
+            padding-top: calc(28px + env(safe-area-inset-top));
         }
 
+        /* Header — big playful display with dynamic day title */
         header {
-            text-align: center;
-            margin-bottom: 30px;
-            padding-top: 10px;
+            text-align: left;
+            margin-bottom: 26px;
+            padding: 8px 0 8px;
         }
 
         h1 {
-            font-family: 'Barlow Condensed', sans-serif;
-            font-size: 32px;
-            font-weight: 700;
-            margin-bottom: 10px;
-            letter-spacing: -1px;
+            font-family: 'Unbounded', 'Barlow Condensed', sans-serif;
+            font-size: 68px;
+            font-weight: 800;
+            line-height: 0.88;
+            letter-spacing: -0.045em;
+            text-transform: uppercase;
+            background: linear-gradient(130deg,
+                var(--day) 0%,
+                var(--day-2) 40%,
+                var(--ink) 75%,
+                var(--day) 100%);
+            background-size: 220% auto;
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            color: transparent;
+            animation: hueShift 7s linear infinite;
+            filter: drop-shadow(0 10px 28px rgba(var(--day-rgb), 0.32));
+            transition: filter 0.5s ease;
         }
 
-        /* Date Selector */
+        @keyframes hueShift {
+            to { background-position: 220% center; }
+        }
+
+        .title-swap {
+            animation: titleSwap 0.55s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        @keyframes titleSwap {
+            0%   { opacity: 0; transform: translateY(14px) scale(0.96); letter-spacing: -0.06em; }
+            60%  { opacity: 1; transform: translateY(-2px) scale(1.02); letter-spacing: -0.04em; }
+            100% { opacity: 1; transform: translateY(0)    scale(1);    letter-spacing: -0.045em; }
+        }
+
+        .day-sub {
+            margin-top: 10px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.22em;
+            color: var(--ink-dim);
+            text-transform: uppercase;
+        }
+
+        .day-sub .dot {
+            display: inline-block;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--day);
+            margin: 0 8px 1px;
+            vertical-align: middle;
+            box-shadow: 0 0 6px var(--day);
+        }
+
+        /* Date selector — chunky pill */
         .date-selector {
             display: flex;
-            justify-content: center;
             align-items: center;
-            gap: 15px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-        }
-
-        .date-input {
-            background: var(--card);
-            border: 2px solid var(--border);
-            color: var(--text-primary);
-            padding: 10px 15px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-family: 'Barlow', sans-serif;
-            font-size: 14px;
-        }
-
-        .date-input:focus {
-            border-color: var(--accent);
-            outline: none;
+            justify-content: space-between;
+            gap: 14px;
+            margin-bottom: 24px;
+            padding: 14px 18px;
+            background: var(--glass);
+            border: 1px solid var(--glass-edge);
+            border-radius: 22px;
+            backdrop-filter: blur(20px) saturate(1.3);
+            -webkit-backdrop-filter: blur(20px) saturate(1.3);
+            box-shadow:
+                inset 0 1px 0 rgba(255, 255, 255, 0.08),
+                0 12px 32px rgba(0, 0, 0, 0.35);
         }
 
         .date-display {
-            font-family: 'Barlow Condensed', sans-serif;
-            font-size: 16px;
-            color: var(--text-secondary);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 0.28em;
+            color: var(--ink-dim);
+            text-transform: uppercase;
         }
 
-        /* Weekly Schedule */
+        .date-input {
+            background: transparent;
+            border: none;
+            color: var(--ink);
+            padding: 4px 0;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            color-scheme: dark;
+        }
+        .date-input:focus { outline: none; color: var(--day); }
+        .date-input::-webkit-calendar-picker-indicator { filter: invert(0.8); opacity: 0.7; cursor: pointer; }
+
+        /* Weekly schedule — chunky day chips */
         .weekly-schedule {
             display: grid;
             grid-template-columns: repeat(7, 1fr);
-            gap: 8px;
-            margin-bottom: 25px;
+            gap: 6px;
+            margin-bottom: 28px;
         }
 
         .day-indicator {
-            background: var(--card);
-            border: 2px solid var(--border);
-            border-radius: 8px;
-            padding: 12px 8px;
+            position: relative;
+            background: var(--glass);
+            border: 1px solid var(--glass-edge);
+            border-radius: 18px;
+            padding: 14px 4px 12px;
             text-align: center;
-            font-size: 12px;
-            font-family: 'Barlow Condensed', sans-serif;
-            font-weight: 500;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            box-shadow:
+                inset 0 1px 0 rgba(255, 255, 255, 0.05),
+                0 4px 12px rgba(0, 0, 0, 0.25);
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+                        border-color 0.3s;
         }
 
         .day-indicator.gym {
-            border-color: var(--accent);
-            background: rgba(200, 241, 53, 0.1);
+            background: linear-gradient(180deg, rgba(var(--accent-rgb), 0.14) 0%, rgba(var(--accent-rgb), 0.04) 100%);
+            border-color: rgba(var(--accent-rgb), 0.3);
         }
 
-        .day-indicator.rest {
-            opacity: 0.6;
-        }
+        .day-indicator.rest { opacity: 0.45; }
 
         .day-indicator.today {
-            background: rgba(200, 241, 53, 0.2);
-            border-color: var(--accent);
-            box-shadow: 0 0 8px rgba(200, 241, 53, 0.3);
-            opacity: 1;
+            transform: scale(1.08) translateY(-3px);
+            background: linear-gradient(180deg, rgba(var(--day-rgb), 0.28) 0%, rgba(var(--day-rgb), 0.1) 100%);
+            border-color: var(--day);
+            box-shadow:
+                inset 0 1px 0 rgba(255, 255, 255, 0.15),
+                0 0 0 3px rgba(var(--day-rgb), 0.18),
+                0 14px 38px rgba(var(--day-rgb), 0.35);
+            z-index: 2;
+            animation: todayFloat 3s ease-in-out infinite;
+        }
+
+        .day-indicator.today::after {
+            content: "";
+            position: absolute;
+            inset: -3px;
+            border-radius: 18px;
+            border: 2px solid var(--day);
+            opacity: 0;
+            animation: todayRing 2.2s ease-out infinite;
+            pointer-events: none;
+        }
+
+        @keyframes todayRing {
+            0%   { opacity: 0.5; transform: scale(0.98); }
+            100% { opacity: 0;   transform: scale(1.15); }
+        }
+
+        @keyframes todayFloat {
+            0%, 100% { transform: scale(1.08) translateY(-3px); }
+            50%      { transform: scale(1.1)  translateY(-5px); }
         }
 
         .day-letter {
-            font-weight: 700;
             display: block;
+            font-family: 'Unbounded', sans-serif;
+            font-weight: 700;
+            font-size: 14px;
+            letter-spacing: -0.02em;
+            color: var(--ink);
             margin-bottom: 4px;
+            text-transform: uppercase;
         }
 
         .day-type {
-            font-size: 10px;
-            color: var(--text-secondary);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 9px;
+            font-weight: 600;
+            letter-spacing: 0.18em;
+            color: var(--ink-dim);
+            text-transform: uppercase;
         }
 
-        /* Tab Navigation */
+        /* Tabs — chunky pills with sheen */
         .tabs {
             display: flex;
             gap: 10px;
-            margin-bottom: 25px;
+            margin-bottom: 28px;
             overflow-x: auto;
-            padding-bottom: 10px;
+            padding: 4px 2px 18px;
+            scrollbar-width: none;
         }
+        .tabs::-webkit-scrollbar { display: none; }
 
         .tab-btn {
-            padding: 12px 20px;
-            background: var(--card);
-            border: 2px solid var(--border);
-            color: var(--text-secondary);
-            cursor: pointer;
-            font-family: 'Barlow Condensed', sans-serif;
-            font-size: 16px;
+            position: relative;
+            padding: 14px 22px;
+            background: var(--glass);
+            border: 1px solid var(--glass-edge);
+            color: var(--ink-dim);
+            font-family: 'Unbounded', sans-serif;
+            font-size: 12px;
             font-weight: 600;
-            border-radius: 8px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            border-radius: 100px;
+            cursor: pointer;
             white-space: nowrap;
-            transition: all 0.2s;
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            overflow: hidden;
         }
 
         .tab-btn:hover {
-            border-color: var(--accent);
+            transform: translateY(-1px);
+            color: var(--ink);
+            border-color: var(--glass-edge-hi);
         }
 
         .tab-btn.active {
-            color: var(--bg);
+            color: var(--ink-on-pop);
             border-color: transparent;
-            font-weight: 700;
+            transform: translateY(-1px);
+            background: linear-gradient(135deg, var(--btn-col) 0%, var(--btn-col-2) 100%);
+            box-shadow:
+                inset 0 1px 0 rgba(255, 255, 255, 0.5),
+                0 0 0 1px rgba(255, 255, 255, 0.15),
+                0 10px 32px rgba(var(--btn-rgb), 0.5),
+                0 2px 0 rgba(0, 0, 0, 0.15);
         }
 
-        .tab-btn.active[data-day="A"] {
-            background: var(--push);
+        /* Sheen sweep on active tab */
+        .tab-btn.active::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(115deg,
+                transparent 30%,
+                var(--sheen-color) 50%,
+                transparent 70%);
+            transform: translateX(-100%);
+            animation: sheen 3.5s ease-in-out infinite;
         }
 
-        .tab-btn.active[data-day="B"] {
-            background: var(--lower-q);
+        @keyframes sheen {
+            0%, 20% { transform: translateX(-120%); }
+            50%     { transform: translateX(120%); }
+            100%    { transform: translateX(120%); }
         }
 
-        .tab-btn.active[data-day="C"] {
-            background: var(--pull);
+        .tab-btn.active[data-day="A"] { --btn-col: #ff7a2e; --btn-col-2: #ffd13d; --btn-rgb: 255,122,46; }
+        .tab-btn.active[data-day="B"] { --btn-col: #c29fff; --btn-col-2: #ff6ec7; --btn-rgb: 194,159,255; }
+        .tab-btn.active[data-day="C"] { --btn-col: #4ec9ff; --btn-col-2: #6affe0; --btn-rgb: 78,201,255; }
+        .tab-btn.active[data-day="D"] { --btn-col: #ff6ec7; --btn-col-2: #ffb347; --btn-rgb: 255,110,199; }
+
+        @media (prefers-color-scheme: light) {
+            .tab-btn.active[data-day="A"] { --btn-col: #e05a00; --btn-col-2: #f5b000; --btn-rgb: 224,90,0; }
+            .tab-btn.active[data-day="B"] { --btn-col: #7c4dff; --btn-col-2: #d63082; --btn-rgb: 124,77,255; }
+            .tab-btn.active[data-day="C"] { --btn-col: #007ec2; --btn-col-2: #00a89a; --btn-rgb: 0,126,194; }
+            .tab-btn.active[data-day="D"] { --btn-col: #d63082; --btn-col-2: #e87923; --btn-rgb: 214,48,130; }
         }
 
-        .tab-btn.active[data-day="D"] {
-            background: var(--lower-h);
-        }
-
-        /* Tab Content */
-        .tab-content {
-            display: none;
-        }
-
+        /* Tab content */
+        .tab-content { display: none; }
         .tab-content.active {
             display: block;
+            animation: contentIn 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
-        .workout-section {
-            margin-bottom: 25px;
+        @keyframes contentIn {
+            from { opacity: 0; transform: translateY(12px) scale(0.98); }
+            to   { opacity: 1; transform: translateY(0) scale(1); }
         }
 
+        .workout-section { margin-bottom: 24px; }
+
+        /* Section title — big chunky gradient */
         .section-title {
-            font-family: 'Barlow Condensed', sans-serif;
-            font-size: 18px;
+            position: relative;
+            font-family: 'Unbounded', sans-serif;
+            font-size: 26px;
             font-weight: 700;
-            margin-bottom: 15px;
-            padding-bottom: 10px;
-            border-bottom: 2px solid var(--border);
-            letter-spacing: -0.5px;
+            letter-spacing: -0.03em;
+            color: var(--ink);
+            padding: 8px 0 14px;
+            margin-bottom: 14px;
+            background: linear-gradient(100deg, var(--ink) 0%, var(--day) 70%, var(--day-2) 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            color: transparent;
         }
 
-        /* Workout Table */
+        .section-title::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            height: 1px;
+            background: linear-gradient(90deg, rgba(var(--day-rgb), 0.5) 0%, transparent 60%);
+        }
+
+        /* Nested sub-section titles (inline 14px) */
+        .section-title[style*="14px"] {
+            font-family: 'JetBrains Mono', monospace !important;
+            font-size: 10px !important;
+            font-weight: 700 !important;
+            letter-spacing: 0.24em !important;
+            text-transform: uppercase !important;
+            color: var(--day) !important;
+            -webkit-text-fill-color: var(--day) !important;
+            background: none !important;
+            border: none !important;
+            padding: 22px 0 10px 14px !important;
+            margin: 0 !important;
+            position: relative;
+        }
+
+        .section-title[style*="14px"]::before {
+            content: "▸";
+            position: absolute;
+            left: 0;
+            top: 21px;
+            color: var(--day);
+            font-size: 12px;
+        }
+        .section-title[style*="14px"]::after { display: none; }
+
+        /* Workout table — glass card */
         .workout-table {
             width: 100%;
             border-collapse: collapse;
+            background: var(--glass);
+            border: 1px solid var(--glass-edge);
+            border-radius: 20px;
+            overflow: hidden;
+            backdrop-filter: blur(20px) saturate(1.2);
+            -webkit-backdrop-filter: blur(20px) saturate(1.2);
+            box-shadow:
+                inset 0 1px 0 rgba(255, 255, 255, 0.07),
+                0 16px 48px rgba(0, 0, 0, 0.35),
+                0 0 0 1px rgba(var(--day-rgb), 0.08);
         }
 
         .workout-table tr {
-            border-bottom: 1px solid var(--border);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            transition: background 0.2s;
         }
+        .workout-table tr:last-child { border-bottom: none; }
+        .workout-table tr:hover { background: rgba(var(--day-rgb), 0.06); }
 
         .workout-table td {
-            padding: 14px;
+            padding: 16px 18px;
             text-align: left;
             font-size: 14px;
-        }
-
-        .workout-table tr:last-child td {
-            border-bottom: none;
+            vertical-align: middle;
         }
 
         .exercise-name {
-            font-weight: 500;
-            color: var(--text-primary);
+            font-weight: 600;
+            color: var(--ink);
             min-width: 150px;
+            letter-spacing: -0.005em;
         }
 
         .sets-reps {
-            color: var(--text-secondary);
-            font-size: 13px;
-            min-width: 100px;
+            color: var(--ink-dim);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 0.04em;
+            min-width: 88px;
         }
 
         .rest-time {
-            color: var(--text-secondary);
-            font-size: 12px;
+            color: var(--ink-faint);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            font-weight: 500;
+            letter-spacing: 0.05em;
             min-width: 80px;
         }
 
         .weight-input-cell {
-            min-width: 120px;
+            min-width: 130px;
+            text-align: right !important;
         }
 
+        /* Weight input — chunky mono */
         .weight-input {
-            background: var(--card);
-            border: 2px solid var(--border);
-            color: var(--accent);
-            padding: 8px 10px;
-            border-radius: 6px;
-            font-family: 'Courier New', monospace;
-            font-size: 16px;
-            font-weight: 600;
+            position: relative;
+            background: var(--weight-bg, rgba(0, 0, 0, 0.32));
+            border: 2px solid rgba(var(--day-rgb), 0.28);
+            color: var(--day);
+            padding: 10px 12px;
+            border-radius: 12px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 18px;
+            font-weight: 700;
             width: 100%;
-            max-width: 100px;
-            transition: border-color 0.2s;
+            max-width: 96px;
+            text-align: center;
+            letter-spacing: 0.02em;
+            transition: all 0.25s;
+            box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.3);
+        }
+
+        @media (prefers-color-scheme: light) {
+            .weight-input {
+                --weight-bg: rgba(255, 255, 255, 0.7);
+                box-shadow: inset 0 2px 6px rgba(80, 30, 140, 0.12);
+            }
         }
 
         .weight-input:focus {
             outline: none;
-            border-color: var(--accent);
-            box-shadow: 0 0 8px rgba(200, 241, 53, 0.2);
+            border-color: var(--day);
+            background: rgba(var(--day-rgb), 0.1);
+            box-shadow:
+                0 0 0 4px rgba(var(--day-rgb), 0.2),
+                inset 0 1px 0 rgba(255, 255, 255, 0.08),
+                0 0 24px rgba(var(--day-rgb), 0.35);
+            transform: scale(1.04);
         }
 
         .weight-input::placeholder {
-            color: var(--text-secondary);
-            opacity: 0.5;
+            color: var(--ink-faint);
+            opacity: 0.7;
+            font-weight: 500;
         }
 
-        /* Weight History */
+        /* Weight save bounce + sparkle */
+        .weight-input.saved-bounce {
+            animation: savedBounce 0.65s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        @keyframes savedBounce {
+            0%   { transform: scale(1); }
+            35%  { transform: scale(1.15); }
+            65%  { transform: scale(0.96); }
+            100% { transform: scale(1); }
+        }
+
+        /* History */
         .history-toggle {
-            background: none;
-            border: none;
-            color: var(--accent);
+            background: rgba(var(--day-rgb), 0.08);
+            border: 1px solid rgba(var(--day-rgb), 0.18);
+            color: var(--day);
             cursor: pointer;
-            font-size: 12px;
-            text-decoration: underline;
-            padding: 0;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 9px;
+            font-weight: 700;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            padding: 5px 10px;
             margin-left: 10px;
+            border-radius: 100px;
+            transition: all 0.2s;
+        }
+        .history-toggle:hover {
+            background: rgba(var(--day-rgb), 0.16);
+            border-color: rgba(var(--day-rgb), 0.4);
         }
 
         .history-container {
             max-height: 0;
             overflow: hidden;
-            transition: max-height 0.3s ease;
+            transition: max-height 0.4s ease;
         }
-
-        .history-container.expanded {
-            max-height: 200px;
-        }
+        .history-container.expanded { max-height: 260px; }
 
         .history-list {
-            background: rgba(200, 241, 53, 0.05);
-            border-left: 3px solid var(--accent);
-            padding: 12px;
+            background: rgba(var(--day-rgb), 0.06);
+            border-left: 3px solid var(--day);
+            padding: 12px 14px;
             margin-top: 10px;
-            border-radius: 6px;
+            border-radius: 0 12px 12px 0;
             font-size: 12px;
         }
 
         .history-entry {
-            padding: 6px 0;
-            color: var(--text-secondary);
+            padding: 5px 0;
+            color: var(--ink-dim);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            letter-spacing: 0.04em;
         }
+        .history-weight { color: var(--day); font-weight: 700; }
 
-        .history-weight {
-            color: var(--accent);
-            font-weight: 600;
-            font-family: 'Courier New', monospace;
-        }
-
-        /* Progression Info */
-
-        /* Nutrition & Rest Days */
+        /* Info section — glass card */
         .info-section {
-            background: var(--card);
-            border: 2px solid var(--border);
-            border-radius: 8px;
-            padding: 20px;
-            margin-bottom: 25px;
-            margin-top: 25px;
+            background: var(--glass);
+            border: 1px solid var(--glass-edge);
+            border-radius: 22px;
+            padding: 26px 26px;
+            margin: 24px 0 16px;
+            backdrop-filter: blur(20px) saturate(1.2);
+            -webkit-backdrop-filter: blur(20px) saturate(1.2);
+            box-shadow:
+                inset 0 1px 0 rgba(255, 255, 255, 0.06),
+                0 14px 42px rgba(0, 0, 0, 0.3);
         }
 
         .info-section h3 {
-            font-family: 'Barlow Condensed', sans-serif;
-            font-size: 16px;
+            font-family: 'Unbounded', sans-serif;
+            font-size: 20px;
             font-weight: 700;
-            margin-bottom: 12px;
-            color: var(--accent);
+            letter-spacing: -0.02em;
+            margin-bottom: 14px;
+            background: linear-gradient(100deg, var(--accent) 0%, var(--day-2) 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            color: transparent;
         }
 
-        .info-section ul {
-            list-style: none;
-            margin-left: 0;
-        }
+        .info-section ul { list-style: none; margin: 0; }
 
         .info-section li {
-            font-size: 13px;
-            color: var(--text-secondary);
-            padding: 8px 0;
+            position: relative;
+            font-size: 14px;
+            color: var(--ink-dim);
+            padding: 10px 0 10px 22px;
+            line-height: 1.5;
         }
 
         .info-section li::before {
-            content: "• ";
-            color: var(--accent);
-            margin-right: 8px;
-            font-weight: 700;
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 16px;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--accent);
+            box-shadow: 0 0 10px rgba(var(--accent-rgb), 0.6);
         }
 
-        /* Save Button */
+        .info-section strong { color: var(--ink); font-weight: 700; }
+
+        /* Save button — big juicy pill */
         .save-button {
-            background: var(--accent);
-            color: var(--bg);
-            border: none;
-            padding: 14px 28px;
-            border-radius: 8px;
-            font-family: 'Barlow Condensed', sans-serif;
-            font-size: 16px;
-            font-weight: 700;
-            cursor: pointer;
-            width: 100%;
-            transition: all 0.3s;
-            margin-top: 16px;
-            letter-spacing: 0.5px;
             position: sticky;
-            bottom: 16px;
-            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.6);
+            bottom: calc(16px + env(safe-area-inset-bottom));
+            width: 100%;
+            padding: 18px 28px;
+            margin-top: 24px;
+            background: linear-gradient(135deg, var(--day) 0%, var(--day-2) 100%);
+            color: var(--ink-on-pop);
+            border: none;
+            border-radius: 22px;
+            font-family: 'Unbounded', sans-serif;
+            font-size: 14px;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            cursor: pointer;
+            overflow: hidden;
+            box-shadow:
+                inset 0 1px 0 rgba(255, 255, 255, 0.5),
+                0 12px 40px rgba(var(--day-rgb), 0.5),
+                0 3px 0 rgba(0, 0, 0, 0.2);
+            transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1),
+                        box-shadow 0.2s;
+        }
+
+        .save-button::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(115deg,
+                transparent 30%,
+                var(--sheen-color) 50%,
+                transparent 70%);
+            transform: translateX(-100%);
+            pointer-events: none;
         }
 
         .save-button:hover {
-            opacity: 0.9;
-            transform: translateY(-2px);
+            transform: translateY(-2px) scale(1.01);
+            box-shadow:
+                inset 0 1px 0 rgba(255, 255, 255, 0.5),
+                0 18px 50px rgba(var(--day-rgb), 0.6),
+                0 3px 0 rgba(0, 0, 0, 0.2);
         }
 
-        .save-button:active {
-            transform: translateY(0);
+        .save-button:hover::before {
+            animation: sheenSweep 0.8s ease forwards;
         }
 
-        /* Data Management */
+        @keyframes sheenSweep {
+            to { transform: translateX(120%); }
+        }
+
+        .save-button.save-bounce {
+            animation: savedBounce 0.55s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .save-button:active { transform: translateY(0) scale(0.99); }
+
+        /* Sparkle particles on save */
+        .spark {
+            position: fixed;
+            width: 8px;
+            height: 8px;
+            background: var(--day);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 1200;
+            transform: translate(-50%, -50%);
+            box-shadow: 0 0 12px rgba(var(--day-rgb), 0.9);
+        }
+
+        /* Data buttons */
         .data-section {
             display: flex;
             gap: 10px;
-            margin-top: 20px;
+            margin-top: 28px;
         }
 
         .data-btn {
-            background: var(--card);
-            color: var(--text-secondary);
-            border: 1px solid var(--border);
-            padding: 10px 16px;
-            border-radius: 6px;
-            font-family: 'Barlow Condensed', sans-serif;
-            font-size: 13px;
-            font-weight: 500;
+            background: var(--glass);
+            color: var(--ink-dim);
+            border: 1px solid var(--glass-edge);
+            padding: 13px 16px;
+            border-radius: 16px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
             cursor: pointer;
             flex: 1;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            transition: all 0.2s;
         }
 
-        .data-btn:active {
-            opacity: 0.7;
+        .data-btn:hover {
+            color: var(--ink);
+            border-color: rgba(var(--day-rgb), 0.35);
+            background: rgba(var(--day-rgb), 0.06);
         }
 
-        /* Toast Notification */
+        .data-btn:active { transform: scale(0.97); }
+
+        /* Toast — chunky pill */
         .toast {
             position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: var(--accent);
-            color: var(--bg);
-            padding: 14px 20px;
-            border-radius: 8px;
-            font-weight: 600;
+            bottom: calc(24px + env(safe-area-inset-bottom));
+            right: 24px;
+            background: linear-gradient(135deg, var(--day) 0%, var(--day-2) 100%);
+            color: var(--ink-on-pop);
+            padding: 14px 22px;
+            border-radius: 100px;
+            font-family: 'Unbounded', sans-serif;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
             z-index: 1000;
-            animation: slideIn 0.3s ease;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            box-shadow:
+                inset 0 1px 0 rgba(255, 255, 255, 0.4),
+                0 16px 42px rgba(var(--day-rgb), 0.5);
+            animation: toastPop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
-        @keyframes slideIn {
-            from {
-                transform: translateX(400px);
-                opacity: 0;
-            }
-            to {
-                transform: translateX(0);
-                opacity: 1;
+        @keyframes slideIn { from { transform: translateX(120%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+        @keyframes toastPop {
+            0%   { transform: translateY(30px) scale(0.85); opacity: 0; }
+            70%  { transform: translateY(-4px) scale(1.03); opacity: 1; }
+            100% { transform: translateY(0)    scale(1);    opacity: 1; }
+        }
+
+        /* Footer */
+        footer {
+            margin-top: 48px;
+            padding-top: 28px;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+            text-align: center;
+            color: var(--ink-faint) !important;
+            font-family: 'JetBrains Mono', monospace !important;
+            font-size: 10px !important;
+            font-weight: 600;
+            letter-spacing: 0.24em;
+            text-transform: uppercase;
+        }
+
+        /* Reduce motion */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
             }
         }
 
         /* Responsive */
         @media (max-width: 768px) {
-            .container {
-                padding: 15px;
-            }
-
-            h1 {
-                font-size: 24px;
-            }
-
-            .workout-table td {
-                padding: 10px;
-                font-size: 13px;
-            }
-
-            .exercise-name {
-                min-width: 120px;
-            }
-
-            .tab-btn {
-                padding: 10px 16px;
-                font-size: 14px;
-            }
-
-            .weight-input {
-                max-width: 80px;
-                padding: 6px 8px;
-                font-size: 16px;
-            }
+            .container { padding: 22px 14px 36px; padding-top: calc(22px + env(safe-area-inset-top)); }
+            h1 { font-size: 44px; }
+            .date-selector { padding: 12px 14px; border-radius: 18px; }
+            .section-title { font-size: 20px; }
+            .workout-table { border-radius: 16px; }
+            .workout-table td { padding: 12px 12px; font-size: 13px; }
+            .exercise-name { min-width: 120px; }
+            .tab-btn { padding: 12px 18px; font-size: 11px; }
+            .weight-input { max-width: 82px; padding: 8px 8px; font-size: 16px; border-radius: 10px; }
+            .day-indicator { padding: 11px 3px 9px; border-radius: 14px; }
+            .day-letter { font-size: 12px; }
+            .day-type { font-size: 8px; }
+            .info-section { padding: 20px; border-radius: 18px; }
+            .info-section h3 { font-size: 17px; }
+            .save-button { padding: 16px 24px; font-size: 12px; border-radius: 18px; }
+            .toast { font-size: 11px; padding: 12px 18px; right: 16px; }
         }
     </style>
 </head>
-<body>
+<body data-active-day="A">
     <div class="container">
         <header>
-            <h1>GYM PROGRAM</h1>
+            <h1 id="dayTitle">PUSH DAY</h1>
+            <div class="day-sub" id="daySub">Day A<span class="dot"></span>Upper Push<span class="dot"></span>Monday</div>
         </header>
 
         <div class="date-selector">
@@ -1127,8 +1670,9 @@
     </div>
 
     <footer style="text-align:center; padding: 20px calc(20px + env(safe-area-inset-right)) calc(20px + env(safe-area-inset-bottom)) calc(20px + env(safe-area-inset-left)); color: var(--text-secondary); font-size: 12px; font-family: monospace;">
-        <img src="./icon-512.png" alt="Gym" style="width: 32px; height: 32px; opacity: 0.5; margin-bottom: 8px;"><br>
-        2026-04-13
+        <img src="./icon-512.png" alt="Gym" style="width: 32px; height: 32px; opacity: 0.5; margin-bottom: 10px;"><br>
+        2026-04-23
+
     </footer>
 
     <script>
@@ -1239,6 +1783,14 @@
             switchTab(tabDay);
         }
 
+        // Day meta — drives the motivational title, subtitle, and surface theme
+        const DAY_META = {
+            A: { title: 'PUSH DAY',  kind: 'Upper Push',  weekday: 'Monday'   },
+            B: { title: 'LEG DAY',   kind: 'Lower Quad',  weekday: 'Tuesday'  },
+            C: { title: 'PULL DAY',  kind: 'Upper Pull',  weekday: 'Thursday' },
+            D: { title: 'HINGE DAY', kind: 'Lower Hinge', weekday: 'Friday'   }
+        };
+
         // Switch tabs
         function switchTab(day) {
             document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
@@ -1246,6 +1798,50 @@
 
             document.querySelector(`.tab-btn[data-day="${day}"]`).classList.add('active');
             document.querySelector(`.tab-content[data-day="${day}"]`).classList.add('active');
+
+            // Re-theme entire surface to match the active day
+            document.body.setAttribute('data-active-day', day);
+
+            // Rotate the motivational header
+            const meta = DAY_META[day];
+            if (meta) {
+                const title = document.getElementById('dayTitle');
+                const sub   = document.getElementById('daySub');
+                if (title) {
+                    title.textContent = meta.title;
+                    title.classList.remove('title-swap');
+                    void title.offsetWidth;
+                    title.classList.add('title-swap');
+                }
+                if (sub) {
+                    sub.innerHTML = `Day ${day}<span class="dot"></span>${meta.kind}<span class="dot"></span>${meta.weekday}`;
+                }
+            }
+        }
+
+        // Sparkle particles radiating from a point
+        function sparkAt(x, y) {
+            const count = 14;
+            for (let i = 0; i < count; i++) {
+                const s = document.createElement('div');
+                s.className = 'spark';
+                s.style.left = x + 'px';
+                s.style.top  = y + 'px';
+                const angle = (i / count) * Math.PI * 2 + (Math.random() * 0.6);
+                const dist  = 60 + Math.random() * 90;
+                const dx = Math.cos(angle) * dist;
+                const dy = Math.sin(angle) * dist;
+                const size = 4 + Math.random() * 6;
+                s.style.width  = size + 'px';
+                s.style.height = size + 'px';
+                document.body.appendChild(s);
+                // animate with Web Animations API
+                s.animate([
+                    { transform: `translate(-50%, -50%) translate(0, 0) scale(1)`, opacity: 1 },
+                    { transform: `translate(-50%, -50%) translate(${dx}px, ${dy}px) scale(0.2)`, opacity: 0 }
+                ], { duration: 620 + Math.random() * 220, easing: 'cubic-bezier(.2, .7, .3, 1)', fill: 'forwards' })
+                 .onfinish = () => s.remove();
+            }
         }
 
         // Render weekly schedule
@@ -1514,6 +2110,23 @@
             document.querySelectorAll('.save-button').forEach(btn => {
                 btn.addEventListener('click', async () => {
                     const day = btn.getAttribute('data-day');
+
+                    // Bounce the button + emit sparkles from its center
+                    btn.classList.remove('save-bounce');
+                    void btn.offsetWidth; // reflow to restart animation
+                    btn.classList.add('save-bounce');
+                    const r = btn.getBoundingClientRect();
+                    sparkAt(r.left + r.width / 2, r.top + r.height / 2);
+
+                    // Bounce each filled weight input on this day
+                    document.querySelectorAll(`.tab-content[data-day="${day}"] input.weight-input`).forEach(input => {
+                        if (input.value) {
+                            input.classList.remove('saved-bounce');
+                            void input.offsetWidth;
+                            input.classList.add('saved-bounce');
+                        }
+                    });
+
                     await saveWorkout(day);
                 });
             });

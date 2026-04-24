@@ -1,7 +1,7 @@
 // Service Worker for Gym Program PWA
 // Version: 1.0.0
 
-const CACHE_VERSION = 'gym-app-v1.0.0';
+const CACHE_VERSION = 'gym-app-v1.1.0';
 const CACHE_ASSETS = [
     './',
     './index.html',
