@@ -433,48 +433,20 @@
         }
 
         .day-indicator.gym.selected {
-            background: linear-gradient(180deg, rgba(var(--day-rgb), 0.32) 0%, rgba(var(--day-rgb), 0.12) 100%);
+            background: linear-gradient(180deg, rgba(var(--day-rgb), 0.36) 0%, rgba(var(--day-rgb), 0.14) 100%);
             border-color: var(--day);
+            transform: scale(1.06) translateY(-2px);
+            z-index: 2;
             box-shadow:
                 inset 0 1px 0 rgba(255, 255, 255, 0.18),
-                0 0 0 2px rgba(var(--day-rgb), 0.22),
-                0 8px 22px rgba(var(--day-rgb), 0.32);
+                0 0 0 2px rgba(var(--day-rgb), 0.24),
+                0 12px 32px rgba(var(--day-rgb), 0.4);
+        }
+        .day-indicator.gym.selected .day-type {
+            color: var(--day);
         }
 
-        .day-indicator.rest { opacity: 0.45; }
-
-        .day-indicator.today {
-            transform: scale(1.08) translateY(-3px);
-            background: linear-gradient(180deg, rgba(var(--day-rgb), 0.28) 0%, rgba(var(--day-rgb), 0.1) 100%);
-            border-color: var(--day);
-            box-shadow:
-                inset 0 1px 0 rgba(255, 255, 255, 0.15),
-                0 0 0 3px rgba(var(--day-rgb), 0.18),
-                0 14px 38px rgba(var(--day-rgb), 0.35);
-            z-index: 2;
-            animation: todayFloat 3s ease-in-out infinite;
-        }
-
-        .day-indicator.today::after {
-            content: "";
-            position: absolute;
-            inset: -3px;
-            border-radius: 18px;
-            border: 2px solid var(--day);
-            opacity: 0;
-            animation: todayRing 2.2s ease-out infinite;
-            pointer-events: none;
-        }
-
-        @keyframes todayRing {
-            0%   { opacity: 0.5; transform: scale(0.98); }
-            100% { opacity: 0;   transform: scale(1.15); }
-        }
-
-        @keyframes todayFloat {
-            0%, 100% { transform: scale(1.08) translateY(-3px); }
-            50%      { transform: scale(1.1)  translateY(-5px); }
-        }
+        .day-indicator.rest { opacity: 0.5; }
 
         .day-letter {
             display: block;
@@ -494,87 +466,6 @@
             letter-spacing: 0.18em;
             color: var(--ink-dim);
             text-transform: uppercase;
-        }
-
-        /* Tabs — chunky pills with sheen */
-        .tabs {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 28px;
-            overflow-x: auto;
-            padding: 4px 2px 18px;
-            scrollbar-width: none;
-        }
-        .tabs::-webkit-scrollbar { display: none; }
-
-        .tab-btn {
-            position: relative;
-            padding: 14px 22px;
-            background: var(--glass);
-            border: 1px solid var(--glass-edge);
-            color: var(--ink-dim);
-            font-family: 'Unbounded', sans-serif;
-            font-size: 12px;
-            font-weight: 600;
-            letter-spacing: 0.04em;
-            text-transform: uppercase;
-            border-radius: 100px;
-            cursor: pointer;
-            white-space: nowrap;
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
-            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-            overflow: hidden;
-        }
-
-        .tab-btn:hover {
-            transform: translateY(-1px);
-            color: var(--ink);
-            border-color: var(--glass-edge-hi);
-        }
-
-        .tab-btn.active {
-            color: var(--ink-on-pop);
-            border-color: transparent;
-            transform: translateY(-1px);
-            background: linear-gradient(135deg, var(--btn-col) 0%, var(--btn-col-2) 100%);
-            box-shadow:
-                inset 0 1px 0 rgba(255, 255, 255, 0.5),
-                0 0 0 1px rgba(255, 255, 255, 0.15),
-                0 10px 32px rgba(var(--btn-rgb), 0.5),
-                0 2px 0 rgba(0, 0, 0, 0.15);
-        }
-
-        /* Sheen sweep on active tab */
-        .tab-btn.active::before {
-            content: "";
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(115deg,
-                transparent 30%,
-                var(--sheen-color) 50%,
-                transparent 70%);
-            transform: translateX(-100%);
-            animation: sheen 3.5s ease-in-out infinite;
-        }
-
-        @keyframes sheen {
-            0%, 20% { transform: translateX(-120%); }
-            50%     { transform: translateX(120%); }
-            100%    { transform: translateX(120%); }
-        }
-
-        .tab-btn.active[data-day="A"] { --btn-col: #ff7a2e; --btn-col-2: #ffd13d; --btn-rgb: 255,122,46; }
-        .tab-btn.active[data-day="B"] { --btn-col: #c29fff; --btn-col-2: #ff6ec7; --btn-rgb: 194,159,255; }
-        .tab-btn.active[data-day="C"] { --btn-col: #4ec9ff; --btn-col-2: #6affe0; --btn-rgb: 78,201,255; }
-        .tab-btn.active[data-day="D"] { --btn-col: #ff6ec7; --btn-col-2: #ffb347; --btn-rgb: 255,110,199; }
-
-        @media (prefers-color-scheme: light) {
-            .tab-btn.active[data-day="A"] { --btn-col: #e05a00; --btn-col-2: #f5b000; --btn-rgb: 224,90,0; }
-            .tab-btn.active[data-day="B"] { --btn-col: #7c4dff; --btn-col-2: #d63082; --btn-rgb: 124,77,255; }
-            .tab-btn.active[data-day="C"] { --btn-col: #007ec2; --btn-col-2: #00a89a; --btn-rgb: 0,126,194; }
-            .tab-btn.active[data-day="D"] { --btn-col: #d63082; --btn-col-2: #e87923; --btn-rgb: 214,48,130; }
         }
 
         /* Tab content */
@@ -1296,7 +1187,6 @@
             .date-selector { padding: 12px 14px; border-radius: 18px; }
             .section-title { font-size: 20px; }
             .workout-table { border-radius: 16px; }
-            .tab-btn { padding: 12px 18px; font-size: 11px; }
             .weight-input { max-width: 82px; padding: 8px 8px; font-size: 16px; border-radius: 10px; }
             .day-indicator { padding: 11px 3px 9px; border-radius: 14px; }
             .day-letter { font-size: 12px; }
@@ -1321,13 +1211,6 @@
         </div>
 
         <div class="weekly-schedule" id="weeklySchedule"></div>
-
-        <div class="tabs">
-            <button class="tab-btn active" data-day="A" data-title="Upper Push">Day A</button>
-            <button class="tab-btn" data-day="B" data-title="Lower Quad">Day B</button>
-            <button class="tab-btn" data-day="C" data-title="Upper Pull">Day C</button>
-            <button class="tab-btn" data-day="D" data-title="Lower Hinge">Day D</button>
-        </div>
 
         <!-- Day A - Upper Push -->
         <div class="tab-content active" data-day="A">
@@ -2099,19 +1982,6 @@
         }
 
         // Auto-select today's workout
-        function autoSelectToday() {
-            const today = new Date();
-            const dayOfWeek = getDayOfWeek(today);
-
-            // Mon=1->A, Tue=2->B, Thu=4->C, Fri=5->D, else->A
-            let tabDay = 'A';
-            if (dayOfWeek === 2) tabDay = 'B';
-            else if (dayOfWeek === 4) tabDay = 'C';
-            else if (dayOfWeek === 5) tabDay = 'D';
-
-            switchTab(tabDay);
-        }
-
         // Day meta — drives the motivational title, subtitle, and surface theme
         const DAY_META = {
             A: { title: 'PUSH DAY',  kind: 'Upper Push',  weekday: 'Monday'   },
@@ -2120,19 +1990,26 @@
             D: { title: 'HINGE DAY', kind: 'Lower Hinge', weekday: 'Friday'   }
         };
 
-        // Switch tabs
+        // Snap any non-gym date back to the nearest preceding gym day
+        function snapToGymDay(date) {
+            const d = new Date(date);
+            // Walk backwards day-by-day until we hit a gym weekday (Mon/Tue/Thu/Fri).
+            // Capped at 7 iterations so we never loop indefinitely.
+            for (let i = 0; i < 7; i++) {
+                if (WEEKDAY_TO_DAY[d.getDay()]) return d;
+                d.setDate(d.getDate() - 1);
+            }
+            return d;
+        }
+
+        // Switch the visible workout tab (and re-theme the page) for a day letter.
+        // Does NOT touch the date input or schedule; that's setActiveDate's job.
         function switchTab(day) {
-            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
             document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            const content = document.querySelector(`.tab-content[data-day="${day}"]`);
+            if (content) content.classList.add('active');
 
-            document.querySelector(`.tab-btn[data-day="${day}"]`).classList.add('active');
-            document.querySelector(`.tab-content[data-day="${day}"]`).classList.add('active');
-
-            // Re-theme entire surface to match the active day
             document.body.setAttribute('data-active-day', day);
-
-            // Highlight the matching gym day indicator
-            syncActiveDayIndicator(day);
 
             // Rotate the motivational header
             const meta = DAY_META[day];
@@ -2149,6 +2026,22 @@
                     sub.innerHTML = `Day ${day}<span class="dot"></span>${meta.kind}<span class="dot"></span>${meta.weekday}`;
                 }
             }
+        }
+
+        // Single source of truth: set the active workout date. Snaps rest-day
+        // picks to the previous gym day, then syncs date input, week schedule,
+        // tab content, theme, and weight inputs.
+        async function setActiveDate(date) {
+            const snapped = snapToGymDay(date);
+            const dateStr = formatDate(snapped);
+            const day = WEEKDAY_TO_DAY[snapped.getDay()];
+
+            const dateInput = document.getElementById('dateInput');
+            if (dateInput.value !== dateStr) dateInput.value = dateStr;
+
+            switchTab(day);
+            renderWeeklySchedule(snapped);
+            await loadWeights(day, dateStr);
         }
 
         // Sparkle particles radiating from a point
@@ -2180,58 +2073,51 @@
         // Maps weekday index (0=Sun … 6=Sat) → tab letter for gym days
         const WEEKDAY_TO_DAY = { 1: 'A', 2: 'B', 4: 'C', 5: 'D' };
 
-        function renderWeeklySchedule() {
-            const today = new Date();
-            const startOfWeek = new Date(today);
-            startOfWeek.setDate(today.getDate() - today.getDay());
+        // Render the 7-chip schedule for the week containing `selectedDate`.
+        // Gym days are interactive and labeled `Mon` / `Day A`; rest days
+        // show `Rest`. The chip whose date matches `selectedDate` is highlighted.
+        function renderWeeklySchedule(selectedDate) {
+            const sel = selectedDate ? new Date(selectedDate) : new Date();
+            const selStr = formatDate(sel);
+            const startOfWeek = new Date(sel);
+            startOfWeek.setDate(sel.getDate() - sel.getDay());
 
             const schedule = document.getElementById('weeklySchedule');
             schedule.innerHTML = '';
 
             const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-            const gymDays = [false, true, true, false, true, true, false]; // Mon, Tue, Thu, Fri are gym days
 
             for (let i = 0; i < 7; i++) {
                 const date = new Date(startOfWeek);
                 date.setDate(startOfWeek.getDate() + i);
-                const isGymDay = gymDays[i];
-                const dayName = dayNames[i];
-                const isToday = formatDate(date) === formatDate(today);
-
-                let dayType = isGymDay ? 'Gym' : 'Rest';
-                let dayLabel = isGymDay ? 'GYM' : 'REST';
+                const dateStr = formatDate(date);
+                const tabDay = WEEKDAY_TO_DAY[i];
+                const isGymDay = !!tabDay;
+                const isSelected = isGymDay && dateStr === selStr;
 
                 const dayDiv = document.createElement('div');
-                dayDiv.className = `day-indicator ${isGymDay ? 'gym' : 'rest'} ${isToday ? 'today' : ''}`;
-                dayDiv.innerHTML = `<span class="day-letter">${dayName}</span><span class="day-type">${dayLabel}</span>`;
+                dayDiv.className = `day-indicator ${isGymDay ? 'gym' : 'rest'} ${isSelected ? 'selected' : ''}`;
+                dayDiv.dataset.date = dateStr;
+                if (isGymDay) dayDiv.dataset.tabDay = tabDay;
+
+                const sublabel = isGymDay ? `Day ${tabDay}` : 'Rest';
+                dayDiv.innerHTML = `<span class="day-letter">${dayNames[i]}</span><span class="day-type">${sublabel}</span>`;
 
                 if (isGymDay) {
-                    const tabDay = WEEKDAY_TO_DAY[i];
-                    dayDiv.dataset.tabDay = tabDay;
                     dayDiv.setAttribute('role', 'button');
                     dayDiv.setAttribute('tabindex', '0');
-                    dayDiv.setAttribute('aria-label', `Open Day ${tabDay} (${dayLabel})`);
-                    dayDiv.addEventListener('click', () => switchTab(tabDay));
+                    dayDiv.setAttribute('aria-label', `Open Day ${tabDay} (${dayNames[i]} ${dateStr})`);
+                    dayDiv.addEventListener('click', () => setActiveDate(date));
                     dayDiv.addEventListener('keydown', (e) => {
                         if (e.key === 'Enter' || e.key === ' ') {
                             e.preventDefault();
-                            switchTab(tabDay);
+                            setActiveDate(date);
                         }
                     });
                 }
 
                 schedule.appendChild(dayDiv);
             }
-
-            syncActiveDayIndicator(document.body.getAttribute('data-active-day'));
-        }
-
-        // Mark the day indicator whose tabDay matches the active tab as active
-        function syncActiveDayIndicator(day) {
-            document.querySelectorAll('.day-indicator').forEach(el => el.classList.remove('selected'));
-            if (!day) return;
-            const match = document.querySelector(`.day-indicator[data-tab-day="${day}"]`);
-            if (match) match.classList.add('selected');
         }
 
         // Load weights for current tab and date
@@ -2522,7 +2408,7 @@
 
                     transaction.oncomplete = async () => {
                         showToast(`Imported ${records.length} records`);
-                        const day = document.querySelector('.tab-btn.active').getAttribute('data-day');
+                        const day = document.body.getAttribute('data-active-day');
                         await loadWeights(day, document.getElementById('dateInput').value);
                     };
                 } catch (err) {
@@ -2549,31 +2435,19 @@
         // Initialize app
         async function init() {
             await initDB();
-            renderWeeklySchedule();
 
             const today = new Date();
             const dateInput = document.getElementById('dateInput');
-            dateInput.value = formatDate(today);
-            dateInput.max = formatDate(today);
 
-            // Load weights for today
-            autoSelectToday();
-            const activeDay = document.querySelector('.tab-btn.active').getAttribute('data-day');
-            await loadWeights(activeDay, formatDate(today));
+            // Auto-select today (snaps to previous gym day if today is a rest day),
+            // which renders the schedule, switches tab, and loads weights.
+            await setActiveDate(today);
 
-            // Tab switching
-            document.querySelectorAll('.tab-btn').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    const day = btn.getAttribute('data-day');
-                    switchTab(day);
-                    loadWeights(day, dateInput.value);
-                });
-            });
-
-            // Date change
-            dateInput.addEventListener('change', async () => {
-                const day = document.querySelector('.tab-btn.active').getAttribute('data-day');
-                await loadWeights(day, dateInput.value);
+            // Date picker → drive the same flow (snap rest-day picks to prev gym day)
+            dateInput.addEventListener('change', () => {
+                const [y, m, d] = dateInput.value.split('-').map(Number);
+                if (!y) return;
+                setActiveDate(new Date(y, m - 1, d));
             });
 
             // Save buttons
