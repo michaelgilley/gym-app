@@ -593,7 +593,9 @@
             font-weight: 500;
             letter-spacing: 0.02em;
             line-height: 1.3;
-            width: 80px;
+            width: 100px;
+            overflow-wrap: normal;
+            word-break: normal;
         }
 
         .weight-input-cell {
@@ -849,15 +851,16 @@
         }
         .history-modal__title {
             font-family: 'Unbounded', sans-serif;
-            font-size: 15px;
-            font-weight: 700;
-            letter-spacing: 0.01em;
-            line-height: 1.25;
+            font-size: 20px;
+            font-weight: 800;
+            letter-spacing: -0.01em;
+            line-height: 1.2;
             background: linear-gradient(100deg, var(--day) 0%, var(--day-2) 100%);
             -webkit-background-clip: text;
             background-clip: text;
             -webkit-text-fill-color: transparent;
             color: transparent;
+            filter: drop-shadow(0 1px 0 rgba(var(--day-rgb), 0.18));
         }
         .history-modal__close {
             flex: 0 0 auto;
@@ -920,6 +923,30 @@
             color: var(--day);
             font-weight: 800;
             font-size: 15px;
+        }
+        .history-weight__unit {
+            color: var(--ink-dim);
+            font-weight: 600;
+            font-size: 12px;
+            margin-left: 4px;
+            letter-spacing: 0.04em;
+        }
+        @media (prefers-color-scheme: light) {
+            .history-modal__card {
+                background:
+                    linear-gradient(155deg,
+                        rgba(var(--day-rgb), 0.06) 0%,
+                        rgba(255, 255, 255, 0.92) 45%,
+                        rgba(255, 255, 255, 0.96) 100%);
+            }
+            .history-entry {
+                background: rgba(255, 255, 255, 0.7);
+                border-color: rgba(var(--day-rgb), 0.32);
+                color: #1a0c2e;
+            }
+            .history-entry__date {
+                color: #1a0c2e;
+            }
         }
         .history-delta {
             display: inline-block;
@@ -1288,7 +1315,7 @@
             .container { padding: 18px 10px 32px; padding-top: calc(18px + env(safe-area-inset-top)); }
             .workout-table td { padding: 10px 8px; }
             .sets-reps { width: 60px; font-size: 10px; }
-            .rest-time { width: 76px; font-size: 10px; }
+            .rest-time { width: 92px; font-size: 10px; }
             .weight-input-cell { width: 88px; }
             .weight-input { padding: 8px 6px; font-size: 15px; border-radius: 10px; }
             .exercise-name { font-size: 13px; }
@@ -2515,7 +2542,7 @@
                 row.innerHTML = `
                     <span class="history-entry__date">${dateStr}</span>
                     <span class="history-entry__right">
-                        <span class="history-weight">${entry.weight} lbs</span>
+                        <span class="history-weight">${entry.weight}<span class="history-weight__unit">lbs</span></span>
                         ${deltaHtml}
                     </span>
                 `;
