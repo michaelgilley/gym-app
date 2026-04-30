@@ -281,7 +281,7 @@
             z-index: 2;
             max-width: 900px;
             margin: 0 auto;
-            padding: 28px 20px 48px;
+            padding: 28px 20px 0;
             padding-top: calc(28px + env(safe-area-inset-top));
         }
 
@@ -1315,7 +1315,6 @@
 
         /* Footer */
         footer {
-            margin-top: 48px;
             padding-top: 28px;
             border-top: 1px solid rgba(255, 255, 255, 0.06);
             text-align: center;
@@ -1338,7 +1337,7 @@
 
         /* Narrow phones: tighten further so 4-col rows still fit comfortably */
         @media (max-width: 420px) {
-            .container { padding: 18px 10px 32px; padding-top: calc(18px + env(safe-area-inset-top)); }
+            .container { padding: 18px 10px 0; padding-top: calc(18px + env(safe-area-inset-top)); }
             .workout-table td { padding: 10px 8px; }
             .sets-reps { width: 60px; font-size: 10px; }
             .rest-time { width: 92px; font-size: 10px; }
