@@ -390,6 +390,32 @@
         .date-input:focus { outline: none; color: var(--day); }
         .date-input::-webkit-calendar-picker-indicator { filter: invert(0.8); opacity: 0.7; cursor: pointer; }
 
+        .date-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .today-btn {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            background: rgba(var(--day-rgb), 0.12);
+            border: 1px solid rgba(var(--day-rgb), 0.32);
+            color: var(--day);
+            padding: 6px 10px;
+            border-radius: 100px;
+            cursor: pointer;
+            transition: background 0.2s, border-color 0.2s, transform 0.1s;
+            white-space: nowrap;
+        }
+        .today-btn:hover {
+            background: rgba(var(--day-rgb), 0.22);
+            border-color: rgba(var(--day-rgb), 0.5);
+        }
+        .today-btn:active { transform: scale(0.94); }
+
         /* Weekly schedule — chunky day chips */
         .weekly-schedule {
             display: grid;
@@ -1347,7 +1373,10 @@
 
         <div class="date-selector">
             <label class="date-display">Select Date:</label>
-            <input type="date" id="dateInput" class="date-input">
+            <div class="date-actions">
+                <input type="date" id="dateInput" class="date-input">
+                <button type="button" id="todayBtn" class="today-btn">Today</button>
+            </div>
         </div>
 
         <div class="weekly-schedule" id="weeklySchedule"></div>
@@ -1387,7 +1416,7 @@
                             <td class="sets-reps">4 x 6-8</td>
                             <td class="rest-time">2-3 min rest</td>
                             <td class="weight-input-cell">
-                                <input type="number" class="weight-input" data-exercise="Barbell bench press" data-barbell="true" placeholder="lbs">
+                                <input type="number" inputmode="decimal" step="any" class="weight-input" data-exercise="Barbell bench press" data-barbell="true" placeholder="lbs">
                             </td>
                         </tr>
                     </table>
@@ -1401,7 +1430,7 @@
                             <td class="sets-reps">4 x 10-12</td>
                             <td class="rest-time">90s</td>
                             <td class="weight-input-cell">
-                                <input type="number" class="weight-input" data-exercise="Incline dumbbell press" placeholder="lbs">
+                                <input type="number" inputmode="decimal" step="any" class="weight-input" data-exercise="Incline dumbbell press" placeholder="lbs">
                             </td>
                         </tr>
                         <tr>
@@ -1409,7 +1438,7 @@
                             <td class="sets-reps">4 x 10-12</td>
                             <td class="rest-time">90s</td>
                             <td class="weight-input-cell">
-                                <input type="number" class="weight-input" data-exercise="Overhead dumbbell press" placeholder="lbs">
+                                <input type="number" inputmode="decimal" step="any" class="weight-input" data-exercise="Overhead dumbbell press" placeholder="lbs">
                             </td>
                         </tr>
                         <tr>
@@ -1417,7 +1446,7 @@
                             <td class="sets-reps">3 x 12-15</td>
                             <td class="rest-time">60s</td>
                             <td class="weight-input-cell">
-                                <input type="number" class="weight-input" data-exercise="Cable lateral raise" placeholder="lbs">
+                                <input type="number" inputmode="decimal" step="any" class="weight-input" data-exercise="Cable lateral raise" placeholder="lbs">
                             </td>
                         </tr>
                         <tr>
@@ -1425,7 +1454,7 @@
                             <td class="sets-reps">3 x 12-15</td>
                             <td class="rest-time">60s</td>
                             <td class="weight-input-cell">
-                                <input type="number" class="weight-input" data-exercise="Tricep cable pushdown" placeholder="lbs">
+                                <input type="number" inputmode="decimal" step="any" class="weight-input" data-exercise="Tricep cable pushdown" placeholder="lbs">
                             </td>
                         </tr>
                     </table>
@@ -1470,7 +1499,7 @@
                             <td class="sets-reps">3 x 10-12</td>
                             <td class="rest-time">60s</td>
                             <td class="weight-input-cell">
-                                <input type="number" class="weight-input" data-exercise="Goblet overhead leg raise" placeholder="lbs">
+                                <input type="number" inputmode="decimal" step="any" class="weight-input" data-exercise="Goblet overhead leg raise" placeholder="lbs">
                             </td>
                         </tr>
                         <tr>
@@ -1532,7 +1561,7 @@
                             <td class="sets-reps">4 x 6-8</td>
                             <td class="rest-time">2-3 min rest</td>
                             <td class="weight-input-cell">
-                                <input type="number" class="weight-input" data-exercise="Barbell back squat" data-barbell="true" placeholder="lbs">
+                                <input type="number" inputmode="decimal" step="any" class="weight-input" data-exercise="Barbell back squat" data-barbell="true" placeholder="lbs">
                             </td>
                         </tr>
                     </table>
@@ -1546,7 +1575,7 @@
                             <td class="sets-reps">4 x 10-12</td>
                             <td class="rest-time">90s</td>
                             <td class="weight-input-cell">
-                                <input type="number" class="weight-input" data-exercise="Leg press" data-barbell="true" placeholder="lbs">
+                                <input type="number" inputmode="decimal" step="any" class="weight-input" data-exercise="Leg press" data-barbell="true" placeholder="lbs">
                             </td>
                         </tr>
                         <tr>
@@ -1554,7 +1583,7 @@
                             <td class="sets-reps">4 x 12-15</td>
                             <td class="rest-time">90s</td>
                             <td class="weight-input-cell">
-                                <input type="number" class="weight-input" data-exercise="Goblet squat" placeholder="lbs">
+                                <input type="number" inputmode="decimal" step="any" class="weight-input" data-exercise="Goblet squat" placeholder="lbs">
                             </td>
                         </tr>
                         <tr>
@@ -1562,7 +1591,7 @@
                             <td class="sets-reps">3 x 12-15</td>
                             <td class="rest-time">60s</td>
                             <td class="weight-input-cell">
-                                <input type="number" class="weight-input" data-exercise="Leg extension" placeholder="lbs">
+                                <input type="number" inputmode="decimal" step="any" class="weight-input" data-exercise="Leg extension" placeholder="lbs">
                             </td>
                         </tr>
                         <tr>
@@ -1570,7 +1599,7 @@
                             <td class="sets-reps">3 x 15</td>
                             <td class="rest-time">60s</td>
                             <td class="weight-input-cell">
-                                <input type="number" class="weight-input" data-exercise="Standing calf raise" placeholder="lbs">
+                                <input type="number" inputmode="decimal" step="any" class="weight-input" data-exercise="Standing calf raise" placeholder="lbs">
                             </td>
                         </tr>
                     </table>
@@ -1584,7 +1613,7 @@
                             <td class="sets-reps">3 x 15-20</td>
                             <td class="rest-time">60s</td>
                             <td class="weight-input-cell">
-                                <input type="number" class="weight-input" data-exercise="Hip abductor machine" placeholder="lbs">
+                                <input type="number" inputmode="decimal" step="any" class="weight-input" data-exercise="Hip abductor machine" placeholder="lbs">
                             </td>
                         </tr>
                         <tr>
@@ -1592,7 +1621,7 @@
                             <td class="sets-reps">3 x 15-20</td>
                             <td class="rest-time">60s</td>
                             <td class="weight-input-cell">
-                                <input type="number" class="weight-input" data-exercise="Hip adductor machine" placeholder="lbs">
+                                <input type="number" inputmode="decimal" step="any" class="weight-input" data-exercise="Hip adductor machine" placeholder="lbs">
                             </td>
                         </tr>
                     </table>
@@ -1637,7 +1666,7 @@
                             <td class="sets-reps">3 x 10-12</td>
                             <td class="rest-time">60s</td>
                             <td class="weight-input-cell">
-                                <input type="number" class="weight-input" data-exercise="Goblet overhead leg raise" placeholder="lbs">
+                                <input type="number" inputmode="decimal" step="any" class="weight-input" data-exercise="Goblet overhead leg raise" placeholder="lbs">
                             </td>
                         </tr>
                         <tr>
@@ -1694,7 +1723,7 @@
                             <td class="sets-reps">4 x 6-8</td>
                             <td class="rest-time">2-3 min rest</td>
                             <td class="weight-input-cell">
-                                <input type="number" class="weight-input" data-exercise="Barbell row" data-barbell="true" placeholder="lbs">
+                                <input type="number" inputmode="decimal" step="any" class="weight-input" data-exercise="Barbell row" data-barbell="true" placeholder="lbs">
                             </td>
                         </tr>
                     </table>
@@ -1708,7 +1737,7 @@
                             <td class="sets-reps">4 x 10-12</td>
                             <td class="rest-time">90s</td>
                             <td class="weight-input-cell">
-                                <input type="number" class="weight-input" data-exercise="Lat pulldown" placeholder="lbs">
+                                <input type="number" inputmode="decimal" step="any" class="weight-input" data-exercise="Lat pulldown" placeholder="lbs">
                             </td>
                         </tr>
                         <tr>
@@ -1716,7 +1745,7 @@
                             <td class="sets-reps">4 x 10-12</td>
                             <td class="rest-time">90s</td>
                             <td class="weight-input-cell">
-                                <input type="number" class="weight-input" data-exercise="Cable seated row" placeholder="lbs">
+                                <input type="number" inputmode="decimal" step="any" class="weight-input" data-exercise="Cable seated row" placeholder="lbs">
                             </td>
                         </tr>
                         <tr>
@@ -1724,7 +1753,7 @@
                             <td class="sets-reps">3 x 12-15</td>
                             <td class="rest-time">60s</td>
                             <td class="weight-input-cell">
-                                <input type="number" class="weight-input" data-exercise="Dumbbell curl" placeholder="lbs">
+                                <input type="number" inputmode="decimal" step="any" class="weight-input" data-exercise="Dumbbell curl" placeholder="lbs">
                             </td>
                         </tr>
                         <tr>
@@ -1732,7 +1761,7 @@
                             <td class="sets-reps">3 x 15</td>
                             <td class="rest-time">60s</td>
                             <td class="weight-input-cell">
-                                <input type="number" class="weight-input" data-exercise="Face pull" placeholder="lbs">
+                                <input type="number" inputmode="decimal" step="any" class="weight-input" data-exercise="Face pull" placeholder="lbs">
                             </td>
                         </tr>
                     </table>
@@ -1772,7 +1801,7 @@
                             <td class="sets-reps">3 x 10-12</td>
                             <td class="rest-time">60s</td>
                             <td class="weight-input-cell">
-                                <input type="number" class="weight-input" data-exercise="Goblet overhead leg raise" placeholder="lbs">
+                                <input type="number" inputmode="decimal" step="any" class="weight-input" data-exercise="Goblet overhead leg raise" placeholder="lbs">
                             </td>
                         </tr>
                         <tr>
@@ -1834,7 +1863,7 @@
                             <td class="sets-reps">4 x 6-8</td>
                             <td class="rest-time">2-3 min rest</td>
                             <td class="weight-input-cell">
-                                <input type="number" class="weight-input" data-exercise="Romanian deadlift" data-barbell="true" placeholder="lbs">
+                                <input type="number" inputmode="decimal" step="any" class="weight-input" data-exercise="Romanian deadlift" data-barbell="true" placeholder="lbs">
                             </td>
                         </tr>
                     </table>
@@ -1848,7 +1877,7 @@
                             <td class="sets-reps">4 x 10-12</td>
                             <td class="rest-time">90s</td>
                             <td class="weight-input-cell">
-                                <input type="number" class="weight-input" data-exercise="Hip thrust" placeholder="lbs">
+                                <input type="number" inputmode="decimal" step="any" class="weight-input" data-exercise="Hip thrust" placeholder="lbs">
                             </td>
                         </tr>
                         <tr>
@@ -1856,7 +1885,7 @@
                             <td class="sets-reps">4 x 12-15</td>
                             <td class="rest-time">90s</td>
                             <td class="weight-input-cell">
-                                <input type="number" class="weight-input" data-exercise="Leg curl machine" placeholder="lbs">
+                                <input type="number" inputmode="decimal" step="any" class="weight-input" data-exercise="Leg curl machine" placeholder="lbs">
                             </td>
                         </tr>
                         <tr>
@@ -1864,7 +1893,7 @@
                             <td class="sets-reps">3 x 12</td>
                             <td class="rest-time">90s</td>
                             <td class="weight-input-cell">
-                                <input type="number" class="weight-input" data-exercise="Sumo dumbbell squat" placeholder="lbs">
+                                <input type="number" inputmode="decimal" step="any" class="weight-input" data-exercise="Sumo dumbbell squat" placeholder="lbs">
                             </td>
                         </tr>
                         <tr>
@@ -1872,7 +1901,7 @@
                             <td class="sets-reps">3 x 15</td>
                             <td class="rest-time">60s</td>
                             <td class="weight-input-cell">
-                                <input type="number" class="weight-input" data-exercise="Seated calf raise" placeholder="lbs">
+                                <input type="number" inputmode="decimal" step="any" class="weight-input" data-exercise="Seated calf raise" placeholder="lbs">
                             </td>
                         </tr>
                     </table>
@@ -1886,7 +1915,7 @@
                             <td class="sets-reps">3 x 15-20</td>
                             <td class="rest-time">60s</td>
                             <td class="weight-input-cell">
-                                <input type="number" class="weight-input" data-exercise="Hip abductor machine" placeholder="lbs">
+                                <input type="number" inputmode="decimal" step="any" class="weight-input" data-exercise="Hip abductor machine" placeholder="lbs">
                             </td>
                         </tr>
                         <tr>
@@ -1894,7 +1923,7 @@
                             <td class="sets-reps">3 x 15-20</td>
                             <td class="rest-time">60s</td>
                             <td class="weight-input-cell">
-                                <input type="number" class="weight-input" data-exercise="Hip adductor machine" placeholder="lbs">
+                                <input type="number" inputmode="decimal" step="any" class="weight-input" data-exercise="Hip adductor machine" placeholder="lbs">
                             </td>
                         </tr>
                     </table>
@@ -1939,7 +1968,7 @@
                             <td class="sets-reps">3 x 10-12</td>
                             <td class="rest-time">60s</td>
                             <td class="weight-input-cell">
-                                <input type="number" class="weight-input" data-exercise="Goblet overhead leg raise" placeholder="lbs">
+                                <input type="number" inputmode="decimal" step="any" class="weight-input" data-exercise="Goblet overhead leg raise" placeholder="lbs">
                             </td>
                         </tr>
                         <tr>
@@ -2741,11 +2770,21 @@
             // which renders the schedule, switches tab, and loads weights.
             await setActiveDate(today);
 
-            // Date picker → drive the same flow (snap rest-day picks to prev gym day)
+            // Date picker → drive the same flow (snap rest-day picks to prev gym day).
+            // iOS Safari's native picker has a "Reset" that clears the value; treat
+            // that as "go to today" so the schedule never desyncs from the input.
             dateInput.addEventListener('change', () => {
+                if (!dateInput.value) {
+                    setActiveDate(new Date());
+                    return;
+                }
                 const [y, m, d] = dateInput.value.split('-').map(Number);
                 if (!y) return;
                 setActiveDate(new Date(y, m - 1, d));
+            });
+
+            document.getElementById('todayBtn').addEventListener('click', () => {
+                setActiveDate(new Date());
             });
 
             // Save buttons
