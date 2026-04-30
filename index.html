@@ -656,6 +656,119 @@
             100% { transform: scale(1); }
         }
 
+        /* Plate calculator (under barbell inputs) */
+        .plate-panel-row td {
+            padding: 0 !important;
+            background: transparent !important;
+            border: none !important;
+        }
+        .workout-table tr.plate-panel-row:hover { background: transparent; }
+        .plate-panel {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 6px;
+            padding: 6px 12px 12px;
+            font-family: 'JetBrains Mono', monospace;
+        }
+        .plate-meta {
+            font-size: 11px;
+            color: var(--ink-faint);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+            line-height: 1.4;
+        }
+        .plate-meta__side {
+            color: var(--day);
+            font-weight: 700;
+            letter-spacing: 0.04em;
+        }
+        .plate-meta__hint {
+            opacity: 0.6;
+            font-style: italic;
+        }
+        .plate-meta__last {
+            font-size: 9px;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            opacity: 0.55;
+        }
+        .plate-meta__off {
+            color: rgba(255, 140, 140, 0.85);
+            font-size: 10px;
+        }
+        .plate-pill {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 22px;
+            height: 18px;
+            padding: 0 5px;
+            background: rgba(var(--day-rgb), 0.14);
+            color: var(--day);
+            border: 1px solid rgba(var(--day-rgb), 0.3);
+            border-radius: 999px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.02em;
+            cursor: pointer;
+            transition: background 0.15s, border-color 0.15s, transform 0.1s, color 0.15s;
+        }
+        .plate-pill:hover {
+            background: rgba(var(--day-rgb), 0.3);
+            border-color: rgba(var(--day-rgb), 0.6);
+        }
+        .plate-pill:hover::after {
+            content: '×';
+            margin-left: 3px;
+            font-size: 11px;
+            opacity: 0.85;
+        }
+        .plate-pill:active { transform: scale(0.9); }
+        .plate-row {
+            display: flex;
+            gap: 5px;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+        }
+        .plate-btn {
+            background: rgba(var(--day-rgb), 0.08);
+            border: 1px solid rgba(var(--day-rgb), 0.22);
+            color: var(--day);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            font-weight: 700;
+            padding: 5px 8px;
+            border-radius: 7px;
+            cursor: pointer;
+            transition: transform 0.1s, background 0.15s, border-color 0.15s;
+            min-width: 38px;
+        }
+        .plate-btn:hover {
+            background: rgba(var(--day-rgb), 0.18);
+            border-color: rgba(var(--day-rgb), 0.45);
+        }
+        .plate-btn:active { transform: scale(0.92); }
+        .plate-btn--reset {
+            opacity: 0.7;
+            min-width: auto;
+            padding: 5px 7px;
+        }
+        @media (prefers-color-scheme: light) {
+            .plate-btn {
+                background: rgba(var(--day-rgb), 0.06);
+            }
+        }
+        @media (max-width: 420px) {
+            .plate-panel { padding: 4px 8px 10px; gap: 5px; }
+            .plate-btn { font-size: 10px; padding: 4px 6px; min-width: 34px; }
+            .plate-meta { font-size: 10px; }
+        }
+
         /* History */
         .history-toggle {
             display: block;
@@ -1247,7 +1360,7 @@
                             <td class="sets-reps">4 x 6-8</td>
                             <td class="rest-time">2-3 min rest</td>
                             <td class="weight-input-cell">
-                                <input type="number" class="weight-input" data-exercise="Barbell bench press" placeholder="lbs">
+                                <input type="number" class="weight-input" data-exercise="Barbell bench press" data-barbell="true" placeholder="lbs">
                             </td>
                         </tr>
                     </table>
@@ -1392,7 +1505,7 @@
                             <td class="sets-reps">4 x 6-8</td>
                             <td class="rest-time">2-3 min rest</td>
                             <td class="weight-input-cell">
-                                <input type="number" class="weight-input" data-exercise="Barbell back squat" placeholder="lbs">
+                                <input type="number" class="weight-input" data-exercise="Barbell back squat" data-barbell="true" placeholder="lbs">
                             </td>
                         </tr>
                     </table>
@@ -1406,7 +1519,7 @@
                             <td class="sets-reps">4 x 10-12</td>
                             <td class="rest-time">90s</td>
                             <td class="weight-input-cell">
-                                <input type="number" class="weight-input" data-exercise="Leg press" placeholder="lbs">
+                                <input type="number" class="weight-input" data-exercise="Leg press" data-barbell="true" placeholder="lbs">
                             </td>
                         </tr>
                         <tr>
@@ -1554,7 +1667,7 @@
                             <td class="sets-reps">4 x 6-8</td>
                             <td class="rest-time">2-3 min rest</td>
                             <td class="weight-input-cell">
-                                <input type="number" class="weight-input" data-exercise="Barbell row" placeholder="lbs">
+                                <input type="number" class="weight-input" data-exercise="Barbell row" data-barbell="true" placeholder="lbs">
                             </td>
                         </tr>
                     </table>
@@ -1694,7 +1807,7 @@
                             <td class="sets-reps">4 x 6-8</td>
                             <td class="rest-time">2-3 min rest</td>
                             <td class="weight-input-cell">
-                                <input type="number" class="weight-input" data-exercise="Romanian deadlift" placeholder="lbs">
+                                <input type="number" class="weight-input" data-exercise="Romanian deadlift" data-barbell="true" placeholder="lbs">
                             </td>
                         </tr>
                     </table>
@@ -1853,7 +1966,7 @@
 
     <footer style="text-align:center; padding: 20px calc(20px + env(safe-area-inset-right)) calc(20px + env(safe-area-inset-bottom)) calc(20px + env(safe-area-inset-left)); color: var(--text-secondary); font-size: 12px; font-family: monospace;">
         <img src="./icon-512.png" alt="Gym" style="width: 32px; height: 32px; opacity: 0.5; margin-bottom: 10px;"><br>
-        2026-04-28
+        2026-04-30
 
     </footer>
 
@@ -2120,6 +2233,158 @@
             }
         }
 
+        // ── Plate calculator ────────────────────────────────────────────
+        // Per-exercise config: starting weight (bar or sled) + which plates
+        // are physically available at that station. Plates loaded symmetrically,
+        // so each "+X" button adds 2X to the total.
+        // 55-lb plates only live in the squat cages (squat / row / RDL).
+        const PLATE_CONFIG = {
+            'Barbell bench press': { base: 45,  baseLabel: 'bar',  plates: [45, 25, 10, 5, 2.5] },
+            'Barbell back squat':  { base: 45,  baseLabel: 'bar',  plates: [55, 45, 25, 10, 5, 2.5] },
+            'Barbell row':         { base: 45,  baseLabel: 'bar',  plates: [55, 45, 25, 10, 5, 2.5] },
+            'Romanian deadlift':   { base: 45,  baseLabel: 'bar',  plates: [55, 45, 25, 10, 5, 2.5] },
+            'Leg press':           { base: 118, baseLabel: 'sled', plates: [45, 25, 10, 5, 2.5] },
+        };
+
+        function plateBreakdown(total, cfg) {
+            const t = parseFloat(total);
+            if (!isFinite(t) || t <= 0) return null;
+            if (t < cfg.base) return { perSide: 0, plates: [], underBase: true, exact: false };
+            const perSide = (t - cfg.base) / 2;
+            let remaining = perSide;
+            const plates = [];
+            for (const p of cfg.plates) {
+                while (remaining >= p - 0.0001) {
+                    plates.push(p);
+                    remaining = Math.round((remaining - p) * 1000) / 1000;
+                }
+            }
+            return { perSide, plates, leftover: remaining, exact: remaining < 0.01 };
+        }
+
+        function fmtPlate(p) {
+            return Number.isInteger(p) ? String(p) : p.toFixed(1).replace(/\.0$/, '');
+        }
+        function fmtNum(n) {
+            return Number.isInteger(n) ? String(n) : n.toFixed(1).replace(/\.0$/, '');
+        }
+
+        function renderBreakdownHTML(b, cfg, isPlaceholder) {
+            if (!b) return '<span class="plate-meta__hint">enter total or tap plates</span>';
+            let html = '';
+            if (b.underBase) {
+                html = `<span class="plate-meta__hint">below ${cfg.baseLabel} (${cfg.base})</span>`;
+            } else if (b.perSide === 0) {
+                html = `<span class="plate-meta__side">just the ${cfg.baseLabel}</span>`;
+            } else {
+                const pills = b.plates.map(p => `<button type="button" class="plate-pill" data-plate="${p}" title="Remove this pair of ${fmtPlate(p)} lb plates (−${fmtNum(p * 2)})">${fmtPlate(p)}</button>`).join('');
+                html = `<span class="plate-meta__side">${fmtNum(b.perSide)} / side</span> ${pills}`;
+                if (!b.exact) html += `<span class="plate-meta__off">+${b.leftover.toFixed(2)} extra</span>`;
+            }
+            if (isPlaceholder) html = `<span class="plate-meta__last">last</span>${html}`;
+            return html;
+        }
+
+        function setupPlatePanel(input) {
+            if (input.dataset.plateInit === '1') return;
+            const exercise = input.getAttribute('data-exercise');
+            const cfg = PLATE_CONFIG[exercise];
+            if (!cfg) return;
+            input.dataset.plateInit = '1';
+
+            const row = input.closest('tr');
+            if (!row) return;
+
+            const colCount = row.children.length;
+            const panelRow = document.createElement('tr');
+            panelRow.className = 'plate-panel-row';
+            const cell = document.createElement('td');
+            cell.colSpan = colCount;
+
+            const panel = document.createElement('div');
+            panel.className = 'plate-panel';
+
+            const meta = document.createElement('div');
+            meta.className = 'plate-meta';
+            meta.addEventListener('click', (e) => {
+                const pill = e.target.closest('.plate-pill');
+                if (!pill) return;
+                e.preventDefault();
+                const plate = parseFloat(pill.dataset.plate);
+                if (!isFinite(plate)) return;
+                let cur = parseFloat(input.value);
+                if (!isFinite(cur)) cur = parseFloat(input.placeholder);
+                if (!isFinite(cur)) return;
+                const next = Math.round((cur - plate * 2) * 100) / 100;
+                input.value = fmtNum(Math.max(next, cfg.base));
+                refreshMeta();
+            });
+
+            const btnRow = document.createElement('div');
+            btnRow.className = 'plate-row';
+            cfg.plates.forEach(p => {
+                const b = document.createElement('button');
+                b.type = 'button';
+                b.className = 'plate-btn';
+                b.textContent = `+${fmtPlate(p)}`;
+                b.title = `Add a pair of ${fmtPlate(p)} lb plates (+${fmtNum(p * 2)} total)`;
+                b.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const cur = parseFloat(input.value);
+                    const start = isFinite(cur) && cur > 0 ? cur : cfg.base;
+                    const next = Math.round((start + p * 2) * 100) / 100;
+                    input.value = fmtNum(next);
+                    refreshMeta();
+                });
+                btnRow.appendChild(b);
+            });
+            const baseBtn = document.createElement('button');
+            baseBtn.type = 'button';
+            baseBtn.className = 'plate-btn plate-btn--reset';
+            baseBtn.textContent = cfg.baseLabel;
+            baseBtn.title = `Reset to just the ${cfg.baseLabel} (${cfg.base} lb)`;
+            baseBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                input.value = String(cfg.base);
+                refreshMeta();
+            });
+            btnRow.appendChild(baseBtn);
+
+            panel.appendChild(meta);
+            panel.appendChild(btnRow);
+            cell.appendChild(panel);
+            panelRow.appendChild(cell);
+            row.parentNode.insertBefore(panelRow, row.nextSibling);
+
+            function refreshMeta() {
+                const v = parseFloat(input.value);
+                if (isFinite(v) && v > 0) {
+                    meta.innerHTML = renderBreakdownHTML(plateBreakdown(v, cfg), cfg, false);
+                    return;
+                }
+                const ph = parseFloat(input.placeholder);
+                if (isFinite(ph) && ph > 0) {
+                    meta.innerHTML = renderBreakdownHTML(plateBreakdown(ph, cfg), cfg, true);
+                    return;
+                }
+                meta.innerHTML = renderBreakdownHTML(null, cfg, false);
+            }
+
+            input.addEventListener('input', refreshMeta);
+            input._refreshPlateMeta = refreshMeta;
+            refreshMeta();
+        }
+
+        function initPlatePanels() {
+            document.querySelectorAll('input.weight-input[data-barbell="true"]').forEach(setupPlatePanel);
+        }
+
+        function refreshAllPlateMetas() {
+            document.querySelectorAll('input.weight-input[data-barbell="true"]').forEach(input => {
+                if (typeof input._refreshPlateMeta === 'function') input._refreshPlateMeta();
+            });
+        }
+
         // Load weights for current tab and date
         async function loadWeights(day, date) {
             const exercises = {
@@ -2184,6 +2449,9 @@
                     ensureHistoryToggle(input, exercise);
                 }
             }
+
+            // Recompute plate breakdowns now that values/placeholders are set
+            refreshAllPlateMetas();
         }
 
         // Ensure the history toggle button exists in the input cell
@@ -2435,6 +2703,9 @@
         // Initialize app
         async function init() {
             await initDB();
+
+            // Inject plate calculator under each barbell input
+            initPlatePanels();
 
             const today = new Date();
             const dateInput = document.getElementById('dateInput');
