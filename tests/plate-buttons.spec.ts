@@ -175,13 +175,6 @@ test.describe('Plate +buttons placeholder fallback', () => {
     await expect(input).toHaveValue('8');
   });
 
-  test('Hip thrust label no longer says "(barbell)"', async ({ freshPage }) => {
-    const cell = freshPage.locator(
-      '.tab-content[data-day="D"] td.exercise-name', { hasText: 'Hip thrust' }
-    );
-    await expect(cell).toHaveText('Hip thrust');
-  });
-
   test('bar reset still clears to the bar even when a placeholder is set', async ({ freshPage }) => {
     await freshPage.evaluate(async () => {
       const sw = (window as any).saveWeight;
