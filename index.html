@@ -2021,7 +2021,7 @@
 
     <footer style="text-align:center; padding: 20px calc(20px + env(safe-area-inset-right)) calc(20px + env(safe-area-inset-bottom)) calc(20px + env(safe-area-inset-left)); color: var(--text-secondary); font-size: 12px; font-family: monospace;">
         <img src="./icon-512.png" alt="Gym" style="width: 32px; height: 32px; opacity: 0.5; margin-bottom: 10px;"><br>
-        2026-04-30
+        2026-05-01
 
     </footer>
 
@@ -2385,7 +2385,8 @@
                 b.title = `Add a pair of ${fmtPlate(p)} lb plates (+${fmtNum(p * 2)} total)`;
                 b.addEventListener('click', (e) => {
                     e.preventDefault();
-                    const cur = parseFloat(input.value);
+                    let cur = parseFloat(input.value);
+                    if (!isFinite(cur) || cur <= 0) cur = parseFloat(input.placeholder);
                     const start = isFinite(cur) && cur > 0 ? cur : cfg.base;
                     const next = Math.round((start + p * 2) * 100) / 100;
                     input.value = fmtNum(next);
