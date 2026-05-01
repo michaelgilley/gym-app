@@ -70,6 +70,66 @@ test.describe('Plate +buttons placeholder fallback', () => {
     await expect(input).toHaveValue('185');
   });
 
+  test('Hip thrust (glute drive) has a plate panel, +25 from empty starts at 95', async ({ freshPage }) => {
+    await freshPage.evaluate(() => (window as any).loadWeights('D', '2026-04-30'));
+
+    const input = freshPage.locator(
+      '.tab-content[data-day="D"] input[data-exercise="Hip thrust"]'
+    );
+    await expect(input).toHaveAttribute('data-barbell', 'true');
+
+    const panel = input.locator('xpath=ancestor::tr[1]/following-sibling::tr[1]');
+    await expect(panel).toHaveClass(/plate-panel-row/);
+
+    await panel.locator('.plate-btn', { hasText: '+25' }).click();
+    // 45 (start) + (25 * 2) = 95
+    await expect(input).toHaveValue('95');
+  });
+
+  test('Hip thrust reset returns to 45', async ({ freshPage }) => {
+    await freshPage.evaluate(() => (window as any).loadWeights('D', '2026-04-30'));
+
+    const input = freshPage.locator(
+      '.tab-content[data-day="D"] input[data-exercise="Hip thrust"]'
+    );
+    await input.fill('185');
+
+    const panel = input.locator('xpath=ancestor::tr[1]/following-sibling::tr[1]');
+    await panel.locator('.plate-btn--reset').click();
+
+    await expect(input).toHaveValue('45');
+  });
+
+  test('Seated calf raise has a plate panel, +25 from empty starts at 110', async ({ freshPage }) => {
+    await freshPage.evaluate(() => (window as any).loadWeights('D', '2026-04-30'));
+
+    const input = freshPage.locator(
+      '.tab-content[data-day="D"] input[data-exercise="Seated calf raise"]'
+    );
+    await expect(input).toHaveAttribute('data-barbell', 'true');
+
+    const panel = input.locator('xpath=ancestor::tr[1]/following-sibling::tr[1]');
+    await expect(panel).toHaveClass(/plate-panel-row/);
+
+    await panel.locator('.plate-btn', { hasText: '+25' }).click();
+    // 60 (start) + (25 * 2) = 110
+    await expect(input).toHaveValue('110');
+  });
+
+  test('Seated calf raise reset returns to 60', async ({ freshPage }) => {
+    await freshPage.evaluate(() => (window as any).loadWeights('D', '2026-04-30'));
+
+    const input = freshPage.locator(
+      '.tab-content[data-day="D"] input[data-exercise="Seated calf raise"]'
+    );
+    await input.fill('150');
+
+    const panel = input.locator('xpath=ancestor::tr[1]/following-sibling::tr[1]');
+    await panel.locator('.plate-btn--reset').click();
+
+    await expect(input).toHaveValue('60');
+  });
+
   test('bar reset still clears to the bar even when a placeholder is set', async ({ freshPage }) => {
     await freshPage.evaluate(async () => {
       const sw = (window as any).saveWeight;

@@ -1857,7 +1857,7 @@
                             <td class="sets-reps">4 x 10-12</td>
                             <td class="rest-time">90s</td>
                             <td class="weight-input-cell">
-                                <input type="number" inputmode="decimal" step="any" class="weight-input" data-exercise="Hip thrust" placeholder="lbs">
+                                <input type="number" inputmode="decimal" step="any" class="weight-input" data-exercise="Hip thrust" data-barbell="true" placeholder="lbs">
                             </td>
                         </tr>
                         <tr>
@@ -1881,7 +1881,7 @@
                             <td class="sets-reps">3 x 15</td>
                             <td class="rest-time">60s</td>
                             <td class="weight-input-cell">
-                                <input type="number" inputmode="decimal" step="any" class="weight-input" data-exercise="Seated calf raise" placeholder="lbs">
+                                <input type="number" inputmode="decimal" step="any" class="weight-input" data-exercise="Seated calf raise" data-barbell="true" placeholder="lbs">
                             </td>
                         </tr>
                     </table>
@@ -2279,7 +2279,9 @@
             'Barbell back squat':  { base: 45,  baseLabel: 'bar',  plates: [55, 45, 25, 10, 5, 2.5] },
             'Barbell row':         { base: 45,  baseLabel: 'bar',  plates: [55, 45, 25, 10, 5, 2.5] },
             'Romanian deadlift':   { base: 45,  baseLabel: 'bar',  plates: [55, 45, 25, 10, 5, 2.5] },
-            'Leg press':           { base: 118, baseLabel: 'sled', plates: [45, 25, 10, 5, 2.5] },
+            'Leg press':           { base: 118, baseLabel: 'sled',  plates: [45, 25, 10, 5, 2.5] },
+            'Hip thrust':          { base: 45,  baseLabel: 'start', plates: [45, 25, 10, 5, 2.5] },
+            'Seated calf raise':   { base: 60,  baseLabel: 'start', plates: [45, 25, 10, 5, 2.5] },
         };
 
         function plateBreakdown(total, cfg) {
