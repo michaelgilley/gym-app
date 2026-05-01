@@ -130,6 +130,58 @@ test.describe('Plate +buttons placeholder fallback', () => {
     await expect(input).toHaveValue('60');
   });
 
+  test('Leg curl machine (iso-lateral) +25 adds 25, not 50, on top of the 8 lb start', async ({ freshPage }) => {
+    await freshPage.evaluate(() => (window as any).loadWeights('D', '2026-04-30'));
+
+    const input = freshPage.locator(
+      '.tab-content[data-day="D"] input[data-exercise="Leg curl machine"]'
+    );
+    await expect(input).toHaveAttribute('data-barbell', 'true');
+
+    const panel = input.locator('xpath=ancestor::tr[1]/following-sibling::tr[1]');
+    await expect(panel).toHaveClass(/plate-panel-row/);
+
+    await panel.locator('.plate-btn', { hasText: '+25' }).click();
+    // 8 (start) + 25 (one plate, per-leg) = 33
+    await expect(input).toHaveValue('33');
+  });
+
+  test('Leg curl machine reset returns to 8', async ({ freshPage }) => {
+    await freshPage.evaluate(() => (window as any).loadWeights('D', '2026-04-30'));
+
+    const input = freshPage.locator(
+      '.tab-content[data-day="D"] input[data-exercise="Leg curl machine"]'
+    );
+    await input.fill('60');
+
+    const panel = input.locator('xpath=ancestor::tr[1]/following-sibling::tr[1]');
+    await panel.locator('.plate-btn--reset').click();
+
+    await expect(input).toHaveValue('8');
+  });
+
+  test('Leg curl machine pill removal subtracts the single-plate weight, not double', async ({ freshPage }) => {
+    await freshPage.evaluate(() => (window as any).loadWeights('D', '2026-04-30'));
+
+    const input = freshPage.locator(
+      '.tab-content[data-day="D"] input[data-exercise="Leg curl machine"]'
+    );
+    const panel = input.locator('xpath=ancestor::tr[1]/following-sibling::tr[1]');
+    await panel.locator('.plate-btn', { hasText: '+25' }).click();
+    await expect(input).toHaveValue('33');
+
+    // The breakdown meta should now show a 25-lb pill; clicking removes 25, not 50.
+    await panel.locator('.plate-pill', { hasText: '25' }).click();
+    await expect(input).toHaveValue('8');
+  });
+
+  test('Hip thrust label no longer says "(barbell)"', async ({ freshPage }) => {
+    const cell = freshPage.locator(
+      '.tab-content[data-day="D"] td.exercise-name', { hasText: 'Hip thrust' }
+    );
+    await expect(cell).toHaveText('Hip thrust');
+  });
+
   test('bar reset still clears to the bar even when a placeholder is set', async ({ freshPage }) => {
     await freshPage.evaluate(async () => {
       const sw = (window as any).saveWeight;

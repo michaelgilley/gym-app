@@ -1853,7 +1853,7 @@
                     <div class="section-title" style="font-size: 14px; border: none; padding: 0; margin: 15px 0 10px 0;">Accessories</div>
                     <table class="workout-table">
                         <tr>
-                            <td class="exercise-name">Hip thrust (barbell)</td>
+                            <td class="exercise-name">Hip thrust</td>
                             <td class="sets-reps">4 x 10-12</td>
                             <td class="rest-time">90s</td>
                             <td class="weight-input-cell">
@@ -1865,7 +1865,7 @@
                             <td class="sets-reps">4 x 12-15</td>
                             <td class="rest-time">90s</td>
                             <td class="weight-input-cell">
-                                <input type="number" inputmode="decimal" step="any" class="weight-input" data-exercise="Leg curl machine" placeholder="lbs">
+                                <input type="number" inputmode="decimal" step="any" class="weight-input" data-exercise="Leg curl machine" data-barbell="true" placeholder="lbs">
                             </td>
                         </tr>
                         <tr>
@@ -2282,13 +2282,17 @@
             'Leg press':           { base: 118, baseLabel: 'sled',  plates: [45, 25, 10, 5, 2.5] },
             'Hip thrust':          { base: 45,  baseLabel: 'start', plates: [45, 25, 10, 5, 2.5] },
             'Seated calf raise':   { base: 60,  baseLabel: 'start', plates: [45, 25, 10, 5, 2.5] },
+            // Iso-lateral: each leg is loaded independently, so input value is per-leg
+            // and "+X" adds X (not 2X). paired:false flips the math throughout.
+            'Leg curl machine':    { base: 8,   baseLabel: 'start', plates: [45, 25, 10, 5, 2.5], paired: false },
         };
 
         function plateBreakdown(total, cfg) {
             const t = parseFloat(total);
             if (!isFinite(t) || t <= 0) return null;
             if (t < cfg.base) return { perSide: 0, plates: [], underBase: true, exact: false };
-            const perSide = (t - cfg.base) / 2;
+            const divisor = cfg.paired === false ? 1 : 2;
+            const perSide = (t - cfg.base) / divisor;
             let remaining = perSide;
             const plates = [];
             for (const p of cfg.plates) {
@@ -2315,8 +2319,13 @@
             } else if (b.perSide === 0) {
                 html = `<span class="plate-meta__side">just the ${cfg.baseLabel}</span>`;
             } else {
-                const pills = b.plates.map(p => `<button type="button" class="plate-pill" data-plate="${p}" title="Remove this pair of ${fmtPlate(p)} lb plates (−${fmtNum(p * 2)})">${fmtPlate(p)}</button>`).join('');
-                html = `<span class="plate-meta__side">${fmtNum(b.perSide)} / side</span> ${pills}`;
+                const mult = cfg.paired === false ? 1 : 2;
+                const sideLabel = cfg.paired === false ? 'leg' : 'side';
+                const pillTitle = cfg.paired === false
+                    ? p => `Remove this ${fmtPlate(p)} lb plate (−${fmtNum(p)})`
+                    : p => `Remove this pair of ${fmtPlate(p)} lb plates (−${fmtNum(p * 2)})`;
+                const pills = b.plates.map(p => `<button type="button" class="plate-pill" data-plate="${p}" title="${pillTitle(p)}">${fmtPlate(p)}</button>`).join('');
+                html = `<span class="plate-meta__side">${fmtNum(b.perSide)} / ${sideLabel}</span> ${pills}`;
                 if (!b.exact) html += `<span class="plate-meta__off">+${b.leftover.toFixed(2)} extra</span>`;
             }
             if (isPlaceholder) html = `<span class="plate-meta__last">last</span>${html}`;
@@ -2344,6 +2353,7 @@
 
             const meta = document.createElement('div');
             meta.className = 'plate-meta';
+            const mult = cfg.paired === false ? 1 : 2;
             meta.addEventListener('click', (e) => {
                 const pill = e.target.closest('.plate-pill');
                 if (!pill) return;
@@ -2353,7 +2363,7 @@
                 let cur = parseFloat(input.value);
                 if (!isFinite(cur)) cur = parseFloat(input.placeholder);
                 if (!isFinite(cur)) return;
-                const next = Math.round((cur - plate * 2) * 100) / 100;
+                const next = Math.round((cur - plate * mult) * 100) / 100;
                 input.value = fmtNum(Math.max(next, cfg.base));
                 refreshMeta();
             });
@@ -2365,13 +2375,15 @@
                 b.type = 'button';
                 b.className = 'plate-btn';
                 b.textContent = `+${fmtPlate(p)}`;
-                b.title = `Add a pair of ${fmtPlate(p)} lb plates (+${fmtNum(p * 2)} total)`;
+                b.title = cfg.paired === false
+                    ? `Add a ${fmtPlate(p)} lb plate (+${fmtNum(p)} total)`
+                    : `Add a pair of ${fmtPlate(p)} lb plates (+${fmtNum(p * 2)} total)`;
                 b.addEventListener('click', (e) => {
                     e.preventDefault();
                     let cur = parseFloat(input.value);
                     if (!isFinite(cur) || cur <= 0) cur = parseFloat(input.placeholder);
                     const start = isFinite(cur) && cur > 0 ? cur : cfg.base;
-                    const next = Math.round((start + p * 2) * 100) / 100;
+                    const next = Math.round((start + p * mult) * 100) / 100;
                     input.value = fmtNum(next);
                     refreshMeta();
                 });
