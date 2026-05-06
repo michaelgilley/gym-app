@@ -821,6 +821,33 @@
             border-color: rgba(var(--day-rgb), 0.4);
         }
 
+        /* "Use last" chip — fills the input with the most recent saved weight */
+        .last-weight-chip {
+            display: block;
+            width: fit-content;
+            margin: 6px 0 0 auto;
+            white-space: nowrap;
+            background: rgba(var(--day-rgb), 0.18);
+            border: 1px solid rgba(var(--day-rgb), 0.45);
+            color: var(--day);
+            cursor: pointer;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            padding: 5px 10px;
+            border-radius: 100px;
+            transition: all 0.2s;
+        }
+        .last-weight-chip:hover {
+            background: rgba(var(--day-rgb), 0.32);
+            border-color: var(--day);
+        }
+        .last-weight-chip[hidden] {
+            display: none;
+        }
+
         /* History modal */
         .history-modal {
             position: fixed;
@@ -2002,7 +2029,7 @@
 
     <footer style="text-align:center; padding: 20px calc(20px + env(safe-area-inset-right)) calc(20px + env(safe-area-inset-bottom)) calc(20px + env(safe-area-inset-left)); color: var(--text-secondary); font-size: 12px; font-family: monospace;">
         <img src="./icon-512.png" alt="Gym" style="width: 32px; height: 32px; opacity: 0.5; margin-bottom: 10px;"><br>
-        2026-05-01
+        2026-05-06
 
     </footer>
 
@@ -2430,75 +2457,47 @@
             document.querySelectorAll('input.weight-input[data-barbell="true"]').forEach(setupPlatePanel);
         }
 
+        // History toggles don't depend on date or saved data, so attach them
+        // once for every weight input across all days. Keeps Day X's toggle
+        // present even before loadWeights('X') has ever run for this session.
+        function initHistoryToggles() {
+            document.querySelectorAll('input.weight-input').forEach(input => {
+                const exercise = input.getAttribute('data-exercise');
+                if (exercise) ensureHistoryToggle(input, exercise);
+            });
+        }
+
         function refreshAllPlateMetas() {
             document.querySelectorAll('input.weight-input[data-barbell="true"]').forEach(input => {
                 if (typeof input._refreshPlateMeta === 'function') input._refreshPlateMeta();
             });
         }
 
-        // Load weights for current tab and date
+        // Load weights for current tab and date.
+        // The exercise list is derived from the DOM so the schedule HTML
+        // is the single source of truth — adding/renaming an input row is
+        // enough; no separate map to keep in sync.
         async function loadWeights(day, date) {
-            const exercises = {
-                'A': [
-                    'Barbell bench press',
-                    'Incline dumbbell press',
-                    'Overhead dumbbell press',
-                    'Cable lateral raise',
-                    'Tricep cable pushdown',
-                    'Goblet overhead leg raise'
-                ],
-                'B': [
-                    'Barbell back squat',
-                    'Leg press',
-                    'Walking lunges',
-                    'Leg extension',
-                    'Standing calf raise',
-                    'Hip abductor machine',
-                    'Hip adductor machine',
-                    'Goblet overhead leg raise'
-                ],
-                'C': [
-                    'Barbell row',
-                    'Lat pulldown',
-                    'Cable seated row',
-                    'Dumbbell curl',
-                    'Face pull',
-                    'Goblet overhead leg raise'
-                ],
-                'D': [
-                    'Romanian deadlift',
-                    'Hip thrust',
-                    'Leg curl machine',
-                    'Sumo dumbbell squat',
-                    'Seated calf raise',
-                    'Hip abductor machine',
-                    'Hip adductor machine',
-                    'Goblet overhead leg raise'
-                ]
-            };
+            const inputs = document.querySelectorAll(
+                `.tab-content[data-day="${day}"] input.weight-input`
+            );
 
-            const exerciseList = exercises[day] || [];
+            for (const input of inputs) {
+                const exercise = input.getAttribute('data-exercise');
+                if (!exercise) continue;
 
-            for (const exercise of exerciseList) {
                 const weight = await getWeight(date, exercise);
-                const input = document.querySelector(`input[data-exercise="${exercise}"]`);
+                const history = await getWeightHistory(exercise);
+                const last = history.length > 0 ? history[history.length - 1].weight : null;
 
-                if (input) {
-                    if (weight) {
-                        input.value = weight;
-                    } else {
-                        // Get last weight as placeholder (latest entry)
-                        const history = await getWeightHistory(exercise);
-                        if (history.length > 0) {
-                            input.placeholder = `${history[history.length - 1].weight} lbs`;
-                        } else {
-                            input.placeholder = 'lbs';
-                        }
-                    }
-
-                    // Make sure the history toggle exists for this input
-                    ensureHistoryToggle(input, exercise);
+                if (weight) {
+                    input.value = weight;
+                } else {
+                    input.placeholder = last != null ? `${last} lbs` : 'lbs';
                 }
+
+                ensureHistoryToggle(input, exercise);
+                ensureLastWeightChip(input, last);
             }
 
             // Recompute plate breakdowns now that values/placeholders are set
@@ -2519,6 +2518,48 @@
                 openHistoryModal(exercise);
             };
             cell.appendChild(toggleBtn);
+        }
+
+        // "Use last" chip: tap target that fills the input with the most
+        // recent saved weight. Hidden when input has a value or no history
+        // exists; reappears once the input is cleared.
+        function ensureLastWeightChip(input, lastWeight) {
+            const cell = input.closest('td');
+            if (!cell) return;
+            let chip = cell.querySelector('.last-weight-chip');
+
+            if (lastWeight == null) {
+                if (chip) chip.remove();
+                return;
+            }
+
+            if (!chip) {
+                chip = document.createElement('button');
+                chip.type = 'button';
+                chip.className = 'last-weight-chip';
+                chip.title = 'Use last weight';
+                const toggle = cell.querySelector('.history-toggle');
+                if (toggle) cell.insertBefore(chip, toggle);
+                else cell.appendChild(chip);
+
+                const updateVisibility = () => {
+                    chip.hidden = input.value.trim() !== '';
+                };
+                chip.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const lw = chip.dataset.lastWeight;
+                    if (!lw) return;
+                    input.value = lw;
+                    input.dispatchEvent(new Event('input', { bubbles: true }));
+                    updateVisibility();
+                });
+                input.addEventListener('input', updateVisibility);
+                chip._updateVisibility = updateVisibility;
+            }
+
+            chip.dataset.lastWeight = String(lastWeight);
+            chip.textContent = `use ${lastWeight}`;
+            if (chip._updateVisibility) chip._updateVisibility();
         }
 
         // Render the modal contents and open it
@@ -2757,6 +2798,9 @@
 
             // Inject plate calculator under each barbell input
             initPlatePanels();
+
+            // Attach history toggles to every weight input (date-independent).
+            initHistoryToggles();
 
             const today = new Date();
             const dateInput = document.getElementById('dateInput');
