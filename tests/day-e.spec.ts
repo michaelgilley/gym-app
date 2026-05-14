@@ -1,15 +1,15 @@
 import { test, expect } from './fixtures';
 
 /**
- * Day E (Wednesday — Arms): added as the 5th gym day in the rotation.
+ * Day E (Friday, Arms): the 5th gym day in the rotation.
  * Wires through the same selector / tab-switching / save-and-persist
  * pipeline as A-D.
  *
- * Reference Wednesday for date-driven specs: 2026-04-29.
+ * Reference Friday for date-driven specs: 2026-05-01.
  */
 
-test.describe('Day E (Wednesday)', () => {
-  test('weekly schedule renders 5 gym chips including Wed=E', async ({ freshPage }) => {
+test.describe('Day E (Friday)', () => {
+  test('weekly schedule renders 5 gym chips including Fri=E', async ({ freshPage }) => {
     await expect(freshPage.locator('.day-indicator.gym')).toHaveCount(5);
 
     const tabDays = await freshPage.locator('.day-indicator.gym').evaluateAll(
@@ -18,26 +18,26 @@ test.describe('Day E (Wednesday)', () => {
     expect(tabDays.sort()).toEqual(['A', 'B', 'C', 'D', 'E']);
   });
 
-  test('Wed chip is interactive and exposes data-tab-day="E"', async ({ freshPage }) => {
-    const wed = freshPage.locator('.day-indicator.gym[data-tab-day="E"]');
-    await expect(wed).toHaveCount(1);
-    await expect(wed).toHaveAttribute('role', 'button');
-    await expect(wed).toHaveAttribute('tabindex', '0');
+  test('Fri chip is interactive and exposes data-tab-day="E"', async ({ freshPage }) => {
+    const fri = freshPage.locator('.day-indicator.gym[data-tab-day="E"]');
+    await expect(fri).toHaveCount(1);
+    await expect(fri).toHaveAttribute('role', 'button');
+    await expect(fri).toHaveAttribute('tabindex', '0');
   });
 
-  test('clicking the Wed chip activates Day E', async ({ freshPage }) => {
-    const wed = freshPage.locator('.day-indicator.gym[data-tab-day="E"]');
-    await wed.click();
+  test('clicking the Fri chip activates Day E', async ({ freshPage }) => {
+    const fri = freshPage.locator('.day-indicator.gym[data-tab-day="E"]');
+    await fri.click();
 
     await expect(freshPage.locator('body')).toHaveAttribute('data-active-day', 'E');
     await expect(freshPage.locator('.tab-content[data-day="E"]')).toHaveClass(/\bactive\b/);
     await expect(freshPage.locator('.day-indicator.gym.selected[data-tab-day="E"]')).toHaveCount(1);
   });
 
-  test('navigating to a Wednesday date activates Day E', async ({ freshPage }) => {
+  test('navigating to a Friday date activates Day E', async ({ freshPage }) => {
     await freshPage.evaluate(() => {
       const di = document.getElementById('dateInput') as HTMLInputElement;
-      di.value = '2026-04-29'; // Wednesday
+      di.value = '2026-05-01'; // Friday
       di.dispatchEvent(new Event('change', { bubbles: true }));
     });
 
@@ -48,7 +48,7 @@ test.describe('Day E (Wednesday)', () => {
   test('Day E save button persists weights and round-trips', async ({ freshPage }) => {
     await freshPage.evaluate(() => {
       const di = document.getElementById('dateInput') as HTMLInputElement;
-      di.value = '2026-04-29';
+      di.value = '2026-05-01';
       di.dispatchEvent(new Event('change', { bubbles: true }));
     });
 
@@ -61,7 +61,7 @@ test.describe('Day E (Wednesday)', () => {
       .waitFor({ state: 'visible', timeout: 3000 }).catch(() => {});
 
     const persisted = await freshPage.evaluate(async () => {
-      return await (window as any).getWeight('2026-04-29', 'EZ bar curl');
+      return await (window as any).getWeight('2026-05-01', 'EZ bar curl');
     });
     expect(persisted).toBe(65);
   });
@@ -71,7 +71,7 @@ test.describe('Day E (Wednesday)', () => {
       (window as any).switchTab?.('E');
       document.body.setAttribute('data-active-day', 'E');
     });
-    await freshPage.evaluate(() => (window as any).loadWeights('E', '2026-04-29'));
+    await freshPage.evaluate(() => (window as any).loadWeights('E', '2026-05-01'));
 
     const inputs = freshPage.locator('.tab-content[data-day="E"] input.weight-input');
     const count = await inputs.count();

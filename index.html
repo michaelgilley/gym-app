@@ -2187,7 +2187,7 @@
 
     <footer style="text-align:center; padding: 20px calc(20px + env(safe-area-inset-right)) calc(20px + env(safe-area-inset-bottom)) calc(20px + env(safe-area-inset-left)); color: var(--text-secondary); font-size: 12px; font-family: monospace;">
         <img src="./icon-512.png" alt="Gym" style="width: 32px; height: 32px; opacity: 0.5; margin-bottom: 10px;"><br>
-        2026-05-13
+        2026-05-14
 
     </footer>
 
@@ -2320,9 +2320,9 @@
         const DAY_META = {
             A: { title: 'PUSH DAY',  kind: 'Upper Push',     weekday: 'Monday'    },
             B: { title: 'LEG DAY',   kind: 'Lower Quad',     weekday: 'Tuesday'   },
-            E: { title: 'ARM DAY',   kind: 'Arms + Carries', weekday: 'Wednesday' },
-            C: { title: 'PULL DAY',  kind: 'Upper Pull',     weekday: 'Thursday'  },
-            D: { title: 'HINGE DAY', kind: 'Lower Hinge',    weekday: 'Friday'    }
+            C: { title: 'PULL DAY',  kind: 'Upper Pull',     weekday: 'Wednesday' },
+            D: { title: 'HINGE DAY', kind: 'Lower Hinge',    weekday: 'Thursday'  },
+            E: { title: 'ARM DAY',   kind: 'Arms + Carries', weekday: 'Friday'    }
         };
 
         // Snap any non-gym date back to the nearest preceding gym day
@@ -2406,7 +2406,7 @@
 
         // Render weekly schedule
         // Maps weekday index (0=Sun … 6=Sat) → tab letter for gym days
-        const WEEKDAY_TO_DAY = { 1: 'A', 2: 'B', 3: 'E', 4: 'C', 5: 'D' };
+        const WEEKDAY_TO_DAY = { 1: 'A', 2: 'B', 3: 'C', 4: 'D', 5: 'E' };
 
         // Render the 7-chip schedule for the week containing `selectedDate`.
         // Gym days are interactive and labeled `Mon` / `Day A`; rest days
