@@ -31,7 +31,7 @@ export const test = base.extend<Fixtures>({
 export { expect };
 
 /** Set a weight input and trigger save for a given day. */
-export async function saveWeight(page: Page, day: 'A' | 'B' | 'C' | 'D', exercise: string, weight: string) {
+export async function saveWeight(page: Page, day: 'A' | 'B' | 'C' | 'D' | 'E', exercise: string, weight: string) {
   const input = page.locator(`.tab-content[data-day="${day}"] input[data-exercise="${exercise}"]`);
   await input.fill(weight);
   await page.locator(`.save-button[data-day="${day}"]`).click();

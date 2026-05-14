@@ -26,7 +26,7 @@ test.describe('Day selector', () => {
     const targetDate = await target.getAttribute('data-date');
     const targetTabDay = await target.getAttribute('data-tab-day');
     expect(targetDate).not.toBe(initialSelectedDate);
-    expect(targetTabDay).toMatch(/^[ABCD]$/);
+    expect(targetTabDay).toMatch(/^[ABCDE]$/);
 
     await target.click();
 

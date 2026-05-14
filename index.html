@@ -127,6 +127,17 @@
             --bg-0: #12060d;
         }
 
+        body[data-active-day="E"] {
+            --day:     #d4ff3d;  --day-rgb:   212,255, 61;
+            --day-2:   #ffd23d;  --day-2-rgb: 255,210, 61;
+            --aur-1:   #a4ff1f;  --aur-1-rgb: 164,255, 31;     /* electric lime */
+            --aur-2:   #ffae00;  --aur-2-rgb: 255,174,  0;     /* amber */
+            --aur-3:   #00d97e;  --aur-3-rgb:   0,217,126;     /* jade */
+            --aur-4:   #1f4a1a;  --aur-4-rgb:  31, 74, 26;     /* deep moss */
+            --aur-opacity: 0.48;
+            --bg-0: #07120a;
+        }
+
         /* ── LIGHT MODE (follows system preference) ────────────────────── */
         @media (prefers-color-scheme: light) {
             :root {
@@ -210,6 +221,16 @@
                 --aur-3:   #ffd1b3;  --aur-3-rgb: 255,209,179;
                 --aur-4:   #ffc6da;  --aur-4-rgb: 255,198,218;
                 --bg-0: #fff0f5;
+            }
+
+            body[data-active-day="E"] {
+                --day:     #5a9a1f;  --day-rgb:   90,154, 31;
+                --day-2:   #c79900;  --day-2-rgb: 199,153,  0;
+                --aur-1:   #b9e07a;  --aur-1-rgb: 185,224,122;
+                --aur-2:   #ffdb7a;  --aur-2-rgb: 255,219,122;
+                --aur-3:   #b3e8b3;  --aur-3-rgb: 179,232,179;
+                --aur-4:   #d4eb9f;  --aur-4-rgb: 212,235,159;
+                --bg-0: #f6fff0;
             }
         }
 
@@ -1997,6 +2018,143 @@
             <button class="save-button" data-day="D">Save Day D Workout</button>
         </div>
 
+        <!-- Day E - Arms + Carries -->
+        <div class="tab-content" data-day="E">
+
+            <div class="workout-section">
+                <div class="section-title">Arms + Carries</div>
+
+                <div class="workout-section">
+                    <div class="section-title" style="font-size: 14px; border: none; padding: 0; margin: 15px 0 10px 0;">Warmup</div>
+                    <table class="workout-table">
+                        <tr>
+                            <td class="exercise-name">5 min cardio</td>
+                            <td class="rest-time">Light intensity</td>
+                            <td class="weight-input-cell"></td>
+                        </tr>
+                        <tr>
+                            <td class="exercise-name">Shoulder / elbow circles</td>
+                            <td class="rest-time">2 min</td>
+                            <td class="weight-input-cell"></td>
+                        </tr>
+                        <tr>
+                            <td class="exercise-name">Light curl warmup</td>
+                            <td class="sets-reps">2 x 12</td>
+                            <td class="weight-input-cell"></td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="workout-section">
+                    <div class="section-title" style="font-size: 14px; border: none; padding: 0; margin: 15px 0 10px 0;">Athletic Opener</div>
+                    <table class="workout-table">
+                        <tr>
+                            <td class="exercise-name">Sled push</td>
+                            <td class="sets-reps">4 trips</td>
+                            <td class="rest-time">walk back rest</td>
+                            <td class="weight-input-cell">
+                                <input type="number" inputmode="decimal" step="any" class="weight-input" data-exercise="Sled push" placeholder="lbs">
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="workout-section">
+                    <div class="section-title" style="font-size: 14px; border: none; padding: 0; margin: 15px 0 10px 0;">Biceps</div>
+                    <table class="workout-table">
+                        <tr>
+                            <td class="exercise-name">EZ bar curl</td>
+                            <td class="sets-reps">4 x 8-10</td>
+                            <td class="rest-time">90s</td>
+                            <td class="weight-input-cell">
+                                <input type="number" inputmode="decimal" step="any" class="weight-input" data-exercise="EZ bar curl" placeholder="lbs">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="exercise-name">Incline dumbbell curl</td>
+                            <td class="sets-reps">3 x 10-12</td>
+                            <td class="rest-time">60s</td>
+                            <td class="weight-input-cell">
+                                <input type="number" inputmode="decimal" step="any" class="weight-input" data-exercise="Incline dumbbell curl" placeholder="lbs">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="exercise-name">Hammer curl</td>
+                            <td class="sets-reps">3 x 12-15</td>
+                            <td class="rest-time">60s</td>
+                            <td class="weight-input-cell">
+                                <input type="number" inputmode="decimal" step="any" class="weight-input" data-exercise="Hammer curl" placeholder="lbs">
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="workout-section">
+                    <div class="section-title" style="font-size: 14px; border: none; padding: 0; margin: 15px 0 10px 0;">Triceps</div>
+                    <table class="workout-table">
+                        <tr>
+                            <td class="exercise-name">Overhead tricep extension</td>
+                            <td class="sets-reps">4 x 10-12</td>
+                            <td class="rest-time">60s</td>
+                            <td class="weight-input-cell">
+                                <input type="number" inputmode="decimal" step="any" class="weight-input" data-exercise="Overhead tricep extension" placeholder="lbs">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="exercise-name">Tricep cable pushdown</td>
+                            <td class="sets-reps">3 x 12-15</td>
+                            <td class="rest-time">60s</td>
+                            <td class="weight-input-cell">
+                                <input type="number" inputmode="decimal" step="any" class="weight-input" data-exercise="Tricep cable pushdown" placeholder="lbs">
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="workout-section">
+                    <div class="section-title" style="font-size: 14px; border: none; padding: 0; margin: 15px 0 10px 0;">Carries</div>
+                    <table class="workout-table">
+                        <tr>
+                            <td class="exercise-name">Farmers carry</td>
+                            <td class="sets-reps">3 x 40 yd</td>
+                            <td class="rest-time">60-90s</td>
+                            <td class="weight-input-cell">
+                                <input type="number" inputmode="decimal" step="any" class="weight-input" data-exercise="Farmers carry" placeholder="lbs/hand">
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="workout-section">
+                    <div class="section-title" style="font-size: 14px; border: none; padding: 0; margin: 15px 0 10px 0;">Cooldown</div>
+                    <table class="workout-table">
+                        <tr>
+                            <td class="exercise-name">Forearm / wrist stretch</td>
+                            <td class="rest-time">30s each</td>
+                            <td class="weight-input-cell"></td>
+                        </tr>
+                        <tr>
+                            <td class="exercise-name">Bicep wall stretch</td>
+                            <td class="rest-time">45s each</td>
+                            <td class="weight-input-cell"></td>
+                        </tr>
+                        <tr>
+                            <td class="exercise-name">Overhead tricep stretch</td>
+                            <td class="rest-time">30s each</td>
+                            <td class="weight-input-cell"></td>
+                        </tr>
+                        <tr>
+                            <td class="exercise-name">Lat stretch</td>
+                            <td class="rest-time">45s each</td>
+                            <td class="weight-input-cell"></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <button class="save-button" data-day="E">Save Day E Workout</button>
+        </div>
+
         <!-- Info Sections -->
         <div class="info-section">
             <h3>4-Week Progression (Weeks 7&ndash;10)</h3>
@@ -2029,7 +2187,7 @@
 
     <footer style="text-align:center; padding: 20px calc(20px + env(safe-area-inset-right)) calc(20px + env(safe-area-inset-bottom)) calc(20px + env(safe-area-inset-left)); color: var(--text-secondary); font-size: 12px; font-family: monospace;">
         <img src="./icon-512.png" alt="Gym" style="width: 32px; height: 32px; opacity: 0.5; margin-bottom: 10px;"><br>
-        2026-05-06
+        2026-05-13
 
     </footer>
 
@@ -2160,16 +2318,17 @@
         // Auto-select today's workout
         // Day meta — drives the motivational title, subtitle, and surface theme
         const DAY_META = {
-            A: { title: 'PUSH DAY',  kind: 'Upper Push',  weekday: 'Monday'   },
-            B: { title: 'LEG DAY',   kind: 'Lower Quad',  weekday: 'Tuesday'  },
-            C: { title: 'PULL DAY',  kind: 'Upper Pull',  weekday: 'Thursday' },
-            D: { title: 'HINGE DAY', kind: 'Lower Hinge', weekday: 'Friday'   }
+            A: { title: 'PUSH DAY',  kind: 'Upper Push',     weekday: 'Monday'    },
+            B: { title: 'LEG DAY',   kind: 'Lower Quad',     weekday: 'Tuesday'   },
+            E: { title: 'ARM DAY',   kind: 'Arms + Carries', weekday: 'Wednesday' },
+            C: { title: 'PULL DAY',  kind: 'Upper Pull',     weekday: 'Thursday'  },
+            D: { title: 'HINGE DAY', kind: 'Lower Hinge',    weekday: 'Friday'    }
         };
 
         // Snap any non-gym date back to the nearest preceding gym day
         function snapToGymDay(date) {
             const d = new Date(date);
-            // Walk backwards day-by-day until we hit a gym weekday (Mon/Tue/Thu/Fri).
+            // Walk backwards day-by-day until we hit a gym weekday (Mon/Tue/Wed/Thu/Fri).
             // Capped at 7 iterations so we never loop indefinitely.
             for (let i = 0; i < 7; i++) {
                 if (WEEKDAY_TO_DAY[d.getDay()]) return d;
@@ -2247,7 +2406,7 @@
 
         // Render weekly schedule
         // Maps weekday index (0=Sun … 6=Sat) → tab letter for gym days
-        const WEEKDAY_TO_DAY = { 1: 'A', 2: 'B', 4: 'C', 5: 'D' };
+        const WEEKDAY_TO_DAY = { 1: 'A', 2: 'B', 3: 'E', 4: 'C', 5: 'D' };
 
         // Render the 7-chip schedule for the week containing `selectedDate`.
         // Gym days are interactive and labeled `Mon` / `Day A`; rest days
