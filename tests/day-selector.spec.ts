@@ -14,6 +14,22 @@ test.describe('Day selector', () => {
     await expect(freshPage.locator('.day-indicator.gym.selected')).toHaveCount(1);
   });
 
+  test('schedule renders exactly five Mon–Fri chips, no weekend chips', async ({ freshPage }) => {
+    const chips = freshPage.locator('.day-indicator');
+    await expect(chips).toHaveCount(5);
+
+    // All chips are gym days now; no .rest chips.
+    await expect(freshPage.locator('.day-indicator.rest')).toHaveCount(0);
+
+    // Each chip's day-letter label, in order, matches Mon..Fri.
+    const labels = await freshPage.locator('.day-indicator .day-letter').allTextContents();
+    expect(labels).toEqual(['Mon', 'Tue', 'Wed', 'Thu', 'Fri']);
+
+    // No Sun/Sat labels anywhere in the schedule.
+    expect(labels).not.toContain('Sun');
+    expect(labels).not.toContain('Sat');
+  });
+
   test('clicking a different gym chip moves the selected class', async ({ freshPage }) => {
     const allGymChips = freshPage.locator('.day-indicator.gym');
     const initialSelectedDate = await freshPage.locator('.day-indicator.gym.selected').getAttribute('data-date');

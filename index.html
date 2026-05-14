@@ -437,10 +437,168 @@
         }
         .today-btn:active { transform: scale(0.94); }
 
-        /* Weekly schedule — chunky day chips */
+        /* Scan-in icon button — floats in the top-right of the container */
+        .scan-in-btn {
+            position: absolute;
+            top: calc(20px + env(safe-area-inset-top));
+            right: calc(20px + env(safe-area-inset-right));
+            z-index: 5;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            padding: 0;
+            background: rgba(var(--day-rgb), 0.12);
+            border: 1px solid rgba(var(--day-rgb), 0.32);
+            color: var(--day);
+            border-radius: 50%;
+            cursor: pointer;
+            -webkit-tap-highlight-color: transparent;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            transition: transform 0.15s, background 0.2s, border-color 0.2s;
+        }
+        .scan-in-btn:hover {
+            background: rgba(var(--day-rgb), 0.22);
+            border-color: rgba(var(--day-rgb), 0.5);
+        }
+        .scan-in-btn:active { transform: scale(0.94); }
+        .scan-in-btn__bars {
+            display: inline-flex;
+            align-items: center;
+            gap: 1.5px;
+            height: 16px;
+        }
+        .scan-in-btn__bars span {
+            display: block;
+            background: var(--day);
+            border-radius: 1px;
+            height: 100%;
+        }
+        .scan-in-btn__bars span:nth-child(1) { width: 2px; }
+        .scan-in-btn__bars span:nth-child(2) { width: 1px; }
+        .scan-in-btn__bars span:nth-child(3) { width: 3px; }
+        .scan-in-btn__bars span:nth-child(4) { width: 1px; }
+        .scan-in-btn__bars span:nth-child(5) { width: 2px; }
+        .scan-in-btn__bars span:nth-child(6) { width: 1px; }
+        .scan-in-btn__bars span:nth-child(7) { width: 2px; }
+
+        /* Barcode modal — full-screen friendly, max contrast */
+        .barcode-modal {
+            position: fixed;
+            inset: 0;
+            z-index: 1100;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 12px;
+        }
+        .barcode-modal.open { display: flex; }
+        .barcode-modal__backdrop {
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+        }
+        .barcode-modal__card {
+            position: relative;
+            background: #fff;
+            color: #111;
+            border-radius: 24px;
+            padding: 16px 12px 18px;
+            width: 100%;
+            max-width: min(640px, 96vw);
+            box-shadow: 0 28px 80px rgba(0, 0, 0, 0.55);
+            animation: historyPop 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .barcode-modal__header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+        .barcode-modal__title {
+            flex: 1;
+            font-family: 'Unbounded', sans-serif;
+            font-size: 14px;
+            font-weight: 700;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: #111;
+        }
+        .barcode-modal__edit,
+        .barcode-modal__close {
+            flex: 0 0 auto;
+            background: rgba(0, 0, 0, 0.06);
+            border: 1px solid rgba(0, 0, 0, 0.12);
+            color: #111;
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            font-size: 18px;
+            line-height: 1;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+            transition: background 0.15s, transform 0.15s;
+        }
+        .barcode-modal__edit:hover,
+        .barcode-modal__close:hover {
+            background: rgba(0, 0, 0, 0.12);
+            transform: scale(1.05);
+        }
+        .barcode-modal__close { font-size: 22px; }
+        .barcode-svg-host {
+            width: 100%;
+            display: block;
+            padding: 6px 2px 10px;
+        }
+        .barcode-svg-host svg {
+            width: 100%;
+            height: 100px;
+            display: block;
+        }
+        .barcode-number {
+            display: block;
+            width: 100%;
+            background: transparent;
+            border: 1px dashed rgba(0, 0, 0, 0.2);
+            color: #111;
+            padding: 10px 12px;
+            margin-top: 4px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 18px;
+            font-weight: 700;
+            letter-spacing: 0.18em;
+            text-align: center;
+            border-radius: 12px;
+            cursor: pointer;
+        }
+        .barcode-number:hover { background: rgba(0, 0, 0, 0.04); }
+        .barcode-empty {
+            display: none;
+            margin-top: 10px;
+            padding: 14px;
+            background: rgba(0, 0, 0, 0.04);
+            border-radius: 12px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            color: #444;
+            text-align: center;
+            letter-spacing: 0.04em;
+        }
+        .barcode-modal.empty .barcode-svg-host,
+        .barcode-modal.empty .barcode-number { display: none; }
+        .barcode-modal.empty .barcode-empty { display: block; }
+
+        /* Weekly schedule — chunky day chips, weekdays only */
         .weekly-schedule {
             display: grid;
-            grid-template-columns: repeat(7, 1fr);
+            grid-template-columns: repeat(5, 1fr);
             gap: 6px;
             margin-bottom: 28px;
         }
@@ -602,11 +760,19 @@
         }
 
         .workout-table tr {
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.11);
             transition: background 0.2s;
         }
         .workout-table tr:last-child { border-bottom: none; }
+        /* Exercise rows directly followed by their plate panel: keep them
+           visually unified by suppressing the hairline between them. */
+        .workout-table tr:has(+ tr.plate-panel-row) { border-bottom: none; }
         .workout-table tr:hover { background: rgba(var(--day-rgb), 0.06); }
+        @media (prefers-color-scheme: light) {
+            .workout-table tr {
+                border-bottom-color: rgba(80, 30, 140, 0.12);
+            }
+        }
 
         .workout-table td {
             padding: 12px 10px;
@@ -1233,48 +1399,103 @@
             100% { transform: translateY(0)    scale(1);    opacity: 1; }
         }
 
-        /* Progression table — 4-week plan card */
-        .progression-table {
-            width: 100%;
-            border-collapse: collapse;
+        /* Progress card — top weights + sparkline per main lift */
+        .progress-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
             margin-top: 4px;
         }
-        .progression-table tr {
-            border-bottom: 1px solid var(--table-row-hairline);
+        .progress-row {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            grid-template-rows: auto auto;
+            align-items: center;
+            gap: 4px 12px;
+            padding: 12px 14px;
+            background: rgba(var(--day-rgb), 0.06);
+            border: 1px solid rgba(var(--day-rgb), 0.18);
+            border-left: 3px solid rgba(var(--day-rgb), 0.55);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: background 0.2s, border-color 0.2s, transform 0.1s;
+            text-align: left;
+            color: inherit;
+            font: inherit;
+            width: 100%;
         }
-        .progression-table tr:last-child { border-bottom: none; }
-        .progression-table td {
-            padding: 12px 10px;
-            font-size: 13px;
-            color: var(--ink-dim);
-            vertical-align: top;
-            line-height: 1.45;
+        .progress-row:hover {
+            background: rgba(var(--day-rgb), 0.12);
+            border-color: rgba(var(--day-rgb), 0.4);
         }
-        .progression-table td.week-cell {
-            font-family: 'Unbounded', sans-serif;
-            font-size: 12px;
-            font-weight: 700;
-            letter-spacing: 0.04em;
+        .progress-row:active { transform: scale(0.99); }
+        .progress-row__name {
+            grid-column: 1;
+            grid-row: 1;
+            font-size: 14px;
+            font-weight: 600;
             color: var(--ink);
+            letter-spacing: -0.005em;
+        }
+        .progress-row__top {
+            grid-column: 2;
+            grid-row: 1;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 15px;
+            font-weight: 800;
+            color: var(--day);
             white-space: nowrap;
-            width: 1%;
         }
-        .progression-table tr.deload {
-            background: linear-gradient(90deg, rgba(255, 176, 32, 0.18) 0%, rgba(255, 176, 32, 0.06) 100%);
-            box-shadow: inset 3px 0 0 #ffb020;
+        .progress-row__top-unit {
+            color: var(--ink-dim);
+            font-size: 11px;
+            font-weight: 600;
+            margin-left: 3px;
+            letter-spacing: 0.04em;
         }
-        .progression-table tr.deload td { color: var(--ink); }
-        .progression-table tr.deload td.week-cell {
-            color: #ffb020;
+        .progress-row__spark {
+            grid-column: 1 / span 2;
+            grid-row: 2;
+            width: 100%;
+            height: 28px;
+            display: block;
         }
-        @media (prefers-color-scheme: light) {
-            .progression-table tr.deload {
-                background: linear-gradient(90deg, rgba(214, 132, 0, 0.18) 0%, rgba(214, 132, 0, 0.06) 100%);
-                box-shadow: inset 3px 0 0 #d68400;
-            }
-            .progression-table tr.deload td.week-cell {
-                color: #b56a00;
-            }
+        .progress-row__empty {
+            grid-column: 1 / span 2;
+            grid-row: 2;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            color: var(--ink-faint);
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+        }
+
+        /* Progress chart modal — reuses history-modal styling */
+        .progress-chart {
+            width: 100%;
+            height: 220px;
+            display: block;
+            margin-bottom: 8px;
+        }
+        .progress-chart-stats {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 10px 0 4px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            color: var(--ink-dim);
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+        }
+        .progress-chart-stats strong {
+            display: block;
+            font-size: 16px;
+            color: var(--day);
+            font-weight: 800;
+            margin-top: 4px;
+            letter-spacing: 0;
+            text-transform: none;
         }
 
         /* PR celebrations — random pick of three */
@@ -1399,6 +1620,12 @@
             <div class="day-sub" id="daySub">Day A<span class="dot"></span>Upper Push<span class="dot"></span>Monday</div>
         </header>
 
+        <button type="button" id="scanInBtn" class="scan-in-btn" aria-haspopup="dialog" aria-label="Scan in" title="Scan in">
+            <span class="scan-in-btn__bars" aria-hidden="true">
+                <span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+            </span>
+        </button>
+
         <div class="date-selector">
             <label class="date-display">Select Date:</label>
             <div class="date-actions">
@@ -1419,18 +1646,23 @@
                     <div class="section-title" style="font-size: 14px; border: none; padding: 0; margin: 15px 0 10px 0;">Warmup</div>
                     <table class="workout-table">
                         <tr>
-                            <td class="exercise-name">5 min cardio</td>
+                            <td class="exercise-name">3–5 min cardio</td>
                             <td class="rest-time">Light intensity</td>
                             <td class="weight-input-cell"></td>
                         </tr>
                         <tr>
-                            <td class="exercise-name">Arm circles / Shoulder rotations</td>
-                            <td class="rest-time">2 min</td>
+                            <td class="exercise-name">Empty bar bench</td>
+                            <td class="sets-reps">1 x 8</td>
                             <td class="weight-input-cell"></td>
                         </tr>
                         <tr>
-                            <td class="exercise-name">Warm-up sets on bench</td>
-                            <td class="sets-reps">2 x 10</td>
+                            <td class="exercise-name">~50% working weight bench</td>
+                            <td class="sets-reps">1 x 5</td>
+                            <td class="weight-input-cell"></td>
+                        </tr>
+                        <tr>
+                            <td class="exercise-name">~75% working weight bench</td>
+                            <td class="sets-reps">1 x 3</td>
                             <td class="weight-input-cell"></td>
                         </tr>
                     </table>
@@ -1492,28 +1724,18 @@
                     <div class="section-title" style="font-size: 14px; border: none; padding: 0; margin: 15px 0 10px 0;">Cooldown</div>
                     <table class="workout-table">
                         <tr>
-                            <td class="exercise-name">Chest doorway stretch</td>
-                            <td class="rest-time">45s</td>
+                            <td class="exercise-name">Walk</td>
+                            <td class="rest-time">2 min</td>
                             <td class="weight-input-cell"></td>
                         </tr>
                         <tr>
-                            <td class="exercise-name">Cross-body shoulder stretch</td>
-                            <td class="rest-time">45s each</td>
+                            <td class="exercise-name">Chest doorway stretch</td>
+                            <td class="rest-time">60s each</td>
                             <td class="weight-input-cell"></td>
                         </tr>
                         <tr>
                             <td class="exercise-name">Overhead tricep stretch</td>
-                            <td class="rest-time">30s each</td>
-                            <td class="weight-input-cell"></td>
-                        </tr>
-                        <tr>
-                            <td class="exercise-name">Bicep wall stretch</td>
-                            <td class="rest-time">30s each</td>
-                            <td class="weight-input-cell"></td>
-                        </tr>
-                        <tr>
-                            <td class="exercise-name">Child's pose</td>
-                            <td class="rest-time">60s</td>
+                            <td class="rest-time">45s each</td>
                             <td class="weight-input-cell"></td>
                         </tr>
                     </table>
@@ -1559,23 +1781,23 @@
                     <div class="section-title" style="font-size: 14px; border: none; padding: 0; margin: 15px 0 10px 0;">Warmup</div>
                     <table class="workout-table">
                         <tr>
-                            <td class="exercise-name">5 min bike/treadmill</td>
+                            <td class="exercise-name">3–5 min bike</td>
                             <td class="rest-time">Light intensity</td>
                             <td class="weight-input-cell"></td>
                         </tr>
                         <tr>
-                            <td class="exercise-name">90-90 stretch</td>
-                            <td class="rest-time">60-90s per side</td>
+                            <td class="exercise-name">Empty bar squat</td>
+                            <td class="sets-reps">1 x 8</td>
                             <td class="weight-input-cell"></td>
                         </tr>
                         <tr>
-                            <td class="exercise-name">Leg swings / Hip circles / BW squats x10</td>
-                            <td class="rest-time">2 min</td>
+                            <td class="exercise-name">~50% working weight squat</td>
+                            <td class="sets-reps">1 x 5</td>
                             <td class="weight-input-cell"></td>
                         </tr>
                         <tr>
-                            <td class="exercise-name">Warm-up sets on squat</td>
-                            <td class="sets-reps">2 x 10</td>
+                            <td class="exercise-name">~75% working weight squat</td>
+                            <td class="sets-reps">1 x 3</td>
                             <td class="weight-input-cell"></td>
                         </tr>
                     </table>
@@ -1659,28 +1881,18 @@
                     <div class="section-title" style="font-size: 14px; border: none; padding: 0; margin: 15px 0 10px 0;">Cooldown</div>
                     <table class="workout-table">
                         <tr>
-                            <td class="exercise-name">Standing quad stretch</td>
-                            <td class="rest-time">45s each</td>
+                            <td class="exercise-name">Walk</td>
+                            <td class="rest-time">2 min</td>
                             <td class="weight-input-cell"></td>
                         </tr>
                         <tr>
-                            <td class="exercise-name">Kneeling hip flexor stretch</td>
-                            <td class="rest-time">45s each</td>
+                            <td class="exercise-name">Couch stretch</td>
+                            <td class="rest-time">60s each</td>
                             <td class="weight-input-cell"></td>
                         </tr>
                         <tr>
                             <td class="exercise-name">Pigeon pose</td>
                             <td class="rest-time">60s each</td>
-                            <td class="weight-input-cell"></td>
-                        </tr>
-                        <tr>
-                            <td class="exercise-name">Seated forward fold</td>
-                            <td class="rest-time">60s</td>
-                            <td class="weight-input-cell"></td>
-                        </tr>
-                        <tr>
-                            <td class="exercise-name">Child's pose</td>
-                            <td class="rest-time">60s</td>
                             <td class="weight-input-cell"></td>
                         </tr>
                     </table>
@@ -1726,18 +1938,23 @@
                     <div class="section-title" style="font-size: 14px; border: none; padding: 0; margin: 15px 0 10px 0;">Warmup</div>
                     <table class="workout-table">
                         <tr>
-                            <td class="exercise-name">5 min rowing</td>
+                            <td class="exercise-name">3–5 min row</td>
                             <td class="rest-time">Light intensity</td>
                             <td class="weight-input-cell"></td>
                         </tr>
                         <tr>
-                            <td class="exercise-name">Arm circles / Shoulder rotations</td>
-                            <td class="rest-time">2 min</td>
+                            <td class="exercise-name">Empty bar row</td>
+                            <td class="sets-reps">1 x 8</td>
                             <td class="weight-input-cell"></td>
                         </tr>
                         <tr>
-                            <td class="exercise-name">Warm-up sets on barbell row</td>
-                            <td class="sets-reps">2 x 10</td>
+                            <td class="exercise-name">~50% working weight row</td>
+                            <td class="sets-reps">1 x 5</td>
+                            <td class="weight-input-cell"></td>
+                        </tr>
+                        <tr>
+                            <td class="exercise-name">~75% working weight row</td>
+                            <td class="sets-reps">1 x 3</td>
                             <td class="weight-input-cell"></td>
                         </tr>
                     </table>
@@ -1799,23 +2016,18 @@
                     <div class="section-title" style="font-size: 14px; border: none; padding: 0; margin: 15px 0 10px 0;">Cooldown</div>
                     <table class="workout-table">
                         <tr>
+                            <td class="exercise-name">Walk</td>
+                            <td class="rest-time">2 min</td>
+                            <td class="weight-input-cell"></td>
+                        </tr>
+                        <tr>
                             <td class="exercise-name">Chest doorway stretch</td>
-                            <td class="rest-time">45s</td>
+                            <td class="rest-time">60s each</td>
                             <td class="weight-input-cell"></td>
                         </tr>
                         <tr>
-                            <td class="exercise-name">Cross-body shoulder stretch</td>
+                            <td class="exercise-name">Lat stretch</td>
                             <td class="rest-time">45s each</td>
-                            <td class="weight-input-cell"></td>
-                        </tr>
-                        <tr>
-                            <td class="exercise-name">Bicep wall stretch</td>
-                            <td class="rest-time">30s each</td>
-                            <td class="weight-input-cell"></td>
-                        </tr>
-                        <tr>
-                            <td class="exercise-name">Child's pose</td>
-                            <td class="rest-time">60s</td>
                             <td class="weight-input-cell"></td>
                         </tr>
                     </table>
@@ -1861,23 +2073,23 @@
                     <div class="section-title" style="font-size: 14px; border: none; padding: 0; margin: 15px 0 10px 0;">Warmup</div>
                     <table class="workout-table">
                         <tr>
-                            <td class="exercise-name">5 min bike/treadmill</td>
+                            <td class="exercise-name">3–5 min bike</td>
                             <td class="rest-time">Light intensity</td>
                             <td class="weight-input-cell"></td>
                         </tr>
                         <tr>
-                            <td class="exercise-name">90-90 stretch</td>
-                            <td class="rest-time">60-90s per side</td>
+                            <td class="exercise-name">Empty bar RDL</td>
+                            <td class="sets-reps">1 x 8</td>
                             <td class="weight-input-cell"></td>
                         </tr>
                         <tr>
-                            <td class="exercise-name">Leg swings / Hip circles / Glute bridges x10</td>
-                            <td class="rest-time">2 min</td>
+                            <td class="exercise-name">~50% working weight RDL</td>
+                            <td class="sets-reps">1 x 5</td>
                             <td class="weight-input-cell"></td>
                         </tr>
                         <tr>
-                            <td class="exercise-name">Warm-up sets on RDL</td>
-                            <td class="sets-reps">2 x 10</td>
+                            <td class="exercise-name">~75% working weight RDL</td>
+                            <td class="sets-reps">1 x 3</td>
                             <td class="weight-input-cell"></td>
                         </tr>
                     </table>
@@ -1961,28 +2173,18 @@
                     <div class="section-title" style="font-size: 14px; border: none; padding: 0; margin: 15px 0 10px 0;">Cooldown</div>
                     <table class="workout-table">
                         <tr>
-                            <td class="exercise-name">Standing hamstring stretch</td>
-                            <td class="rest-time">45s each</td>
+                            <td class="exercise-name">Walk</td>
+                            <td class="rest-time">2 min</td>
                             <td class="weight-input-cell"></td>
                         </tr>
                         <tr>
-                            <td class="exercise-name">Kneeling hip flexor stretch</td>
-                            <td class="rest-time">45s each</td>
+                            <td class="exercise-name">Standing hamstring stretch</td>
+                            <td class="rest-time">60s each</td>
                             <td class="weight-input-cell"></td>
                         </tr>
                         <tr>
                             <td class="exercise-name">Pigeon pose</td>
                             <td class="rest-time">60s each</td>
-                            <td class="weight-input-cell"></td>
-                        </tr>
-                        <tr>
-                            <td class="exercise-name">Seated forward fold</td>
-                            <td class="rest-time">60s</td>
-                            <td class="weight-input-cell"></td>
-                        </tr>
-                        <tr>
-                            <td class="exercise-name">Child's pose</td>
-                            <td class="rest-time">60s</td>
                             <td class="weight-input-cell"></td>
                         </tr>
                     </table>
@@ -2028,18 +2230,18 @@
                     <div class="section-title" style="font-size: 14px; border: none; padding: 0; margin: 15px 0 10px 0;">Warmup</div>
                     <table class="workout-table">
                         <tr>
-                            <td class="exercise-name">5 min cardio</td>
+                            <td class="exercise-name">3–5 min cardio</td>
                             <td class="rest-time">Light intensity</td>
                             <td class="weight-input-cell"></td>
                         </tr>
                         <tr>
-                            <td class="exercise-name">Shoulder / elbow circles</td>
-                            <td class="rest-time">2 min</td>
+                            <td class="exercise-name">Light DB curl</td>
+                            <td class="sets-reps">1 x 12</td>
                             <td class="weight-input-cell"></td>
                         </tr>
                         <tr>
-                            <td class="exercise-name">Light curl warmup</td>
-                            <td class="sets-reps">2 x 12</td>
+                            <td class="exercise-name">Light overhead extension</td>
+                            <td class="sets-reps">1 x 10</td>
                             <td class="weight-input-cell"></td>
                         </tr>
                     </table>
@@ -2129,8 +2331,8 @@
                     <div class="section-title" style="font-size: 14px; border: none; padding: 0; margin: 15px 0 10px 0;">Cooldown</div>
                     <table class="workout-table">
                         <tr>
-                            <td class="exercise-name">Forearm / wrist stretch</td>
-                            <td class="rest-time">30s each</td>
+                            <td class="exercise-name">Walk</td>
+                            <td class="rest-time">2 min</td>
                             <td class="weight-input-cell"></td>
                         </tr>
                         <tr>
@@ -2140,11 +2342,6 @@
                         </tr>
                         <tr>
                             <td class="exercise-name">Overhead tricep stretch</td>
-                            <td class="rest-time">30s each</td>
-                            <td class="weight-input-cell"></td>
-                        </tr>
-                        <tr>
-                            <td class="exercise-name">Lat stretch</td>
                             <td class="rest-time">45s each</td>
                             <td class="weight-input-cell"></td>
                         </tr>
@@ -2155,27 +2352,10 @@
             <button class="save-button" data-day="E">Save Day E Workout</button>
         </div>
 
-        <!-- Info Sections -->
-        <div class="info-section">
-            <h3>4-Week Progression (Weeks 7&ndash;10)</h3>
-            <table class="progression-table">
-                <tr>
-                    <td class="week-cell">Week 1</td>
-                    <td>Start compounds at a moderate weight. Build confidence in the new <strong>6&ndash;8</strong> rep range.</td>
-                </tr>
-                <tr>
-                    <td class="week-cell">Week 2</td>
-                    <td>Add <strong>5 lbs</strong> to barbell compounds. Progress only if you hit 8 clean reps across all sets.</td>
-                </tr>
-                <tr>
-                    <td class="week-cell">Week 3</td>
-                    <td>Push intensity. Last compound set should be a <strong>genuine grind</strong>.</td>
-                </tr>
-                <tr class="deload">
-                    <td class="week-cell">Week 4<br><span style="font-size:10px;letter-spacing:0.12em;">DELOAD</span></td>
-                    <td>Same exercises, <strong>50&ndash;60%</strong> of working weights, <strong>2 sets only</strong> on everything. Recover and reset.</td>
-                </tr>
-            </table>
+        <!-- Progress: top weights + sparklines for the main compounds -->
+        <div class="info-section progress-card">
+            <h3>Progress</h3>
+            <div id="progressList" class="progress-list" aria-live="polite"></div>
         </div>
 
         <div class="data-section">
@@ -2199,6 +2379,22 @@
                 <button class="history-modal__close" type="button" onclick="closeHistoryModal()" aria-label="Close">&times;</button>
             </div>
             <div class="history-modal__list" id="historyModalList"></div>
+        </div>
+    </div>
+
+    <div class="barcode-modal" id="barcodeModal" role="dialog" aria-modal="true" aria-labelledby="barcodeModalTitle">
+        <div class="barcode-modal__backdrop" onclick="closeBarcodeModal()"></div>
+        <div class="barcode-modal__card">
+            <div class="barcode-modal__header">
+                <div class="barcode-modal__title" id="barcodeModalTitle">Scan in</div>
+                <button class="barcode-modal__edit" type="button" onclick="editMemberNumber()" aria-label="Edit member number" title="Edit member number">✎</button>
+                <button class="barcode-modal__close" type="button" onclick="closeBarcodeModal()" aria-label="Close">&times;</button>
+            </div>
+            <div class="barcode-modal__body">
+                <div id="barcodeSvgHost" class="barcode-svg-host" role="img" aria-label="Membership barcode"></div>
+                <button type="button" id="barcodeNumber" class="barcode-number" onclick="editMemberNumber()" aria-label="Edit member number">—</button>
+                <div class="barcode-empty" id="barcodeEmpty">Tap to set your member number</div>
+            </div>
         </div>
     </div>
 
@@ -2408,48 +2604,46 @@
         // Maps weekday index (0=Sun … 6=Sat) → tab letter for gym days
         const WEEKDAY_TO_DAY = { 1: 'A', 2: 'B', 3: 'C', 4: 'D', 5: 'E' };
 
-        // Render the 7-chip schedule for the week containing `selectedDate`.
-        // Gym days are interactive and labeled `Mon` / `Day A`; rest days
-        // show `Rest`. The chip whose date matches `selectedDate` is highlighted.
+        // Render the 5-chip Mon–Fri schedule for the week containing `selectedDate`.
+        // Every chip is a gym day; the chip whose date matches `selectedDate` is highlighted.
         function renderWeeklySchedule(selectedDate) {
             const sel = selectedDate ? new Date(selectedDate) : new Date();
             const selStr = formatDate(sel);
-            const startOfWeek = new Date(sel);
-            startOfWeek.setDate(sel.getDate() - sel.getDay());
+            // Anchor Monday of the displayed week. JS getDay(): 0=Sun..6=Sat.
+            const monday = new Date(sel);
+            const dow = sel.getDay();
+            const offsetToMonday = dow === 0 ? -6 : 1 - dow;
+            monday.setDate(sel.getDate() + offsetToMonday);
 
             const schedule = document.getElementById('weeklySchedule');
             schedule.innerHTML = '';
 
-            const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+            const dayNames = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'];
 
-            for (let i = 0; i < 7; i++) {
-                const date = new Date(startOfWeek);
-                date.setDate(startOfWeek.getDate() + i);
+            for (let i = 0; i < 5; i++) {
+                const date = new Date(monday);
+                date.setDate(monday.getDate() + i);
                 const dateStr = formatDate(date);
-                const tabDay = WEEKDAY_TO_DAY[i];
-                const isGymDay = !!tabDay;
-                const isSelected = isGymDay && dateStr === selStr;
+                const tabDay = WEEKDAY_TO_DAY[date.getDay()];
+                const isSelected = dateStr === selStr;
 
                 const dayDiv = document.createElement('div');
-                dayDiv.className = `day-indicator ${isGymDay ? 'gym' : 'rest'} ${isSelected ? 'selected' : ''}`;
+                dayDiv.className = `day-indicator gym ${isSelected ? 'selected' : ''}`;
                 dayDiv.dataset.date = dateStr;
-                if (isGymDay) dayDiv.dataset.tabDay = tabDay;
+                dayDiv.dataset.tabDay = tabDay;
 
-                const sublabel = isGymDay ? `Day ${tabDay}` : 'Rest';
-                dayDiv.innerHTML = `<span class="day-letter">${dayNames[i]}</span><span class="day-type">${sublabel}</span>`;
+                dayDiv.innerHTML = `<span class="day-letter">${dayNames[i]}</span><span class="day-type">Day ${tabDay}</span>`;
 
-                if (isGymDay) {
-                    dayDiv.setAttribute('role', 'button');
-                    dayDiv.setAttribute('tabindex', '0');
-                    dayDiv.setAttribute('aria-label', `Open Day ${tabDay} (${dayNames[i]} ${dateStr})`);
-                    dayDiv.addEventListener('click', () => setActiveDate(date));
-                    dayDiv.addEventListener('keydown', (e) => {
-                        if (e.key === 'Enter' || e.key === ' ') {
-                            e.preventDefault();
-                            setActiveDate(date);
-                        }
-                    });
-                }
+                dayDiv.setAttribute('role', 'button');
+                dayDiv.setAttribute('tabindex', '0');
+                dayDiv.setAttribute('aria-label', `Open Day ${tabDay} (${dayNames[i]} ${dateStr})`);
+                dayDiv.addEventListener('click', () => setActiveDate(date));
+                dayDiv.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        setActiveDate(date);
+                    }
+                });
 
                 schedule.appendChild(dayDiv);
             }
@@ -2780,6 +2974,358 @@
             document.body.style.overflow = '';
         }
 
+        // Progress card — main compounds, listed in program order:
+        // Day A → B → C → D (Day E has no barbell main lift)
+        const PROGRESS_EXERCISES = [
+            'Barbell bench press',   // Day A compound
+            'Barbell back squat',    // Day B compound
+            'Leg press',             // Day B accessory
+            'Barbell row',           // Day C compound
+            'Romanian deadlift',     // Day D compound
+            'Hip thrust',            // Day D accessory
+        ];
+
+        function sparklineSVG(history) {
+            if (!history || history.length === 0) return '';
+            const w = 200;
+            const h = 28;
+            const pad = 2;
+            const weights = history.map(h => Number(h.weight));
+            const min = Math.min(...weights);
+            const max = Math.max(...weights);
+            const range = max - min || 1;
+            const stepX = history.length === 1 ? 0 : (w - pad * 2) / (history.length - 1);
+            const points = weights.map((wt, i) => {
+                const x = pad + stepX * i;
+                const y = pad + (h - pad * 2) * (1 - (wt - min) / range);
+                return [x, y];
+            });
+            const path = points.map((p, i) => `${i === 0 ? 'M' : 'L'}${p[0].toFixed(1)},${p[1].toFixed(1)}`).join(' ');
+            const lastPt = points[points.length - 1];
+            return `
+                <svg class="progress-row__spark" viewBox="0 0 ${w} ${h}" preserveAspectRatio="none" aria-hidden="true">
+                    <path d="${path}" fill="none" stroke="rgba(var(--day-rgb), 0.85)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                    <circle cx="${lastPt[0].toFixed(1)}" cy="${lastPt[1].toFixed(1)}" r="2.4" fill="rgb(var(--day-rgb))"/>
+                </svg>
+            `;
+        }
+
+        async function renderProgressCard() {
+            const listEl = document.getElementById('progressList');
+            if (!listEl) return;
+
+            const rows = await Promise.all(PROGRESS_EXERCISES.map(async (ex) => {
+                const history = await getWeightHistory(ex);
+                const top = history.reduce((m, h) => (Number(h.weight) > m ? Number(h.weight) : m), 0);
+                return { exercise: ex, history, top };
+            }));
+
+            listEl.innerHTML = '';
+            rows.forEach(({ exercise, history, top }) => {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.className = 'progress-row';
+                btn.setAttribute('aria-label', `${exercise} progress chart`);
+                btn.dataset.exercise = exercise;
+
+                const spark = history.length > 0
+                    ? sparklineSVG(history)
+                    : '<div class="progress-row__empty">No data yet</div>';
+                const topDisplay = top > 0
+                    ? `${fmtNum(top)}<span class="progress-row__top-unit">lbs</span>`
+                    : `<span class="progress-row__top-unit">—</span>`;
+
+                btn.innerHTML = `
+                    <div class="progress-row__name">${exercise}</div>
+                    <div class="progress-row__top">${topDisplay}</div>
+                    ${spark}
+                `;
+                btn.addEventListener('click', () => openProgressChart(exercise));
+                listEl.appendChild(btn);
+            });
+        }
+
+        // Expanded chart modal — reuses the history-modal shell
+        async function openProgressChart(exercise) {
+            const modal = document.getElementById('historyModal');
+            const titleEl = document.getElementById('historyModalTitle');
+            const listEl = document.getElementById('historyModalList');
+
+            titleEl.textContent = exercise;
+            listEl.innerHTML = '<div class="history-empty">Loading…</div>';
+            modal.classList.add('open');
+            document.body.style.overflow = 'hidden';
+
+            const history = await getWeightHistory(exercise);
+            if (history.length === 0) {
+                listEl.innerHTML = '<div class="history-empty">No history yet</div>';
+                return;
+            }
+
+            const weights = history.map(h => Number(h.weight));
+            const top = Math.max(...weights);
+            const first = weights[0];
+            const last = weights[weights.length - 1];
+            const delta = last - first;
+            const deltaStr = delta > 0 ? `+${fmtNum(delta)}` : (delta < 0 ? `${fmtNum(delta)}` : '±0');
+
+            // Build full chart SVG
+            const w = 340;
+            const h = 200;
+            const padL = 32;
+            const padR = 10;
+            const padT = 14;
+            const padB = 28;
+            const innerW = w - padL - padR;
+            const innerH = h - padT - padB;
+            const min = Math.min(...weights);
+            const max = Math.max(...weights);
+            const range = max - min || 1;
+            const yPad = range * 0.1;
+            const yMin = min - yPad;
+            const yMax = max + yPad;
+            const yRange = yMax - yMin;
+
+            const stepX = history.length === 1 ? 0 : innerW / (history.length - 1);
+            const points = weights.map((wt, i) => {
+                const x = padL + stepX * i;
+                const y = padT + innerH * (1 - (wt - yMin) / yRange);
+                return [x, y];
+            });
+            const path = points.map((p, i) => `${i === 0 ? 'M' : 'L'}${p[0].toFixed(1)},${p[1].toFixed(1)}`).join(' ');
+            const area = points.length > 1
+                ? `${path} L${points[points.length - 1][0].toFixed(1)},${(padT + innerH).toFixed(1)} L${points[0][0].toFixed(1)},${(padT + innerH).toFixed(1)} Z`
+                : '';
+
+            // Y-axis tick labels (min, max)
+            const yMinLabel = padT + innerH;
+            const yMaxLabel = padT;
+
+            // First + last date labels along x
+            const firstDate = history[0].date;
+            const lastDate = history[history.length - 1].date;
+
+            const dots = points.map((p, i) => {
+                const isPR = weights[i] === top;
+                return `<circle cx="${p[0].toFixed(1)}" cy="${p[1].toFixed(1)}" r="${isPR ? 3.6 : 2.8}" fill="${isPR ? 'rgb(var(--day-rgb))' : 'rgba(var(--day-rgb), 0.7)'}"/>`;
+            }).join('');
+
+            listEl.innerHTML = `
+                <svg class="progress-chart" viewBox="0 0 ${w} ${h}" preserveAspectRatio="xMidYMid meet" aria-label="${exercise} weight over time">
+                    <line x1="${padL}" y1="${yMinLabel}" x2="${w - padR}" y2="${yMinLabel}" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
+                    <line x1="${padL}" y1="${yMaxLabel}" x2="${w - padR}" y2="${yMaxLabel}" stroke="rgba(255,255,255,0.06)" stroke-width="1" stroke-dasharray="2 3"/>
+                    <text x="${padL - 6}" y="${yMaxLabel + 4}" text-anchor="end" font-family="JetBrains Mono, monospace" font-size="10" fill="rgba(255,255,255,0.55)">${fmtNum(max)}</text>
+                    <text x="${padL - 6}" y="${yMinLabel + 1}" text-anchor="end" font-family="JetBrains Mono, monospace" font-size="10" fill="rgba(255,255,255,0.55)">${fmtNum(min)}</text>
+                    <text x="${padL}" y="${h - 6}" text-anchor="start" font-family="JetBrains Mono, monospace" font-size="10" fill="rgba(255,255,255,0.45)">${firstDate}</text>
+                    <text x="${w - padR}" y="${h - 6}" text-anchor="end" font-family="JetBrains Mono, monospace" font-size="10" fill="rgba(255,255,255,0.45)">${lastDate}</text>
+                    ${area ? `<path d="${area}" fill="rgba(var(--day-rgb), 0.12)"/>` : ''}
+                    <path d="${path}" fill="none" stroke="rgba(var(--day-rgb), 0.9)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    ${dots}
+                </svg>
+                <div class="progress-chart-stats">
+                    <span>Top<strong>${fmtNum(top)} lbs</strong></span>
+                    <span>Latest<strong>${fmtNum(last)} lbs</strong></span>
+                    <span>Δ<strong>${deltaStr}</strong></span>
+                </div>
+            `;
+        }
+
+        // ── Barcode (Code 128 Set B) ────────────────────────────────────
+        // Module-width patterns for values 0..106. Values 103/104/105 are
+        // Start A/B/C; 106 is the Stop (7 widths — last bar is the terminator).
+        const CODE128_PATTERNS = [
+            '212222','222122','222221','121223','121322','131222','122213','122312','132212','221213',
+            '221312','231212','112232','122132','122231','113222','123122','123221','223211','221132',
+            '221231','213212','223112','312131','311222','321122','321221','312212','322112','322211',
+            '212123','212321','232121','111323','131123','131321','112313','132113','132311','211313',
+            '231113','231311','112133','112331','132131','113123','113321','133121','313121','211331',
+            '231131','213113','213311','213131','311123','311321','331121','312113','312311','332111',
+            '314111','221411','431111','111224','111422','121124','121421','141122','141221','112214',
+            '112412','122114','122411','142112','142211','241211','221114','413111','241112','134111',
+            '111242','121142','121241','114212','124112','124211','411212','421112','421211','212141',
+            '214121','412121','111143','111341','131141','114113','114311','411113','411311','113141',
+            '114131','311141','411131','211412','211214','211232','2331112'
+        ];
+        const CODE128_START_B = 104;
+        const CODE128_START_C = 105;
+        const CODE128_CODE_B = 100;
+        const CODE128_CODE_C = 99;
+        const CODE128_STOP = 106;
+
+        // Minimal Code 128 encoder that switches between Set C (digit pairs)
+        // and Set B (printable ASCII) to match the compact bars produced by
+        // typical gym membership card encoders.
+        //
+        // Heuristic (close to the ISO/IEC 15417 recommendation):
+        //   - Use Set C from the start when the string begins with 4+ digits.
+        //   - In Set B, switch to C if the next run is >=6 digits, or >=4
+        //     digits at end-of-string with even count.
+        //   - In Set C, emit pairs while we have >=2 digits; switch to B
+        //     when we run out of pairs or hit a non-digit.
+        function encodeCode128(str) {
+            const s = String(str);
+            const len = s.length;
+            const digitsAt = (i) => {
+                let n = 0;
+                while (i + n < len && s[i + n] >= '0' && s[i + n] <= '9') n++;
+                return n;
+            };
+
+            const values = [];
+            let i = 0;
+            let mode;
+
+            const leading = digitsAt(0);
+            if (leading >= 4) {
+                values.push(CODE128_START_C);
+                mode = 'C';
+            } else {
+                values.push(CODE128_START_B);
+                mode = 'B';
+            }
+
+            while (i < len) {
+                if (mode === 'C') {
+                    const d = digitsAt(i);
+                    if (d >= 2) {
+                        const pairs = Math.floor(d / 2);
+                        for (let k = 0; k < pairs; k++) {
+                            values.push(parseInt(s.substr(i, 2), 10));
+                            i += 2;
+                        }
+                        if (i >= len) break;
+                        values.push(CODE128_CODE_B);
+                        mode = 'B';
+                    } else {
+                        values.push(CODE128_CODE_B);
+                        mode = 'B';
+                    }
+                } else { // Set B
+                    const d = digitsAt(i);
+                    const remaining = len - i;
+                    const switchToC =
+                        d >= 6 ||
+                        (d >= 4 && d === remaining && d % 2 === 0);
+                    if (switchToC) {
+                        values.push(CODE128_CODE_C);
+                        mode = 'C';
+                        continue;
+                    }
+                    const code = s.charCodeAt(i);
+                    if (code >= 32 && code <= 126) {
+                        values.push(code - 32);
+                    }
+                    i++;
+                }
+            }
+
+            let checksum = values[0];
+            for (let k = 1; k < values.length; k++) {
+                checksum += values[k] * k;
+            }
+            values.push(checksum % 103);
+            values.push(CODE128_STOP);
+            return values;
+        }
+
+        // Backward-compat alias retained for any external callers
+        const encodeCode128B = encodeCode128;
+
+        function renderBarcodeSVG(text, opts = {}) {
+            const moduleWidth = opts.moduleWidth || 2;
+            const height = opts.height || 100;
+            const quietModules = 10;
+            const values = encodeCode128(text);
+            const patterns = values.map(v => CODE128_PATTERNS[v]);
+
+            let totalModules = quietModules * 2;
+            patterns.forEach(p => {
+                for (const c of p) totalModules += +c;
+            });
+            const totalWidth = totalModules * moduleWidth;
+
+            let x = quietModules * moduleWidth;
+            let bars = '';
+            patterns.forEach(p => {
+                let isBar = true;
+                for (const c of p) {
+                    const w = +c * moduleWidth;
+                    if (isBar) {
+                        bars += `<rect x="${x}" y="0" width="${w}" height="${height}" fill="#000"/>`;
+                    }
+                    x += w;
+                    isBar = !isBar;
+                }
+            });
+
+            return `
+                <svg viewBox="0 0 ${totalWidth} ${height}" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+                    <rect x="0" y="0" width="${totalWidth}" height="${height}" fill="#fff"/>
+                    ${bars}
+                </svg>
+            `;
+        }
+
+        const MEMBER_NUMBER_KEY = 'gymMemberNumber';
+
+        function getMemberNumber() {
+            try {
+                return (localStorage.getItem(MEMBER_NUMBER_KEY) || '').trim();
+            } catch (_) {
+                return '';
+            }
+        }
+        function setMemberNumber(value) {
+            try {
+                if (value) localStorage.setItem(MEMBER_NUMBER_KEY, value);
+                else localStorage.removeItem(MEMBER_NUMBER_KEY);
+            } catch (_) { /* ignore */ }
+        }
+
+        function renderBarcodeModalContents() {
+            const modal = document.getElementById('barcodeModal');
+            const host = document.getElementById('barcodeSvgHost');
+            const numberEl = document.getElementById('barcodeNumber');
+            const number = getMemberNumber();
+
+            if (!number) {
+                modal.classList.add('empty');
+                host.innerHTML = '';
+                numberEl.textContent = '—';
+                return;
+            }
+            modal.classList.remove('empty');
+            host.innerHTML = renderBarcodeSVG(number);
+            numberEl.textContent = number;
+        }
+
+        function openBarcodeModal() {
+            const modal = document.getElementById('barcodeModal');
+            renderBarcodeModalContents();
+            modal.classList.add('open');
+            document.body.style.overflow = 'hidden';
+
+            // First-time: prompt right away
+            if (!getMemberNumber()) {
+                editMemberNumber();
+            }
+        }
+
+        function closeBarcodeModal() {
+            const modal = document.getElementById('barcodeModal');
+            modal.classList.remove('open');
+            document.body.style.overflow = '';
+        }
+
+        function editMemberNumber() {
+            const current = getMemberNumber();
+            const next = window.prompt('Member number (digits or scan ID):', current);
+            if (next === null) return; // canceled
+            const cleaned = next.trim();
+            setMemberNumber(cleaned);
+            renderBarcodeModalContents();
+        }
+
         // PR celebration: shockwave rings expanding from a saved input
         function fireShockwave(input) {
             const rect = input.getBoundingClientRect();
@@ -2885,8 +3431,9 @@
                 showToast(`Day ${day} saved (${savedCount} exercises)`);
             }
 
-            // Reload weights to show in history
+            // Reload weights to show in history, and refresh progress card
             await loadWeights(day, date);
+            await renderProgressCard();
         }
 
         // Export all data as JSON
@@ -2968,6 +3515,9 @@
             // which renders the schedule, switches tab, and loads weights.
             await setActiveDate(today);
 
+            // Initial render of the Progress card
+            await renderProgressCard();
+
             // Date picker → drive the same flow (snap rest-day picks to prev gym day).
             // iOS Safari's native picker has a "Reset" that clears the value; treat
             // that as "go to today" so the schedule never desyncs from the input.
@@ -2984,6 +3534,8 @@
             document.getElementById('todayBtn').addEventListener('click', () => {
                 setActiveDate(new Date());
             });
+
+            document.getElementById('scanInBtn').addEventListener('click', openBarcodeModal);
 
             // Save buttons
             document.querySelectorAll('.save-button').forEach(btn => {
@@ -3018,11 +3570,17 @@
             }
         }
 
-        // Close history modal on ESC
+        // Close modals on ESC
         document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') {
-                const modal = document.getElementById('historyModal');
-                if (modal && modal.classList.contains('open')) closeHistoryModal();
+            if (e.key !== 'Escape') return;
+            const history = document.getElementById('historyModal');
+            if (history && history.classList.contains('open')) {
+                closeHistoryModal();
+                return;
+            }
+            const barcode = document.getElementById('barcodeModal');
+            if (barcode && barcode.classList.contains('open')) {
+                closeBarcodeModal();
             }
         });
 
