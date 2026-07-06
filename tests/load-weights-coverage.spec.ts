@@ -5,7 +5,7 @@ import { test, expect } from './fixtures';
  * when history exists) to EVERY weight input in the day's tab content.
  *
  * Regression: the original implementation iterated a hardcoded exercises
- * map that drifted from the HTML — Goblet squat existed as an input but
+ * map that drifted from the HTML — Leg extension existed as an input but
  * was missing from the map, so it never got a history toggle.
  */
 
@@ -32,10 +32,10 @@ test.describe('loadWeights coverage', () => {
     }
   });
 
-  test('Goblet squat gets a chip when it has history', async ({ freshPage }) => {
+  test('Leg extension gets a chip when it has history', async ({ freshPage }) => {
     await freshPage.evaluate(async () => {
       const sw = (window as any).saveWeight;
-      await sw('2026-04-15', 'Goblet squat', 40);
+      await sw('2026-04-15', 'Leg extension', 40);
     });
     await freshPage.evaluate(() => {
       (window as any).switchTab?.('B');
@@ -44,7 +44,7 @@ test.describe('loadWeights coverage', () => {
     await freshPage.evaluate(() => (window as any).loadWeights('B', '2026-04-30'));
 
     const input = freshPage.locator(
-      '.tab-content[data-day="B"] input[data-exercise="Goblet squat"]'
+      '.tab-content[data-day="B"] input[data-exercise="Leg extension"]'
     );
     const cell = input.locator('xpath=ancestor::td[1]');
 

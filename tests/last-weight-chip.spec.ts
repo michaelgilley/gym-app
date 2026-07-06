@@ -27,7 +27,7 @@ test.describe('Last-weight chip', () => {
     await freshPage.evaluate(() => (window as any).loadWeights('A', '2026-04-30'));
 
     const cell = freshPage.locator(
-      '.tab-content[data-day="A"] input[data-exercise="Incline dumbbell press"]'
+      '.tab-content[data-day="A"] input[data-exercise="Overhead dumbbell press"]'
     ).locator('xpath=ancestor::td[1]');
 
     await expect(cell.locator('.last-weight-chip')).toHaveCount(0);
@@ -36,12 +36,12 @@ test.describe('Last-weight chip', () => {
   test('chip appears with the last weight when history exists', async ({ freshPage }) => {
     await freshPage.evaluate(async () => {
       const sw = (window as any).saveWeight;
-      await sw('2026-04-15', 'Incline dumbbell press', 50);
+      await sw('2026-04-15', 'Overhead dumbbell press', 50);
     });
     await freshPage.evaluate(() => (window as any).loadWeights('A', '2026-04-30'));
 
     const cell = freshPage.locator(
-      '.tab-content[data-day="A"] input[data-exercise="Incline dumbbell press"]'
+      '.tab-content[data-day="A"] input[data-exercise="Overhead dumbbell press"]'
     ).locator('xpath=ancestor::td[1]');
 
     const chip = cell.locator('.last-weight-chip');
@@ -52,12 +52,12 @@ test.describe('Last-weight chip', () => {
   test('clicking the chip fills the input with the last weight', async ({ freshPage }) => {
     await freshPage.evaluate(async () => {
       const sw = (window as any).saveWeight;
-      await sw('2026-04-15', 'Incline dumbbell press', 50);
+      await sw('2026-04-15', 'Overhead dumbbell press', 50);
     });
     await freshPage.evaluate(() => (window as any).loadWeights('A', '2026-04-30'));
 
     const input = freshPage.locator(
-      '.tab-content[data-day="A"] input[data-exercise="Incline dumbbell press"]'
+      '.tab-content[data-day="A"] input[data-exercise="Overhead dumbbell press"]'
     );
     const cell = input.locator('xpath=ancestor::td[1]');
 
@@ -69,12 +69,12 @@ test.describe('Last-weight chip', () => {
   test('chip hides after click and re-appears when the input is cleared', async ({ freshPage }) => {
     await freshPage.evaluate(async () => {
       const sw = (window as any).saveWeight;
-      await sw('2026-04-15', 'Incline dumbbell press', 50);
+      await sw('2026-04-15', 'Overhead dumbbell press', 50);
     });
     await freshPage.evaluate(() => (window as any).loadWeights('A', '2026-04-30'));
 
     const input = freshPage.locator(
-      '.tab-content[data-day="A"] input[data-exercise="Incline dumbbell press"]'
+      '.tab-content[data-day="A"] input[data-exercise="Overhead dumbbell press"]'
     );
     const cell = input.locator('xpath=ancestor::td[1]');
     const chip = cell.locator('.last-weight-chip');
@@ -90,7 +90,7 @@ test.describe('Last-weight chip', () => {
   test('saving after clicking the chip persists the last weight', async ({ freshPage }) => {
     await freshPage.evaluate(async () => {
       const sw = (window as any).saveWeight;
-      await sw('2026-04-15', 'Incline dumbbell press', 50);
+      await sw('2026-04-15', 'Overhead dumbbell press', 50);
     });
     await freshPage.evaluate(async () => {
       const di = document.getElementById('dateInput') as HTMLInputElement;
@@ -99,7 +99,7 @@ test.describe('Last-weight chip', () => {
     });
 
     const input = freshPage.locator(
-      '.tab-content[data-day="A"] input[data-exercise="Incline dumbbell press"]'
+      '.tab-content[data-day="A"] input[data-exercise="Overhead dumbbell press"]'
     );
     const cell = input.locator('xpath=ancestor::td[1]');
 
@@ -112,7 +112,7 @@ test.describe('Last-weight chip', () => {
 
     // Reload from storage — the saved value should round-trip.
     const persisted = await freshPage.evaluate(async () => {
-      return await (window as any).getWeight('2026-04-30', 'Incline dumbbell press');
+      return await (window as any).getWeight('2026-04-30', 'Overhead dumbbell press');
     });
     expect(persisted).toBe(50);
   });

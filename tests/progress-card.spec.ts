@@ -14,7 +14,7 @@ const PROGRESS_EXERCISES = [
   'Barbell bench press',
   'Barbell back squat',
   'Leg press',
-  'Barbell row',
+  'Chest-supported row',
   'Romanian deadlift',
   'Hip thrust',
 ];

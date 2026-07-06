@@ -131,10 +131,14 @@ test.describe('Plate +buttons placeholder fallback', () => {
   });
 
   test('Leg curl machine (iso-lateral) +25 adds 25, not 50, on top of the 8 lb start', async ({ freshPage }) => {
-    await freshPage.evaluate(() => (window as any).loadWeights('D', '2026-04-30'));
+    await freshPage.evaluate(async () => {
+      (window as any).switchTab('B');
+      document.body.setAttribute('data-active-day', 'B');
+      await (window as any).loadWeights('B', '2026-04-30');
+    });
 
     const input = freshPage.locator(
-      '.tab-content[data-day="D"] input[data-exercise="Leg curl machine"]'
+      '.tab-content[data-day="B"] input[data-exercise="Leg curl machine"]'
     );
     await expect(input).toHaveAttribute('data-barbell', 'true');
 
@@ -147,10 +151,14 @@ test.describe('Plate +buttons placeholder fallback', () => {
   });
 
   test('Leg curl machine reset returns to 8', async ({ freshPage }) => {
-    await freshPage.evaluate(() => (window as any).loadWeights('D', '2026-04-30'));
+    await freshPage.evaluate(async () => {
+      (window as any).switchTab('B');
+      document.body.setAttribute('data-active-day', 'B');
+      await (window as any).loadWeights('B', '2026-04-30');
+    });
 
     const input = freshPage.locator(
-      '.tab-content[data-day="D"] input[data-exercise="Leg curl machine"]'
+      '.tab-content[data-day="B"] input[data-exercise="Leg curl machine"]'
     );
     await input.fill('60');
 
@@ -161,10 +169,14 @@ test.describe('Plate +buttons placeholder fallback', () => {
   });
 
   test('Leg curl machine pill removal subtracts the single-plate weight, not double', async ({ freshPage }) => {
-    await freshPage.evaluate(() => (window as any).loadWeights('D', '2026-04-30'));
+    await freshPage.evaluate(async () => {
+      (window as any).switchTab('B');
+      document.body.setAttribute('data-active-day', 'B');
+      await (window as any).loadWeights('B', '2026-04-30');
+    });
 
     const input = freshPage.locator(
-      '.tab-content[data-day="D"] input[data-exercise="Leg curl machine"]'
+      '.tab-content[data-day="B"] input[data-exercise="Leg curl machine"]'
     );
     const panel = input.locator('xpath=ancestor::tr[1]/following-sibling::tr[1]');
     await panel.locator('.plate-btn', { hasText: '+25' }).click();
