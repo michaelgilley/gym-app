@@ -73,8 +73,8 @@
             --day-2-rgb: 106, 255, 224;
 
             /* Shadow depth */
-            --shadow-card: 0 16px 48px rgba(0, 0, 0, 0.35);
-            --shadow-deep: 0 24px 60px rgba(0, 0, 0, 0.55);
+            --shadow-card: 0 8px 20px rgba(0, 0, 0, 0.28);
+            --shadow-deep: 0 14px 32px rgba(0, 0, 0, 0.4);
             --ink-on-pop:  #0a0414;
             --table-row-hairline: rgba(255, 255, 255, 0.05);
         }
@@ -177,8 +177,8 @@
                 --day-2:     #00b3a1;
                 --day-2-rgb: 0, 179, 161;
 
-                --shadow-card: 0 16px 40px rgba(80, 30, 140, 0.15);
-                --shadow-deep: 0 24px 56px rgba(80, 30, 140, 0.22);
+                --shadow-card: 0 8px 18px rgba(80, 30, 140, 0.12);
+                --shadow-deep: 0 14px 30px rgba(80, 30, 140, 0.16);
                 --ink-on-pop:  #ffffff;
                 --table-row-hairline: rgba(46, 20, 82, 0.06);
             }
@@ -278,11 +278,11 @@
             body::before { filter: blur(72px) saturate(1.4); }
             body::after  { opacity: 0.035; }
 
-            .date-selector   { box-shadow: inset 0 1px 0 rgba(255,255,255,0.5), 0 12px 32px rgba(80, 30, 140, 0.12); }
+            .date-selector   { box-shadow: inset 0 1px 0 rgba(255,255,255,0.5), var(--shadow-card); }
             .day-indicator   { box-shadow: inset 0 1px 0 rgba(255,255,255,0.5), 0 4px 14px  rgba(80, 30, 140, 0.1); }
-            .workout-table   { box-shadow: inset 0 1px 0 rgba(255,255,255,0.6), 0 18px 48px rgba(80, 30, 140, 0.15), 0 0 0 1px rgba(var(--day-rgb), 0.1); }
-            .info-section    { box-shadow: inset 0 1px 0 rgba(255,255,255,0.55), 0 14px 42px rgba(80, 30, 140, 0.14); }
-            .toast           { box-shadow: inset 0 1px 0 rgba(255,255,255,0.45), 0 16px 40px rgba(var(--day-rgb), 0.45); }
+            .workout-table   { box-shadow: inset 0 1px 0 rgba(255,255,255,0.6), var(--shadow-card), 0 0 0 1px rgba(var(--day-rgb), 0.1); }
+            .info-section    { box-shadow: inset 0 1px 0 rgba(255,255,255,0.55), var(--shadow-card); }
+            .toast           { box-shadow: inset 0 1px 0 rgba(255,255,255,0.45), 0 10px 22px rgba(var(--day-rgb), 0.26); }
         }
 
         /* Grain on top of everything to unify */
@@ -385,7 +385,7 @@
             -webkit-backdrop-filter: blur(20px) saturate(1.3);
             box-shadow:
                 inset 0 1px 0 rgba(255, 255, 255, 0.08),
-                0 12px 32px rgba(0, 0, 0, 0.35);
+                var(--shadow-card);
         }
 
         .date-display {
@@ -510,7 +510,7 @@
             padding: 16px 12px 18px;
             width: 100%;
             max-width: min(640px, 96vw);
-            box-shadow: 0 28px 80px rgba(0, 0, 0, 0.55);
+            box-shadow: var(--shadow-deep);
             animation: historyPop 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
         .barcode-modal__header {
@@ -645,7 +645,7 @@
             box-shadow:
                 inset 0 1px 0 rgba(255, 255, 255, 0.18),
                 0 0 0 2px rgba(var(--day-rgb), 0.24),
-                0 12px 32px rgba(var(--day-rgb), 0.4);
+                0 6px 16px rgba(var(--day-rgb), 0.22);
         }
         .day-indicator.gym.selected .day-type {
             color: var(--day);
@@ -755,7 +755,7 @@
             -webkit-backdrop-filter: blur(20px) saturate(1.2);
             box-shadow:
                 inset 0 1px 0 rgba(255, 255, 255, 0.07),
-                0 16px 48px rgba(0, 0, 0, 0.35),
+                var(--shadow-card),
                 0 0 0 1px rgba(var(--day-rgb), 0.08);
         }
 
@@ -1072,8 +1072,7 @@
             box-shadow:
                 inset 0 1px 0 rgba(255, 255, 255, 0.18),
                 0 0 0 1px rgba(var(--day-rgb), 0.08),
-                0 28px 70px rgba(0, 0, 0, 0.55),
-                0 0 60px rgba(var(--day-rgb), 0.18);
+                var(--shadow-deep);
             animation: historyPop 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
         @keyframes historyPop {
@@ -1224,7 +1223,7 @@
             -webkit-backdrop-filter: blur(20px) saturate(1.2);
             box-shadow:
                 inset 0 1px 0 rgba(255, 255, 255, 0.06),
-                0 14px 42px rgba(0, 0, 0, 0.3);
+                var(--shadow-card);
         }
 
         .info-section h3 {
@@ -1388,7 +1387,7 @@
             z-index: 1000;
             box-shadow:
                 inset 0 1px 0 rgba(255, 255, 255, 0.4),
-                0 16px 42px rgba(var(--day-rgb), 0.5);
+                0 10px 24px rgba(var(--day-rgb), 0.28);
             animation: toastPop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
@@ -1498,7 +1497,7 @@
             text-transform: none;
         }
 
-        /* PR celebrations — random pick of three */
+        /* PR celebrations — random pick of four */
 
         /* 1. Shockwave rings — fired from the saved input box */
         .shockwave {
@@ -1537,22 +1536,71 @@
             100% { opacity: 0; transform: scale(1.06); }
         }
 
-        /* 3. Plate drop — 45-lb weight plate dropping in from above */
-        .plate-host {
+        /* 3. Confetti burst — colorful pieces exploding from the saved input */
+        .confetti-piece {
+            position: fixed;
+            z-index: 1100;
+            pointer-events: none;
+            width: 7px;
+            height: 12px;
+            border-radius: 2px;
+            transform: translate(-50%, -50%);
+            animation: confettiFall 0.9s cubic-bezier(0.15, 0.65, 0.35, 1) forwards;
+        }
+        @keyframes confettiFall {
+            0%   { opacity: 1; transform: translate(-50%, -50%) rotate(0deg); }
+            100% { opacity: 0; transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) rotate(var(--rot)); }
+        }
+
+        /* 4. PR badge — bouncy badge pop with bursting rays behind it */
+        .pr-badge-host {
             position: fixed;
             top: 50%;
             left: 50%;
             z-index: 1100;
             pointer-events: none;
-            filter: drop-shadow(0 18px 30px rgba(0, 0, 0, 0.5));
-            animation: plateDrop 1.3s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+            transform: translate(-50%, -50%);
         }
-        @keyframes plateDrop {
-            0%   { opacity: 0; transform: translate(-50%, -360%) scale(0.65) rotate(-12deg); }
-            55%  { opacity: 1; transform: translate(-50%, -50%)  scale(1)    rotate(3deg); }
-            65%  {              transform: translate(-50%, -56%) scale(0.96) rotate(-2deg); }
-            78%  {              transform: translate(-50%, -50%) scale(1)    rotate(0); }
-            100% { opacity: 0;  transform: translate(-50%, -50%) scale(1.04) rotate(0); }
+        .pr-badge-rays {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 260px;
+            height: 260px;
+            transform: translate(-50%, -50%);
+            background: repeating-conic-gradient(rgba(var(--day-rgb), 0.5) 0deg 8deg, transparent 8deg 20deg);
+            border-radius: 50%;
+            opacity: 0;
+            animation: prBadgeRays 1s ease-out forwards;
+        }
+        .pr-badge {
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 14px 26px;
+            border-radius: 100px;
+            background: linear-gradient(180deg, rgba(var(--day-rgb), 0.95), rgba(var(--day-2-rgb), 0.95));
+            color: var(--ink-on-pop);
+            font-family: 'Unbounded', sans-serif;
+            font-size: 15px;
+            font-weight: 800;
+            letter-spacing: 0.05em;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+            opacity: 0;
+            animation: prBadgePop 0.9s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+        .pr-badge-bolt { font-size: 18px; }
+        @keyframes prBadgePop {
+            0%   { opacity: 0; transform: scale(0.4) rotate(-8deg); }
+            55%  { opacity: 1; transform: scale(1.08) rotate(2deg); }
+            75%  {              transform: scale(0.96) rotate(-1deg); }
+            100% { opacity: 1; transform: scale(1)    rotate(0deg); }
+        }
+        @keyframes prBadgeRays {
+            0%   { opacity: 0; transform: translate(-50%, -50%) scale(0.5) rotate(0deg); }
+            30%  { opacity: 0.9; }
+            100% { opacity: 0; transform: translate(-50%, -50%) scale(1.3) rotate(35deg); }
         }
         @keyframes pageShake {
             0%, 100% { transform: translate(0, 0); }
@@ -2375,7 +2423,7 @@
 
     <footer style="text-align:center; padding: 20px calc(20px + env(safe-area-inset-right)) calc(20px + env(safe-area-inset-bottom)) calc(20px + env(safe-area-inset-left)); color: var(--text-secondary); font-size: 12px; font-family: monospace;">
         <img src="./icon-512.png" alt="Gym" style="width: 32px; height: 32px; opacity: 0.5; margin-bottom: 10px;"><br>
-        2026-07-05
+        2026-07-07
 
     </footer>
 
@@ -2672,7 +2720,7 @@
             'Seated calf raise':   { base: 60,  baseLabel: 'start', plates: [45, 25, 10, 5, 2.5] },
             // Iso-lateral: each leg is loaded independently, so input value is per-leg
             // and "+X" adds X (not 2X). paired:false flips the math throughout.
-            'Leg curl machine':    { base: 8,   baseLabel: 'start', plates: [45, 25, 10, 5, 2.5], paired: false },
+            'Leg curl machine':    { base: 8,   baseLabel: 'start', plates: [25, 10, 5, 2.5], paired: false },
         };
 
         function plateBreakdown(total, cfg) {
@@ -3358,33 +3406,56 @@
             document.body.appendChild(flash);
         }
 
-        // PR celebration: 45-lb plate drops in, bounces, and shakes the page
-        function firePlateDrop() {
+        // PR celebration: confetti pieces explode outward from the saved input
+        function fireConfettiBurst(input) {
+            const rect = input.getBoundingClientRect();
+            const cx = rect.left + rect.width / 2;
+            const cy = rect.top + rect.height / 2;
+            const colors = ['var(--day)', 'var(--day-2)', 'var(--aur-1)', 'var(--aur-2)', 'var(--aur-3)', 'var(--aur-4)'];
+            for (let i = 0; i < 22; i++) {
+                const piece = document.createElement('div');
+                piece.className = 'confetti-piece';
+                const angle = Math.random() * Math.PI * 2;
+                const dist = 90 + Math.random() * 140;
+                piece.style.left = cx + 'px';
+                piece.style.top = cy + 'px';
+                piece.style.background = colors[i % colors.length];
+                piece.style.setProperty('--dx', (Math.cos(angle) * dist) + 'px');
+                piece.style.setProperty('--dy', (Math.sin(angle) * dist + 80) + 'px');
+                piece.style.setProperty('--rot', (Math.random() * 720 - 360) + 'deg');
+                piece.style.animationDelay = (Math.random() * 0.12) + 's';
+                piece.addEventListener('animationend', () => piece.remove());
+                document.body.appendChild(piece);
+            }
+        }
+
+        // PR celebration: bouncy "NEW PR" badge with bursting rays, then a landing shake
+        function firePRBadge() {
             const host = document.createElement('div');
-            host.className = 'plate-host';
+            host.className = 'pr-badge-host';
             host.innerHTML = `
-                <svg viewBox="0 0 100 100" width="140" height="140" aria-hidden="true">
-                    <circle cx="50" cy="50" r="46" fill="#1a1a22" stroke="rgba(var(--day-rgb), 0.95)" stroke-width="3"/>
-                    <circle cx="50" cy="50" r="38" fill="none" stroke="rgba(var(--day-rgb), 0.55)" stroke-width="1"/>
-                    <circle cx="50" cy="50" r="11" fill="#0a0a10" stroke="rgba(var(--day-rgb), 0.65)" stroke-width="1.5"/>
-                    <text x="50" y="60" text-anchor="middle" font-family="Unbounded, sans-serif" font-size="22" font-weight="800" fill="rgba(var(--day-rgb), 1)">45</text>
-                </svg>
+                <div class="pr-badge-rays"></div>
+                <div class="pr-badge">
+                    <span class="pr-badge-bolt">⚡</span>
+                    <span class="pr-badge-text">NEW PR</span>
+                </div>
             `;
-            host.addEventListener('animationend', () => host.remove());
             document.body.appendChild(host);
 
-            // Page shake synced with the plate "landing" frame
+            // Page shake synced with the badge's bounce-in landing
             setTimeout(() => {
                 const c = document.querySelector('.container');
                 if (!c) return;
                 c.classList.add('page-shake');
                 setTimeout(() => c.classList.remove('page-shake'), 360);
-            }, 460);
+            }, 300);
+
+            setTimeout(() => host.remove(), 1300);
         }
 
         // Pick one celebration at random per PR save
         function celebratePR(prInputs) {
-            const choices = ['shockwave', 'aurora', 'plate'];
+            const choices = ['shockwave', 'aurora', 'confetti', 'badge'];
             const choice = choices[Math.floor(Math.random() * choices.length)];
             if (choice === 'shockwave') {
                 prInputs.forEach((input, i) => {
@@ -3392,10 +3463,22 @@
                 });
             } else if (choice === 'aurora') {
                 fireAuroraFlash();
+            } else if (choice === 'confetti') {
+                prInputs.forEach((input, i) => {
+                    setTimeout(() => fireConfettiBurst(input), i * 120);
+                });
             } else {
-                firePlateDrop();
+                firePRBadge();
             }
         }
+
+        // Fun hype phrases for the PR toast — picked at random alongside
+        // the celebration effect so repeat PRs don't read as stale.
+        const PR_HYPE_PHRASES = [
+            'Beast mode.', 'Stronger than yesterday.', 'New max, unlocked.',
+            'Crushed it.', 'Leveling up.', "That's a record.",
+            'Personal best.', 'Unstoppable.', 'Keep stacking wins.', 'Next level.',
+        ];
 
         // Save workout for a day. Detects PRs (any exercise where the new
         // weight beats every prior entry for that exercise on a different
@@ -3434,7 +3517,8 @@
             if (prInputs.length > 0) {
                 celebratePR(prInputs);
                 const label = prInputs.length === 1 ? 'new PR' : `${prInputs.length} new PRs`;
-                showToast(`Day ${day} saved — ${label}!`);
+                const hype = PR_HYPE_PHRASES[Math.floor(Math.random() * PR_HYPE_PHRASES.length)];
+                showToast(`Day ${day} saved — ${label}! ${hype}`);
             } else {
                 showToast(`Day ${day} saved (${savedCount} exercises)`);
             }

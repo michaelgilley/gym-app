@@ -44,6 +44,6 @@ export async function saveWeight(page: Page, day: 'A' | 'B' | 'C' | 'D' | 'E', e
 /** Returns the count of celebration elements currently in the DOM. */
 export async function countCelebrationElements(page: Page): Promise<number> {
   return page.evaluate(() => {
-    return document.querySelectorAll('.shockwave, .aurora-flash, .plate-host').length;
+    return document.querySelectorAll('.shockwave, .aurora-flash, .confetti-piece, .pr-badge-host').length;
   });
 }

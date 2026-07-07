@@ -187,6 +187,20 @@ test.describe('Plate +buttons placeholder fallback', () => {
     await expect(input).toHaveValue('8');
   });
 
+  test('Leg curl machine plate panel has no +45 button (machine does not fit 45s)', async ({ freshPage }) => {
+    await freshPage.evaluate(async () => {
+      (window as any).switchTab('B');
+      document.body.setAttribute('data-active-day', 'B');
+      await (window as any).loadWeights('B', '2026-04-30');
+    });
+
+    const input = freshPage.locator(
+      '.tab-content[data-day="B"] input[data-exercise="Leg curl machine"]'
+    );
+    const panel = input.locator('xpath=ancestor::tr[1]/following-sibling::tr[1]');
+    await expect(panel.locator('.plate-btn', { hasText: '+45' })).toHaveCount(0);
+  });
+
   test('bar reset still clears to the bar even when a placeholder is set', async ({ freshPage }) => {
     await freshPage.evaluate(async () => {
       const sw = (window as any).saveWeight;
