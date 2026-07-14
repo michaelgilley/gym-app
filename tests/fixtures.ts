@@ -41,9 +41,12 @@ export async function saveWeight(page: Page, day: 'A' | 'B' | 'C' | 'D' | 'E', e
   await page.waitForTimeout(150);
 }
 
-/** Returns the count of celebration elements currently in the DOM. */
+/** Returns the count of celebration elements currently in the DOM.
+ * Every celebration effect tags its mounted node(s) with `.pr-fx`, so this
+ * one selector covers all effects regardless of which one the random pick
+ * fires. */
 export async function countCelebrationElements(page: Page): Promise<number> {
   return page.evaluate(() => {
-    return document.querySelectorAll('.shockwave, .aurora-flash, .confetti-piece, .pr-badge-host').length;
+    return document.querySelectorAll('.pr-fx').length;
   });
 }

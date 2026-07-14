@@ -56,11 +56,18 @@ test.describe('PR celebration', () => {
   // `choices[Math.floor(Math.random() * choices.length)]`. Stubbing
   // Math.random to a fixed value forces a specific branch so we can assert
   // each effect mounts its own DOM node, independent of the random pick.
+  // 9 effects, picked by `Math.floor(random * 9)`. The random values are
+  // bucket midpoints ((i + 0.5) / 9) so each forces exactly one branch.
   const EFFECTS: Array<{ random: number; selector: string; name: string }> = [
-    { random: 0.05, selector: '.shockwave', name: 'shockwave' },
-    { random: 0.30, selector: '.aurora-flash', name: 'aurora' },
-    { random: 0.55, selector: '.confetti-piece', name: 'confetti' },
-    { random: 0.80, selector: '.pr-badge-host', name: 'badge' },
+    { random: 0.5 / 9, selector: '.shockwave', name: 'shockwave' },
+    { random: 1.5 / 9, selector: '.aurora-flash', name: 'aurora' },
+    { random: 2.5 / 9, selector: '.confetti-piece', name: 'confetti' },
+    { random: 3.5 / 9, selector: '.pr-badge-host', name: 'badge' },
+    { random: 4.5 / 9, selector: '.firework', name: 'fireworks' },
+    { random: 5.5 / 9, selector: '.confetti-rain', name: 'confetti-rain' },
+    { random: 6.5 / 9, selector: '.sunburst', name: 'sunburst' },
+    { random: 7.5 / 9, selector: '.pr-slam', name: 'text-slam' },
+    { random: 8.5 / 9, selector: '.light-sweep', name: 'light-sweep' },
   ];
 
   for (const effect of EFFECTS) {
