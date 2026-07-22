@@ -2236,7 +2236,7 @@
                             <td class="sets-reps">4 x 5-6</td>
                             <td class="rest-time">2-3 min rest</td>
                             <td class="weight-input-cell">
-                                <input type="number" inputmode="decimal" step="any" class="weight-input" data-exercise="Chest-supported row" placeholder="lbs">
+                                <input type="number" inputmode="decimal" step="any" class="weight-input" data-exercise="Chest-supported row" data-barbell="true" placeholder="lbs">
                             </td>
                         </tr>
                     </table>
@@ -2938,9 +2938,10 @@
             'Leg press':           { base: 118, baseLabel: 'sled',  plates: [45, 25, 10, 5, 2.5] },
             'Hip thrust':          { base: 45,  baseLabel: 'start', plates: [45, 25, 10, 5, 2.5] },
             'Seated calf raise':   { base: 60,  baseLabel: 'start', plates: [45, 25, 10, 5, 2.5] },
-            // Iso-lateral: each leg is loaded independently, so input value is per-leg
+            // Iso-lateral: each side is loaded independently, so input value is per-side
             // and "+X" adds X (not 2X). paired:false flips the math throughout.
-            'Leg curl machine':    { base: 8,   baseLabel: 'start', plates: [25, 10, 5, 2.5], paired: false },
+            'Leg curl machine':    { base: 8,   baseLabel: 'start', plates: [25, 10, 5, 2.5], paired: false, unitLabel: 'leg' },
+            'Chest-supported row': { base: 12,  baseLabel: 'start', plates: [45, 25, 10, 5, 2.5], paired: false, unitLabel: 'arm' },
         };
 
         function plateBreakdown(total, cfg) {
@@ -2976,7 +2977,7 @@
                 html = `<span class="plate-meta__side">just the ${cfg.baseLabel}</span>`;
             } else {
                 const mult = cfg.paired === false ? 1 : 2;
-                const sideLabel = cfg.paired === false ? 'leg' : 'side';
+                const sideLabel = cfg.paired === false ? (cfg.unitLabel || 'leg') : 'side';
                 const pillTitle = cfg.paired === false
                     ? p => `Remove this ${fmtPlate(p)} lb plate (−${fmtNum(p)})`
                     : p => `Remove this pair of ${fmtPlate(p)} lb plates (−${fmtNum(p * 2)})`;

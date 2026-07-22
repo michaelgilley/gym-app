@@ -201,6 +201,79 @@ test.describe('Plate +buttons placeholder fallback', () => {
     await expect(panel.locator('.plate-btn', { hasText: '+45' })).toHaveCount(0);
   });
 
+  test('Chest-supported row (iso-lateral) +25 adds 25, not 50, on top of the 12 lb start', async ({ freshPage }) => {
+    await freshPage.evaluate(async () => {
+      (window as any).switchTab('C');
+      document.body.setAttribute('data-active-day', 'C');
+      await (window as any).loadWeights('C', '2026-04-30');
+    });
+
+    const input = freshPage.locator(
+      '.tab-content[data-day="C"] input[data-exercise="Chest-supported row"]'
+    );
+    await expect(input).toHaveAttribute('data-barbell', 'true');
+
+    const panel = input.locator('xpath=ancestor::tr[1]/following-sibling::tr[1]');
+    await expect(panel).toHaveClass(/plate-panel-row/);
+
+    await panel.locator('.plate-btn', { hasText: '+25' }).click();
+    // 12 (start) + 25 (one plate, per-arm) = 37
+    await expect(input).toHaveValue('37');
+  });
+
+  test('Chest-supported row reset returns to 12', async ({ freshPage }) => {
+    await freshPage.evaluate(async () => {
+      (window as any).switchTab('C');
+      document.body.setAttribute('data-active-day', 'C');
+      await (window as any).loadWeights('C', '2026-04-30');
+    });
+
+    const input = freshPage.locator(
+      '.tab-content[data-day="C"] input[data-exercise="Chest-supported row"]'
+    );
+    await input.fill('60');
+
+    const panel = input.locator('xpath=ancestor::tr[1]/following-sibling::tr[1]');
+    await panel.locator('.plate-btn--reset').click();
+
+    await expect(input).toHaveValue('12');
+  });
+
+  test('Chest-supported row pill removal subtracts the single-plate weight, not double', async ({ freshPage }) => {
+    await freshPage.evaluate(async () => {
+      (window as any).switchTab('C');
+      document.body.setAttribute('data-active-day', 'C');
+      await (window as any).loadWeights('C', '2026-04-30');
+    });
+
+    const input = freshPage.locator(
+      '.tab-content[data-day="C"] input[data-exercise="Chest-supported row"]'
+    );
+    const panel = input.locator('xpath=ancestor::tr[1]/following-sibling::tr[1]');
+    await panel.locator('.plate-btn', { hasText: '+25' }).click();
+    await expect(input).toHaveValue('37');
+
+    // The breakdown meta should now show a 25-lb pill; clicking removes 25, not 50.
+    await panel.locator('.plate-pill', { hasText: '25' }).click();
+    await expect(input).toHaveValue('12');
+  });
+
+  test('Chest-supported row plate panel labels the per-unit breakdown "arm", not "leg"', async ({ freshPage }) => {
+    await freshPage.evaluate(async () => {
+      (window as any).switchTab('C');
+      document.body.setAttribute('data-active-day', 'C');
+      await (window as any).loadWeights('C', '2026-04-30');
+    });
+
+    const input = freshPage.locator(
+      '.tab-content[data-day="C"] input[data-exercise="Chest-supported row"]'
+    );
+    const panel = input.locator('xpath=ancestor::tr[1]/following-sibling::tr[1]');
+    await panel.locator('.plate-btn', { hasText: '+25' }).click();
+
+    await expect(panel.locator('.plate-meta__side')).toHaveText(/\/ arm/);
+  });
+
   test('bar reset still clears to the bar even when a placeholder is set', async ({ freshPage }) => {
     await freshPage.evaluate(async () => {
       const sw = (window as any).saveWeight;
