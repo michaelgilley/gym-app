@@ -1511,43 +1511,62 @@
             text-transform: none;
         }
 
-        /* PR celebrations — random pick of four */
+        /* PR celebrations — random pick of nine, every one a full-screen "hazzah" */
 
-        /* 1. Shockwave rings — fired from the saved input box */
-        .shockwave {
+        /* 1. Emoji burst — hype emojis explode radially from screen center */
+        .emoji-burst {
             position: fixed;
+            top: 50%;
+            left: 50%;
             z-index: 1100;
             pointer-events: none;
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            border: 3px solid rgba(var(--day-rgb), 0.85);
-            box-shadow: 0 0 24px rgba(var(--day-rgb), 0.55);
             transform: translate(-50%, -50%);
-            animation: shockwave 1.1s ease-out forwards;
         }
-        @keyframes shockwave {
-            0%   { width: 8px;   height: 8px;   opacity: 1; border-width: 4px; }
-            100% { width: 720px; height: 720px; opacity: 0; border-width: 1px; }
+        .emoji-burst-piece {
+            position: absolute;
+            top: 0;
+            left: 0;
+            font-size: clamp(30px, 7vw, 54px);
+            line-height: 1;
+            transform: translate(-50%, -50%);
+            filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.35));
+            opacity: 0;
+            animation: emojiBurst 1.2s cubic-bezier(0.15, 0.7, 0.3, 1) forwards;
+        }
+        @keyframes emojiBurst {
+            0%   { opacity: 0; transform: translate(-50%, -50%) scale(0.3) rotate(0deg); }
+            15%  { opacity: 1; }
+            70%  { opacity: 1; }
+            100% { opacity: 0; transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) scale(1) rotate(var(--rot)); }
         }
 
-        /* 2. Aurora flash — full-viewport day-color radial wash */
-        .aurora-flash {
+        /* 2. Confetti cannon — two corner cannons fire confetti up and inward */
+        .confetti-cannon {
             position: fixed;
             inset: 0;
-            z-index: 1099;
+            z-index: 1100;
             pointer-events: none;
-            background: radial-gradient(circle at 50% 40%,
-                rgba(var(--day-rgb), 0.5) 0%,
-                rgba(var(--day-rgb), 0.2) 30%,
-                transparent 65%);
-            opacity: 0;
-            animation: auroraFlash 1.4s ease-out forwards;
+            overflow: hidden;
         }
-        @keyframes auroraFlash {
-            0%   { opacity: 0; transform: scale(0.94); }
-            22%  { opacity: 1; }
-            100% { opacity: 0; transform: scale(1.06); }
+        .cannon-piece {
+            position: absolute;
+            width: 9px;
+            height: 15px;
+            border-radius: 2px;
+            opacity: 0;
+            animation: cannonFly 1.3s cubic-bezier(0.12, 0.6, 0.4, 1) forwards;
+        }
+        .cannon-emoji {
+            position: absolute;
+            font-size: 30px;
+            line-height: 1;
+            opacity: 0;
+            animation: cannonFly 1.4s cubic-bezier(0.12, 0.6, 0.4, 1) forwards;
+        }
+        @keyframes cannonFly {
+            0%   { opacity: 1; transform: translate(0, 0) rotate(0deg); }
+            45%  { opacity: 1; transform: translate(calc(var(--dx) * 0.6), var(--peak)) rotate(calc(var(--rot) * 0.5)); }
+            100% { opacity: 0; transform: translate(var(--dx), var(--dy)) rotate(var(--rot)); }
         }
 
         /* 3. Confetti burst — colorful pieces exploding from the saved input */
@@ -1668,26 +1687,46 @@
             100% { opacity: 0.9; transform: translate(var(--drift), 108vh) rotate(var(--rot)); }
         }
 
-        /* 7. Sunburst — full-screen conic rays sweep out from center */
-        .sunburst {
+        /* 7. Big rings — concentric neon rings pulse out from center over a flash */
+        .ring-pulse {
             position: fixed;
-            top: 50%;
-            left: 50%;
-            width: 220vmax;
-            height: 220vmax;
+            inset: 0;
             z-index: 1099;
             pointer-events: none;
-            transform: translate(-50%, -50%);
-            background: repeating-conic-gradient(from 0deg at 50% 50%,
-                rgba(var(--day-rgb), 0.28) 0deg 6deg,
-                transparent 6deg 16deg);
-            opacity: 0;
-            animation: sunburstSpin 1.4s ease-out forwards;
         }
-        @keyframes sunburstSpin {
-            0%   { opacity: 0; transform: translate(-50%, -50%) scale(0.2) rotate(0deg); }
-            25%  { opacity: 0.9; }
-            100% { opacity: 0; transform: translate(-50%, -50%) scale(1) rotate(28deg); }
+        .ring-flash {
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at 50% 50%,
+                rgba(var(--day-rgb), 0.45) 0%,
+                rgba(var(--day-2-rgb), 0.18) 40%,
+                transparent 60%);
+            opacity: 0;
+            animation: ringFlash 0.9s ease-out forwards;
+        }
+        .big-ring {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 8px solid rgba(var(--day-rgb), 0.9);
+            box-shadow:
+                0 0 40px rgba(var(--day-rgb), 0.6),
+                inset 0 0 30px rgba(var(--day-rgb), 0.35);
+            transform: translate(-50%, -50%);
+            opacity: 0;
+            animation: bigRing 1.2s ease-out forwards;
+        }
+        @keyframes bigRing {
+            0%   { width: 40px;    height: 40px;    opacity: 1; border-width: 10px; }
+            100% { width: 140vmax; height: 140vmax; opacity: 0; border-width: 1px; }
+        }
+        @keyframes ringFlash {
+            0%   { opacity: 0; }
+            15%  { opacity: 1; }
+            100% { opacity: 0; }
         }
 
         /* 8. Text slam — screenwide wordmark slams in with a flash */
@@ -1734,28 +1773,62 @@
             100% { opacity: 0; }
         }
 
-        /* 9. Light sweep — a bright diagonal shine crosses the viewport */
-        .light-sweep {
+        /* 9. Hype combo slam — a rotating hype word slams in with a flash,
+           a confetti sprinkle, and a page shake */
+        .hype-slam {
             position: fixed;
             inset: 0;
-            z-index: 1099;
+            z-index: 1101;
             pointer-events: none;
-            background: linear-gradient(115deg,
-                transparent 30%,
-                rgba(var(--day-rgb), 0.35) 47%,
-                rgba(255, 255, 255, 0.55) 50%,
-                rgba(var(--day-rgb), 0.35) 53%,
-                transparent 70%);
-            background-size: 300% 100%;
-            background-position: 120% 0;
-            opacity: 0;
-            animation: lightSweep 1.1s ease-in-out forwards;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
         }
-        @keyframes lightSweep {
-            0%   { opacity: 0; background-position: 120% 0; }
-            15%  { opacity: 1; }
-            85%  { opacity: 1; }
-            100% { opacity: 0; background-position: -120% 0; }
+        .hype-flash {
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at 50% 50%,
+                rgba(var(--day-rgb), 0.5) 0%,
+                rgba(var(--day-2-rgb), 0.2) 40%,
+                transparent 65%);
+            opacity: 0;
+            animation: hypeFlash 0.9s ease-out forwards;
+        }
+        .hype-word {
+            position: relative;
+            font-family: 'Unbounded', sans-serif;
+            font-weight: 800;
+            font-size: clamp(40px, 15vw, 150px);
+            line-height: 0.9;
+            letter-spacing: -0.02em;
+            text-align: center;
+            color: var(--day);
+            text-shadow: 0 6px 30px rgba(var(--day-rgb), 0.55);
+            opacity: 0;
+            animation: hypeIn 1.3s cubic-bezier(0.2, 1.5, 0.4, 1) forwards;
+        }
+        .hype-confetti {
+            position: absolute;
+            top: -24px;
+            width: 9px;
+            height: 15px;
+            border-radius: 2px;
+            opacity: 0;
+            animation: confettiRainFall linear forwards;
+        }
+        @keyframes hypeIn {
+            0%   { opacity: 0; transform: scale(0.3) rotate(-6deg); }
+            18%  { opacity: 1; }
+            32%  {              transform: scale(1.12) rotate(2deg); }
+            46%  {              transform: scale(0.96) rotate(-1deg); }
+            60%  { opacity: 1; transform: scale(1) rotate(0deg); }
+            100% { opacity: 0; transform: scale(1.06); }
+        }
+        @keyframes hypeFlash {
+            0%   { opacity: 0; }
+            16%  { opacity: 1; }
+            100% { opacity: 0; }
         }
 
         /* Footer */
@@ -2570,7 +2643,7 @@
 
     <footer style="text-align:center; padding: 20px calc(20px + env(safe-area-inset-right)) calc(20px + env(safe-area-inset-bottom)) calc(20px + env(safe-area-inset-left)); color: var(--text-secondary); font-size: 12px; font-family: monospace;">
         <img src="./icon-512.png" alt="Gym" style="width: 32px; height: 32px; opacity: 0.5; margin-bottom: 10px;"><br>
-        2026-07-14
+        2026-07-22
 
     </footer>
 
@@ -3582,28 +3655,64 @@
             renderBarcodeModalContents();
         }
 
-        // PR celebration: shockwave rings expanding from a saved input
-        function fireShockwave(input) {
-            const rect = input.getBoundingClientRect();
-            const cx = rect.left + rect.width / 2;
-            const cy = rect.top + rect.height / 2;
-            for (let i = 0; i < 3; i++) {
-                const ring = document.createElement('div');
-                ring.className = 'shockwave pr-fx';
-                ring.style.left = cx + 'px';
-                ring.style.top = cy + 'px';
-                ring.style.animationDelay = (i * 0.18) + 's';
-                ring.addEventListener('animationend', () => ring.remove());
-                document.body.appendChild(ring);
+        // PR celebration: emoji burst — hype emojis explode radially from the
+        // center of the screen, arc outward with spin, then fade.
+        function fireEmojiBurst() {
+            const host = document.createElement('div');
+            host.className = 'emoji-burst pr-fx';
+            document.body.appendChild(host);
+
+            const emojis = ['🏆', '💪', '🔥', '⚡', '💥', '🎉', '🦾', '⭐'];
+            const count = 18;
+            for (let i = 0; i < count; i++) {
+                const piece = document.createElement('div');
+                piece.className = 'emoji-burst-piece';
+                piece.textContent = emojis[i % emojis.length];
+                const angle = (i / count) * Math.PI * 2 + Math.random() * 0.5;
+                const dist = 150 + Math.random() * 200;
+                piece.style.setProperty('--dx', (Math.cos(angle) * dist) + 'px');
+                piece.style.setProperty('--dy', (Math.sin(angle) * dist + 120) + 'px'); // +gravity
+                piece.style.setProperty('--rot', (Math.random() * 720 - 360) + 'deg');
+                piece.style.animationDelay = (Math.random() * 0.1) + 's';
+                piece.addEventListener('animationend', () => piece.remove());
+                host.appendChild(piece);
             }
+            setTimeout(() => host.remove(), 1500);
         }
 
-        // PR celebration: aurora flash washes the whole viewport in day-color
-        function fireAuroraFlash() {
-            const flash = document.createElement('div');
-            flash.className = 'aurora-flash pr-fx';
-            flash.addEventListener('animationend', () => flash.remove());
-            document.body.appendChild(flash);
+        // PR celebration: confetti cannon — two cannons at the bottom corners
+        // fire confetti and party poppers up and inward across the full width.
+        function fireConfettiCannon() {
+            const host = document.createElement('div');
+            host.className = 'confetti-cannon pr-fx';
+            document.body.appendChild(host);
+
+            const colors = ['var(--day)', 'var(--day-2)', 'var(--aur-1)', 'var(--aur-2)', 'var(--aur-3)', 'var(--aur-4)'];
+            const sides = [{ x: 6, dir: 1 }, { x: 94, dir: -1 }];   // vw origins, firing inward
+            sides.forEach(side => {
+                for (let i = 0; i < 32; i++) {
+                    const piece = document.createElement('div');
+                    const isEmoji = i % 11 === 0;
+                    piece.className = isEmoji ? 'cannon-emoji' : 'cannon-piece';
+                    if (isEmoji) {
+                        piece.textContent = '🎉';
+                    } else {
+                        piece.style.background = colors[i % colors.length];
+                    }
+                    piece.style.left = side.x + 'vw';
+                    piece.style.bottom = '-20px';
+                    const spread = 30 + Math.random() * 55;          // vw travelled inward
+                    const peak = 55 + Math.random() * 35;            // vh peak height
+                    piece.style.setProperty('--dx', (side.dir * spread) + 'vw');
+                    piece.style.setProperty('--peak', (-peak) + 'vh');
+                    piece.style.setProperty('--dy', (18 + Math.random() * 20) + 'vh'); // falls past origin
+                    piece.style.setProperty('--rot', (Math.random() * 900 - 450) + 'deg');
+                    piece.style.animationDelay = (Math.random() * 0.18) + 's';
+                    piece.addEventListener('animationend', () => piece.remove());
+                    host.appendChild(piece);
+                }
+            });
+            setTimeout(() => host.remove(), 1800);
         }
 
         // PR celebration: confetti pieces explode outward from the saved input
@@ -3706,13 +3815,24 @@
             setTimeout(() => host.remove(), 2400);
         }
 
-        // PR celebration: sunburst — full-screen conic rays sweep out from center.
-        function fireSunburst() {
-            const el = document.createElement('div');
-            el.className = 'sunburst pr-fx';
-            el.addEventListener('animationend', () => el.remove());
-            document.body.appendChild(el);
-            setTimeout(() => el.remove(), 1500);
+        // PR celebration: big rings — concentric neon rings pulse out from the
+        // center of the screen over a brief radial flash.
+        function fireBigRings() {
+            const host = document.createElement('div');
+            host.className = 'ring-pulse pr-fx';
+
+            const flash = document.createElement('div');
+            flash.className = 'ring-flash';
+            host.appendChild(flash);
+
+            for (let i = 0; i < 4; i++) {
+                const ring = document.createElement('div');
+                ring.className = 'big-ring';
+                ring.style.animationDelay = (i * 0.16) + 's';
+                host.appendChild(ring);
+            }
+            document.body.appendChild(host);
+            setTimeout(() => host.remove(), 1600);
         }
 
         // PR celebration: text slam — a screenwide "NEW PR" wordmark slams in,
@@ -3736,29 +3856,64 @@
             setTimeout(() => host.remove(), 1500);
         }
 
-        // PR celebration: light sweep — a bright diagonal shine sweeps across
-        // the whole viewport.
-        function fireLightSweep() {
-            const el = document.createElement('div');
-            el.className = 'light-sweep pr-fx';
-            el.addEventListener('animationend', () => el.remove());
-            document.body.appendChild(el);
-            setTimeout(() => el.remove(), 1400);
+        // Words the hype-slam rotates through so back-to-back PRs stay fresh.
+        const HYPE_SLAM_WORDS = ["LET'S GO!", 'STRONGER!', 'BEAST MODE!', 'NEW BEST!', 'MONSTER!'];
+
+        // PR celebration: hype combo slam — a bold rotating hype word slams into
+        // the center over a color flash, a confetti sprinkle rains down, and the
+        // page kicks a quick shake.
+        function fireHypeSlam() {
+            const host = document.createElement('div');
+            host.className = 'hype-slam pr-fx';
+
+            const flash = document.createElement('div');
+            flash.className = 'hype-flash';
+            host.appendChild(flash);
+
+            const colors = ['var(--day)', 'var(--day-2)', 'var(--aur-1)', 'var(--aur-2)', 'var(--aur-3)', 'var(--aur-4)'];
+            for (let i = 0; i < 40; i++) {
+                const piece = document.createElement('div');
+                piece.className = 'hype-confetti';
+                piece.style.left = (Math.random() * 100) + 'vw';
+                piece.style.background = colors[i % colors.length];
+                piece.style.setProperty('--drift', (Math.random() * 80 - 40) + 'px');
+                piece.style.setProperty('--rot', (Math.random() * 900 - 450) + 'deg');
+                piece.style.animationDelay = (Math.random() * 0.4) + 's';
+                piece.style.animationDuration = (1.1 + Math.random() * 0.7) + 's';
+                host.appendChild(piece);
+            }
+
+            const word = document.createElement('div');
+            word.className = 'hype-word';
+            word.textContent = HYPE_SLAM_WORDS[Math.floor(Math.random() * HYPE_SLAM_WORDS.length)];
+            host.appendChild(word);
+
+            document.body.appendChild(host);
+
+            // Page shake synced with the word's slam-in landing
+            setTimeout(() => {
+                const c = document.querySelector('.container');
+                if (!c) return;
+                c.classList.add('page-shake');
+                setTimeout(() => c.classList.remove('page-shake'), 360);
+            }, 180);
+
+            setTimeout(() => host.remove(), 1600);
         }
 
-        // All PR celebrations, picked from at random per PR save. Effects that
-        // anchor to the saved input(s) receive `prInputs`; screenwide splashes
-        // ignore it. The pool skews screenwide by count.
+        // All PR celebrations, picked from at random per PR save. Every one is a
+        // full-screen "hazzah" moment. The lone input-anchored effect (confetti
+        // burst) receives `prInputs`; the screenwide splashes ignore it.
         const CELEBRATIONS = [
-            (inputs) => inputs.forEach((el, i) => setTimeout(() => fireShockwave(el), i * 120)),
-            () => fireAuroraFlash(),
+            () => fireEmojiBurst(),
+            () => fireConfettiCannon(),
             (inputs) => inputs.forEach((el, i) => setTimeout(() => fireConfettiBurst(el), i * 120)),
             () => firePRBadge(),
             () => fireFireworks(),
             () => fireConfettiRain(),
-            () => fireSunburst(),
+            () => fireBigRings(),
             () => fireTextSlam(),
-            () => fireLightSweep(),
+            () => fireHypeSlam(),
         ];
 
         function celebratePR(prInputs) {

@@ -6,8 +6,10 @@ import { test, expect, saveWeight, countCelebrationElements } from './fixtures';
  *   - New weight strictly greater than priorMax → celebration fires.
  *   - New weight equal to or below priorMax → NO celebration.
  *
- * The celebration randomly picks one of four effects, all of which mount a
- * DOM node: `.shockwave` | `.aurora-flash` | `.confetti-piece` | `.pr-badge-host`.
+ * The celebration randomly picks one of nine full-screen effects, all of which
+ * mount a DOM node carrying the shared `pr-fx` class:
+ *   `.emoji-burst` | `.confetti-cannon` | `.confetti-piece` | `.pr-badge-host` |
+ *   `.firework` | `.confetti-rain` | `.ring-pulse` | `.pr-slam` | `.hype-slam`.
  * We assert on the presence of any of these.
  */
 
@@ -59,15 +61,15 @@ test.describe('PR celebration', () => {
   // 9 effects, picked by `Math.floor(random * 9)`. The random values are
   // bucket midpoints ((i + 0.5) / 9) so each forces exactly one branch.
   const EFFECTS: Array<{ random: number; selector: string; name: string }> = [
-    { random: 0.5 / 9, selector: '.shockwave', name: 'shockwave' },
-    { random: 1.5 / 9, selector: '.aurora-flash', name: 'aurora' },
+    { random: 0.5 / 9, selector: '.emoji-burst', name: 'emoji-burst' },
+    { random: 1.5 / 9, selector: '.confetti-cannon', name: 'confetti-cannon' },
     { random: 2.5 / 9, selector: '.confetti-piece', name: 'confetti' },
     { random: 3.5 / 9, selector: '.pr-badge-host', name: 'badge' },
     { random: 4.5 / 9, selector: '.firework', name: 'fireworks' },
     { random: 5.5 / 9, selector: '.confetti-rain', name: 'confetti-rain' },
-    { random: 6.5 / 9, selector: '.sunburst', name: 'sunburst' },
+    { random: 6.5 / 9, selector: '.ring-pulse', name: 'big-rings' },
     { random: 7.5 / 9, selector: '.pr-slam', name: 'text-slam' },
-    { random: 8.5 / 9, selector: '.light-sweep', name: 'light-sweep' },
+    { random: 8.5 / 9, selector: '.hype-slam', name: 'hype-slam' },
   ];
 
   for (const effect of EFFECTS) {
