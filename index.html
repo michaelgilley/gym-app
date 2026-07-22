@@ -4084,6 +4084,14 @@
                 btn.addEventListener('click', async () => {
                     const day = btn.getAttribute('data-day');
 
+                    // Blur any focused weight input so iOS doesn't leave it
+                    // as first responder — a focused field at lock time is
+                    // what triggers the system "Undo Typing" popup on next
+                    // unlock.
+                    if (document.activeElement instanceof HTMLElement && document.activeElement.classList.contains('weight-input')) {
+                        document.activeElement.blur();
+                    }
+
                     // Bounce the button + emit sparkles from its center
                     btn.classList.remove('save-bounce');
                     void btn.offsetWidth; // reflow to restart animation
@@ -4111,6 +4119,20 @@
                 });
             }
         }
+
+        // Blur any focused input when the page is backgrounded/locked, so
+        // iOS doesn't show the system "Undo Typing" popup on next unlock.
+        // pagehide is a belt-and-suspenders alongside visibilitychange —
+        // iOS has been inconsistent about which one fires on lock.
+        function blurWeightInputIfFocused() {
+            if (document.activeElement instanceof HTMLElement && document.activeElement.classList.contains('weight-input')) {
+                document.activeElement.blur();
+            }
+        }
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) blurWeightInputIfFocused();
+        });
+        window.addEventListener('pagehide', blurWeightInputIfFocused);
 
         // Close modals on ESC
         document.addEventListener('keydown', (e) => {
