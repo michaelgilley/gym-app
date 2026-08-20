@@ -2764,7 +2764,7 @@
 
     <footer style="text-align:center; padding: 20px calc(20px + env(safe-area-inset-right)) calc(20px + env(safe-area-inset-bottom)) calc(20px + env(safe-area-inset-left)); color: var(--text-secondary); font-size: 12px; font-family: monospace;">
         <img src="./icon-512.png" alt="Gym" style="width: 32px; height: 32px; opacity: 0.5; margin-bottom: 10px;"><br>
-        2026-08-02
+        2026-08-20
 
     </footer>
 
@@ -3050,12 +3050,13 @@
         // Per-exercise config: starting weight (bar or sled) + which plates
         // are physically available at that station. Plates loaded symmetrically,
         // so each "+X" button adds 2X to the total.
-        // 55-lb plates only live in the squat cages (squat / row / RDL).
+        // 45 is the heaviest plate used anywhere; the squat cages have 55s but
+        // they're deliberately off the menu.
         const PLATE_CONFIG = {
             'Barbell bench press': { base: 45,  baseLabel: 'bar',  plates: [45, 25, 10, 5, 2.5] },
-            'Barbell back squat':  { base: 45,  baseLabel: 'bar',  plates: [55, 45, 25, 10, 5, 2.5] },
-            'Barbell row':         { base: 45,  baseLabel: 'bar',  plates: [55, 45, 25, 10, 5, 2.5] },
-            'Romanian deadlift':   { base: 45,  baseLabel: 'bar',  plates: [55, 45, 25, 10, 5, 2.5] },
+            'Barbell back squat':  { base: 45,  baseLabel: 'bar',  plates: [45, 25, 10, 5, 2.5] },
+            'Barbell row':         { base: 45,  baseLabel: 'bar',  plates: [45, 25, 10, 5, 2.5] },
+            'Romanian deadlift':   { base: 45,  baseLabel: 'bar',  plates: [45, 25, 10, 5, 2.5] },
             'Leg press':           { base: 118, baseLabel: 'sled',  plates: [45, 25, 10, 5, 2.5] },
             'Hip thrust':          { base: 45,  baseLabel: 'start', plates: [45, 25, 10, 5, 2.5] },
             'Seated calf raise':   { base: 60,  baseLabel: 'start', plates: [45, 25, 10, 5, 2.5] },

@@ -291,4 +291,41 @@ test.describe('Plate +buttons placeholder fallback', () => {
 
     await expect(input).toHaveValue('45');
   });
+
+  test('squat-cage lifts no longer offer a +55 button (45 is the heaviest plate)', async ({ freshPage }) => {
+    for (const [day, exercise] of [
+      ['B', 'Barbell back squat'],
+      ['D', 'Romanian deadlift'],
+    ] as const) {
+      await freshPage.evaluate(async (d) => {
+        (window as any).switchTab(d);
+        document.body.setAttribute('data-active-day', d);
+        await (window as any).loadWeights(d, '2026-04-30');
+      }, day);
+
+      const input = freshPage.locator(
+        `.tab-content[data-day="${day}"] input[data-exercise="${exercise}"]`
+      );
+      const panel = input.locator('xpath=ancestor::tr[1]/following-sibling::tr[1]');
+      await expect(panel.locator('.plate-btn', { hasText: '+55' })).toHaveCount(0);
+      await expect(panel.locator('.plate-btn', { hasText: '+45' })).toHaveCount(1);
+    }
+  });
+
+  test('a 135/side load breaks down into 45s, not 55s', async ({ freshPage }) => {
+    await freshPage.evaluate(async () => {
+      (window as any).switchTab('B');
+      document.body.setAttribute('data-active-day', 'B');
+      await (window as any).loadWeights('B', '2026-04-30');
+    });
+
+    const input = freshPage.locator(
+      '.tab-content[data-day="B"] input[data-exercise="Barbell back squat"]'
+    );
+    await input.fill('315'); // 45 bar + 135/side
+
+    const panel = input.locator('xpath=ancestor::tr[1]/following-sibling::tr[1]');
+    await expect(panel.locator('.plate-pill', { hasText: '55' })).toHaveCount(0);
+    await expect(panel.locator('.plate-pill', { hasText: '45' })).toHaveCount(3);
+  });
 });
