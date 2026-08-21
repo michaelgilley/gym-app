@@ -1,10 +1,10 @@
 # Current program (source of truth)
 
-Last updated: 2026-07-05
+Last updated: 2026-08-21
 
 5-day split, strength-focused with hypertrophy support. Each major muscle trained ~2x/week on **different** days: one heavier low-rep exposure + one lighter/variation higher-rep exposure. This file is the canonical spec; the `index.html` day tables must match it.
 
-Days map to weekdays: A=Mon, B=Tue, C=Wed, D=Thu, E=Fri (see `WEEKDAY_TO_DAY` in `index.html`). Every day also has Warmup + Cooldown blocks (and Ab Finisher on A/C, Finisher hip abd/add on B/D, Athletic Opener + Carries on E) that are kept as-is and not listed below.
+Days map to weekdays: A=Mon, B=Tue, C=Wed, D=Thu, E=Fri (see `WEEKDAY_TO_DAY` in `index.html`). Every day also has Warmup + Cooldown blocks (and Ab Finisher on A/C, Finisher hip abd/add on B/D, Carries on E) that are kept as-is and not listed below.
 
 ## Day A — Upper (Push emphasis) · Mon
 chest (heavy), shoulders, back (moderate), triceps, rear delts
@@ -49,11 +49,11 @@ hams (heavy), glutes, quads (moderate), calves
 | 4 | Seated calf raise | 3 x 12-15 | Accessory | 60s |
 
 ## Day E — Arms + Shoulders + Carries · Fri
-biceps, triceps, side delts, carries
+chest, biceps, triceps, side delts, carries
 
 | Order | Exercise | Sets x Reps | Intensity | Rest |
 |---|---|---|---|---|
-| 1 | Sled push | 4 trips | Athletic opener | walk back |
+| 1 | Cable fly (mid, arms out) | 3 x 10-12 | Accessory (chest) | 60-90s |
 | 2 | EZ bar curl | 4 x 6-8 | Main (biceps) | 90s |
 | 3 | Hammer curl | 3 x 12-15 | Accessory | 60s |
 | 4 | Overhead tricep extension | 3 x 8-10 | Secondary | 60s |
@@ -64,7 +64,7 @@ biceps, triceps, side delts, carries
 
 | Muscle | Heavy | Lighter |
 |---|---|---|
-| Chest | Bench (A) | Incline DB (C) |
+| Chest | Bench (A) | Incline DB (C) + cable fly (E) |
 | Back | Chest-supported row (C) | Lat pulldown (A) |
 | Shoulders | OHP (A) | Lateral raise (E) |
 | Rear delts | Rear delt fly (A) | Face pull (C) |
@@ -80,4 +80,4 @@ biceps, triceps, side delts, carries
 * Mains: double progression. Start at current working weight; when all sets hit the top of the range at 1-2 RIR, add 5 lb (upper) / 10 lb (lower) next session.
 * Secondary: add weight when 3 sets clear the top rep at >=2 RIR.
 * Accessories: push reps to the top of the range first, then the smallest load increment; stay controlled.
-* Volume note: chest sits at 8 direct sets/wk, side delts 6. Fine for strength focus. If mass stalls and matters, add 2-3 sets to those slots. No deload scheme is built in.
+* Volume note: chest sits at 11 direct sets/wk across three days (bench A, incline DB C, cable fly E). Side delts sit at 6; if shoulder width stalls and matters, add 2-3 sets there. No deload scheme is built in.
