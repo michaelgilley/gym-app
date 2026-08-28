@@ -1,6 +1,6 @@
 # Current program (source of truth)
 
-Last updated: 2026-08-21
+Last updated: 2026-08-28
 
 5-day split, strength-focused with hypertrophy support. Each major muscle trained ~2x/week on **different** days: one heavier low-rep exposure + one lighter/variation higher-rep exposure. This file is the canonical spec; the `index.html` day tables must match it.
 
@@ -49,16 +49,17 @@ hams (heavy), glutes, quads (moderate), calves
 | 4 | Seated calf raise | 3 x 12-15 | Accessory | 60s |
 
 ## Day E — Arms + Shoulders + Carries · Fri
-chest, biceps, triceps, side delts, carries
+chest, biceps, triceps, side delts, traps, carries
 
 | Order | Exercise | Sets x Reps | Intensity | Rest |
 |---|---|---|---|---|
-| 1 | Cable fly (mid, arms out) | 3 x 10-12 | Accessory (chest) | 60-90s |
-| 2 | EZ bar curl | 4 x 6-8 | Main (biceps) | 90s |
-| 3 | Hammer curl | 3 x 12-15 | Accessory | 60s |
-| 4 | Overhead tricep extension | 3 x 8-10 | Secondary | 60s |
+| 1 | EZ bar curl | 4 x 6-8 | Main (biceps) | 90s |
+| 2 | Hammer curl | 3 x 12-15 | Accessory | 60s |
+| 3 | Overhead tricep extension | 3 x 8-10 | Secondary | 60s |
+| 4 | Cable fly (mid, arms out) | 3 x 10-12 | Accessory (chest) | 60-90s |
 | 5 | Cable lateral raise | 3 x 12-15 | Accessory | 60s |
-| 6 | Suitcase carry | 3 x 40 yd each | Carry | 60-90s |
+| 6 | Chest-supported machine shrug | 3 x 10-15 | Accessory (traps), 1-2 RIR | 60-90s |
+| 7 | Suitcase carry | 3 x 40 yd each | Carry | 60-90s |
 
 ## Weekly muscle frequency (heavy / lighter, different days)
 
@@ -73,6 +74,7 @@ chest, biceps, triceps, side delts, carries
 | Glutes | Squat (B) | RDL + hip thrust (D) |
 | Biceps | EZ curl (E) | DB curl (C) |
 | Triceps | Overhead ext (E) | Pushdown (A) |
+| Traps | — | Chest-supported shrug (E), 1x/wk |
 
 ## Effort (RIR) and progression
 
