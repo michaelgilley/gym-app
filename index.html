@@ -1290,6 +1290,11 @@
 
         .data-btn:active { transform: scale(0.97); }
 
+        .data-btn:disabled {
+            cursor: wait;
+            opacity: 0.65;
+        }
+
         /* Toast — chunky pill. Sits above the sticky Save button so they
            don't visually crowd each other. */
         .toast {
@@ -2772,13 +2777,14 @@
         <div class="data-section">
             <button class="data-btn" onclick="exportData()">Export Data</button>
             <button class="data-btn" onclick="document.getElementById('importFile').click()">Import Data</button>
+            <button class="data-btn" id="reloadLatestBtn" onclick="reloadLatestVersion()">Reload Latest</button>
             <input type="file" id="importFile" accept=".json" style="display:none" onchange="importData(event)">
         </div>
     </div>
 
     <footer style="text-align:center; padding: 20px calc(20px + env(safe-area-inset-right)) calc(20px + env(safe-area-inset-bottom)) calc(20px + env(safe-area-inset-left)); color: var(--text-secondary); font-size: 12px; font-family: monospace;">
         <img src="./icon-512.png" alt="Gym" style="width: 32px; height: 32px; opacity: 0.5; margin-bottom: 10px;"><br>
-        2026-08-28
+        2026-09-23
 
     </footer>
 
@@ -4174,6 +4180,33 @@
                 toast.style.animation = 'slideOut 0.3s ease';
                 setTimeout(() => toast.remove(), 300);
             }, 2000);
+        }
+
+        async function reloadLatestVersion() {
+            const button = document.getElementById('reloadLatestBtn');
+            const originalLabel = button.textContent;
+            button.disabled = true;
+            button.textContent = 'Checking...';
+
+            try {
+                if (!navigator.onLine) throw new Error('offline');
+
+                const freshUrl = new URL('./index.html', window.location.href);
+                freshUrl.searchParams.set('refresh', Date.now().toString());
+                const response = await fetch(freshUrl, { cache: 'no-store' });
+                if (!response.ok) throw new Error(`update request failed: ${response.status}`);
+
+                if ('serviceWorker' in navigator) {
+                    const registration = await navigator.serviceWorker.getRegistration();
+                    if (registration) await registration.update();
+                }
+
+                window.location.replace(freshUrl.href);
+            } catch {
+                button.disabled = false;
+                button.textContent = originalLabel;
+                showToast('Update unavailable. Staying on this version.');
+            }
         }
 
         // Initialize app

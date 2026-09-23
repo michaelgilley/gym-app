@@ -2,7 +2,8 @@ GYM WORKOUT TRACKER PWA
 =======================
 
 A single-file Progressive Web App for tracking gym workouts. Weights persist
-in IndexedDB; works offline once cached.
+in IndexedDB. The service worker caches the local app shell for offline use.
+Use Reload Latest to fetch a deployed update without clearing local data.
 
 This README stays short on purpose. The two things that change often live in
 their own files, so update those, not this:
@@ -29,7 +30,7 @@ TEST
 FILES
 -----
   index.html      The whole app: HTML + CSS (<style>) + JS (<script>) inline.
-  sw.js           Service worker (cache-first). Bump CACHE_VERSION to push updates.
+  sw.js           Service worker. It caches the app shell and uses network-first navigation.
   manifest.json   PWA manifest.
   icon-*.png      App icons.
   tests/          Playwright specs.
